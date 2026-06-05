@@ -70,6 +70,21 @@ const ALIASES: Record<string, string> = {
   "EEUU": "Estados Unidos",
   "Corea Sur": "Corea del Sur",
   "Arabia S.": "Arabia Saudita",
+  "Bosnia": "Bosnia y Herzegovina",
+  "Bosnia & Herzegovina": "Bosnia y Herzegovina",
+  "Congo": "República Democrática del Congo",
+  "DR Congo": "República Democrática del Congo",
+  "Democratic Republic of the Congo": "República Democrática del Congo",
+  "Costa de Marfil": "Costa de Marfil",
+  "Ivory Coast": "Costa de Marfil",
+  "Escocia": "Escocia",
+  "Scotland": "Escocia",
+  "Inglaterra": "Inglaterra",
+  "England": "Inglaterra",
+  "Países Bajos": "Países Bajos",
+  "Netherlands": "Países Bajos",
+  "Curazao": "Curazao",
+  "Curaçao": "Curazao",
 };
 
 export function getTeamInfo(name: string): TeamInfo | undefined {
