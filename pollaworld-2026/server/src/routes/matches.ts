@@ -1,8 +1,21 @@
 import { Router, Request, Response } from "express";
+import { z } from "zod";
 import { db } from "../db";
 import { matches } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
-import { eq, asc, lte, gte, desc, and } from "drizzle-orm";
+import { eq, asc, lte, gte, desc, and, isNotNull } from "drizzle-orm";
+
+const matchCreateSchema = z.object({
+  phase: z.enum(["groups", "round_of_32", "round_of_16", "quarterfinals", "semifinals", "final_3rd", "final"]),
+  group_name: z.string().nullable().optional(),
+  home_team: z.string().min(1),
+  away_team: z.string().min(1),
+  home_flag: z.string().min(1),
+  away_flag: z.string().min(1),
+  match_date: z.string().min(1),
+  match_order: z.number().int(),
+});
+const matchUpdateSchema = matchCreateSchema.partial();
 
 const router = Router();
 
@@ -42,7 +55,7 @@ router.get("/live", async (_req: Request, res: Response) => {
         and(
           gte(matches.match_date, yesterday),
           eq(matches.is_locked, true),
-          gte(matches.home_score_real, 0)
+          and(isNotNull(matches.home_score_real), gte(matches.home_score_real, 0))
         )
       )
       .orderBy(desc(matches.match_date))
@@ -73,9 +86,12 @@ router.get("/:id", async (req: Request, res: Response) => {
 // POST /api/matches — crear partido (admin)
 router.post("/", requireAdmin, async (req: Request, res: Response) => {
   try {
-    const [newMatch] = await db.insert(matches).values(req.body).returning();
+    const data = matchCreateSchema.parse(req.body);
+    const values = { ...data, match_date: new Date(data.match_date) };
+    const [newMatch] = await db.insert(matches).values(values).returning();
     res.status(201).json(newMatch);
   } catch (err) {
+    if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
     console.error("Create match error:", err);
     res.status(500).json({ error: "Error al crear partido." });
   }
@@ -84,9 +100,12 @@ router.post("/", requireAdmin, async (req: Request, res: Response) => {
 // PUT /api/matches/:id — actualizar partido (admin)
 router.put("/:id", requireAdmin, async (req: Request, res: Response) => {
   try {
+    const data = matchUpdateSchema.parse(req.body);
+    const values: any = { ...data };
+    if (data.match_date) values.match_date = new Date(data.match_date);
     const [updated] = await db
       .update(matches)
-      .set(req.body)
+      .set(values)
       .where(eq(matches.id, req.params.id))
       .returning();
     if (!updated) {
@@ -95,6 +114,7 @@ router.put("/:id", requireAdmin, async (req: Request, res: Response) => {
     }
     res.json(updated);
   } catch (err) {
+    if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
     console.error("Update match error:", err);
     res.status(500).json({ error: "Error al actualizar partido." });
   }

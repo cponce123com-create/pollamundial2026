@@ -2,7 +2,8 @@ import { Router, Request, Response } from "express";
 import { db } from "../db";
 import { users, entries, matches, predictions, poolConfig } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
-import { eq, asc } from "drizzle-orm";
+import { eq, and, asc, sql, inArray } from "drizzle-orm";
+import { calculatePoints } from "../lib/scoring";
 
 const router = Router();
 
@@ -190,23 +191,26 @@ router.get("/predictions/export", requireAdmin, async (_req: Request, res: Respo
 
     const allMatches = await db.select().from(matches).orderBy(asc(matches.match_order));
 
+    // Pre-load all users and predictions
+    const allUsers = await db.select().from(users);
+    const userMap = new Map(allUsers.map(u => [u.id, u]));
+    const approvedEntryIds = approvedEntries.map(e => e.id);
+    const allPreds = await db.select().from(predictions).where(inArray(predictions.entry_id, approvedEntryIds));
+    // Group preds by entry_id
+    const predsByEntry = new Map<string, typeof allPreds>();
+    for (const pred of allPreds) {
+      const arr = predsByEntry.get(pred.entry_id) || [];
+      arr.push(pred);
+      predsByEntry.set(pred.entry_id, arr);
+    }
+
     const result = [];
     for (const entry of approvedEntries) {
-      const [user] = await db
-        .select()
-        .from(users)
-        .where(eq(users.id, entry.user_id))
-        .limit(1);
-
-      const entryPreds = await db
-        .select({
-          prediction: predictions,
-          match: matches,
-        })
-        .from(predictions)
-        .innerJoin(matches, eq(predictions.match_id, matches.id))
-        .where(eq(predictions.entry_id, entry.id))
-        .orderBy(asc(matches.match_order));
+      const user = userMap.get(entry.user_id);
+      const entryPreds = (predsByEntry.get(entry.id) || []).map(p => ({
+        prediction: p,
+        match: allMatches.find(m => m.id === p.match_id),
+      })).filter(p => p.match);
 
       if (user) {
         result.push({
@@ -271,6 +275,101 @@ router.delete("/entries/:id", requireAdmin, async (req: Request, res: Response) 
   } catch (err) {
     console.error("Delete entry error:", err);
     res.status(500).json({ error: "Error al eliminar entrada." });
+  }
+});
+
+// POST /api/admin/matches/:id/result — admin ingresa resultado y dispara cálculo
+router.post("/matches/:id/result", requireAdmin, async (req: Request, res: Response) => {
+  try {
+    const { home_score_real, away_score_real } = req.body;
+
+    if (home_score_real === "" || home_score_real === undefined || home_score_real === null ||
+        away_score_real === "" || away_score_real === undefined || away_score_real === null) {
+      res.status(400).json({ error: "Debes ingresar el marcador real del partido." });
+      return;
+    }
+
+    const homeScore = Number(home_score_real);
+    const awayScore = Number(away_score_real);
+
+    if (isNaN(homeScore) || isNaN(awayScore) || homeScore < 0 || awayScore < 0) {
+      res.status(400).json({ error: "Los marcadores deben ser números válidos (0 o más)." });
+      return;
+    }
+
+    const [match] = await db
+      .select()
+      .from(matches)
+      .where(eq(matches.id, req.params.id))
+      .limit(1);
+
+    if (!match) {
+      res.status(404).json({ error: "Partido no encontrado." });
+      return;
+    }
+
+    await db
+      .update(matches)
+      .set({ home_score_real: homeScore, away_score_real: awayScore, is_locked: true })
+      .where(eq(matches.id, match.id));
+
+    const allPredictions = await db
+      .select()
+      .from(predictions)
+      .where(eq(predictions.match_id, match.id));
+
+    for (const pred of allPredictions) {
+      const points = calculatePoints(pred.home_score_pred, pred.away_score_pred, homeScore, awayScore);
+      await db.update(predictions).set({ points_earned: points }).where(eq(predictions.id, pred.id));
+    }
+
+    res.json({ message: `Resultado guardado. ${allPredictions.length} predicciones calculadas.` });
+  } catch (err) {
+    console.error("Save result error:", err);
+    res.status(500).json({ error: "Error al guardar resultado." });
+  }
+});
+
+// PATCH /api/admin/matches/:id/lock — toggle lock (admin)
+router.patch("/matches/:id/lock", requireAdmin, async (req: Request, res: Response) => {
+  try {
+    const { locked } = req.body;
+    if (locked === undefined) {
+      res.status(400).json({ error: "Se requiere el campo locked." });
+      return;
+    }
+
+    if (locked) {
+      const [match] = await db
+        .update(matches)
+        .set({ is_locked: true })
+        .where(eq(matches.id, req.params.id))
+        .returning();
+      if (!match) {
+        res.status(404).json({ error: "Partido no encontrado." });
+        return;
+      }
+      res.json({ message: "Partido bloqueado.", match });
+    } else {
+      const [match] = await db
+        .update(matches)
+        .set({ is_locked: false, home_score_real: null, away_score_real: null })
+        .where(eq(matches.id, req.params.id))
+        .returning();
+      if (!match) {
+        res.status(404).json({ error: "Partido no encontrado." });
+        return;
+      }
+      await db
+        .update(predictions)
+        .set({ points_earned: 0 })
+        .where(eq(predictions.match_id, req.params.id));
+
+      res.json({ message: "Partido desbloqueado. Resultado y puntos eliminados.", match });
+    }
+  } catch (err) {
+    console.error("Lock match error:", err);
+    res.status(500).json({ error: "Error al bloquear partido." });
   }
 });
 

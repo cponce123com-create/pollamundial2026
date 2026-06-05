@@ -1,8 +1,31 @@
 import { Router, Request, Response } from "express";
+import { z } from "zod";
+import multer from "multer";
 import { db } from "../db";
 import { poolConfig, users, entries, predictions } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
 import { eq, sql, count, desc } from "drizzle-orm";
+import cloudinary from "../lib/cloudinary";
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) cb(null, true);
+    else cb(new Error("Solo se permiten imágenes (JPG, PNG, GIF, WEBP)"));
+  },
+});
+
+const poolConfigSchema = z.object({
+  entry_fee: z.number().int().min(1).max(1000).optional(),
+  prize_1st_pct: z.number().int().min(0).max(100).optional(),
+  prize_2nd_pct: z.number().int().min(0).max(100).optional(),
+  prize_3rd_pct: z.number().int().min(0).max(100).optional(),
+  tournament_started: z.boolean().optional(),
+  yape_qr_url: z.string().nullable().optional(),
+  yape_phone: z.string().nullable().optional(),
+  player_custom_names: z.string().nullable().optional(),
+});
 
 const router = Router();
 
@@ -89,19 +112,21 @@ router.get("/config", async (_req: Request, res: Response) => {
 // PUT /api/pool/config — actualizar (admin)
 router.put("/config", requireAdmin, async (req: Request, res: Response) => {
   try {
+    const validated = poolConfigSchema.parse(req.body);
     const configs = await db.select().from(poolConfig).limit(1);
     if (configs.length === 0) {
-      const [newConfig] = await db.insert(poolConfig).values(req.body).returning();
+      const [newConfig] = await db.insert(poolConfig).values(validated).returning();
       res.json(newConfig);
     } else {
       const [updated] = await db
         .update(poolConfig)
-        .set(req.body)
+        .set(validated)
         .where(eq(poolConfig.id, configs[0].id))
         .returning();
       res.json(updated);
     }
   } catch (err) {
+    if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
     console.error("Update pool config error:", err);
     res.status(500).json({ error: "Error al actualizar configuración." });
   }
@@ -132,6 +157,62 @@ router.get("/ranking", async (_req: Request, res: Response) => {
   } catch (err) {
     console.error("Ranking error:", err);
     res.status(500).json({ error: "Error al obtener ranking." });
+  }
+});
+
+// POST /api/pool/upload-yape-qr — subir QR de Yape (admin)
+router.post("/upload-yape-qr", requireAdmin, (req: Request, res: Response, next) => {
+  upload.single("qr")(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({ error: "La imagen no debe superar los 5MB." });
+      }
+      return res.status(400).json({ error: `Error al subir: ${err.message}` });
+    }
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    next();
+  });
+}, async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: "Debes enviar una imagen del código QR." });
+      return;
+    }
+
+    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: "pollaworld/yape-qr",
+          allowed_formats: ["jpg", "jpeg", "png", "gif", "webp"],
+          max_file_size: 5 * 1024 * 1024,
+        },
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result as { secure_url: string });
+        }
+      );
+      stream.end(req.file!.buffer);
+    });
+
+    const configs = await db.select().from(poolConfig).limit(1);
+    if (configs.length === 0) {
+      await db.insert(poolConfig).values({ yape_qr_url: result.secure_url });
+    } else {
+      await db
+        .update(poolConfig)
+        .set({ yape_qr_url: result.secure_url })
+        .where(eq(poolConfig.id, configs[0].id));
+    }
+
+    res.json({ url: result.secure_url, message: "Código QR de Yape actualizado." });
+  } catch (err: any) {
+    console.error("Upload yape QR error:", err);
+    if (err?.http_code === 401 || err?.message?.includes("Invalid")) {
+      return res.status(500).json({ error: "Error de configuración de Cloudinary. Contacta al administrador." });
+    }
+    res.status(500).json({ error: "Error al subir código QR." });
   }
 });
 

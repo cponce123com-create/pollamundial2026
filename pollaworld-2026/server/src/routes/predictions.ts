@@ -3,9 +3,7 @@ import { z } from "zod";
 import { db } from "../db";
 import { predictions, matches, users, entries, poolConfig } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
-import { requireAdmin } from "../middleware/admin";
 import { eq, and, asc, desc, sql, inArray } from "drizzle-orm";
-import { calculatePoints } from "../lib/scoring";
 
 const router = Router();
 
@@ -114,36 +112,29 @@ router.post("/bulk", requireAuth, async (req: Request, res: Response) => {
     }
 
     const results = [];
-    for (const pred of data.predictions) {
-      const [match] = await db.select().from(matches).where(eq(matches.id, pred.match_id)).limit(1);
-      if (!match || match.is_locked) continue;
-
-      const [existing] = await db
-        .select()
-        .from(predictions)
-        .where(and(eq(predictions.entry_id, data.entry_id), eq(predictions.match_id, pred.match_id)))
-        .limit(1);
-
-      if (existing) {
-        const [updated] = await db
-          .update(predictions)
-          .set({ home_score_pred: pred.home_score_pred, away_score_pred: pred.away_score_pred, updated_at: new Date() })
-          .where(eq(predictions.id, existing.id))
-          .returning();
-        results.push(updated);
-      } else {
-        const [created] = await db
-          .insert(predictions)
-          .values({
-            user_id: req.user!.userId,
-            entry_id: data.entry_id,
-            match_id: pred.match_id,
-            home_score_pred: pred.home_score_pred,
-            away_score_pred: pred.away_score_pred,
-          })
-          .returning();
-        results.push(created);
-      }
+    // Get all match IDs
+    const matchIds = data.predictions.map(p => p.match_id);
+    // Single query for all unlockable matches
+    const activeMatches = await db.select().from(matches).where(and(inArray(matches.id, matchIds), eq(matches.is_locked, false)));
+    const validMatchIds = new Set(activeMatches.map(m => m.id));
+    // Get existing predictions for this entry
+    const existingPreds = await db.select().from(predictions).where(and(eq(predictions.entry_id, data.entry_id), inArray(predictions.match_id, matchIds)));
+    const existingMap = new Map(existingPreds.map(p => [p.match_id, p]));
+    // Batch upsert
+    const batch = data.predictions.filter(p => validMatchIds.has(p.match_id)).map(p => ({
+      user_id: req.user!.userId,
+      entry_id: data.entry_id,
+      match_id: p.match_id,
+      home_score_pred: p.home_score_pred,
+      away_score_pred: p.away_score_pred,
+      points_earned: 0,
+    }));
+    if (batch.length > 0) {
+      const inserted = await db.insert(predictions).values(batch).onConflictDoUpdate({
+        target: [predictions.entry_id, predictions.match_id],
+        set: { home_score_pred: sql`excluded.home_score_pred`, away_score_pred: sql`excluded.away_score_pred`, updated_at: sql`now()` },
+      }).returning();
+      results.push(...inserted);
     }
 
     res.json({ saved: results.length, predictions: results });
@@ -283,132 +274,6 @@ router.get("/popular", async (_req: Request, res: Response) => {
   } catch (err) {
     console.error("Popular predictions error:", err);
     res.status(500).json({ error: "Error al obtener predicciones populares." });
-  }
-});
-
-// GET /api/predictions/ranking — tabla de posiciones por entry (público)
-router.get("/ranking", async (_req: Request, res: Response) => {
-  try {
-    const ranking = await db
-      .select({
-        entryId: entries.id,
-        ticketNumber: entries.ticket_number,
-        userId: users.id,
-        name: users.name,
-        playerSlug: users.player_slug,
-        totalPoints: sql<number>`COALESCE(SUM(${predictions.points_earned}), 0)`.mapWith(Number),
-      })
-      .from(entries)
-      .innerJoin(users, eq(entries.user_id, users.id))
-      .leftJoin(predictions, eq(entries.id, predictions.entry_id))
-      .groupBy(entries.id, users.id)
-      .orderBy(desc(sql`COALESCE(SUM(${predictions.points_earned}), 0)`));
-
-    res.json(ranking);
-  } catch (err) {
-    console.error("Ranking error:", err);
-    res.status(500).json({ error: "Error al obtener ranking." });
-  }
-});
-
-// POST /api/admin/matches/:id/result — admin ingresa resultado y dispara cálculo
-router.post("/admin/matches/:id/result", requireAdmin, async (req: Request, res: Response) => {
-  try {
-    const { home_score_real, away_score_real } = req.body;
-
-    // Validate: must be non-null numbers, reject empty strings (Number("") = 0)
-    if (home_score_real === "" || home_score_real === undefined || home_score_real === null ||
-        away_score_real === "" || away_score_real === undefined || away_score_real === null) {
-      res.status(400).json({ error: "Debes ingresar el marcador real del partido." });
-      return;
-    }
-
-    const homeScore = Number(home_score_real);
-    const awayScore = Number(away_score_real);
-
-    if (isNaN(homeScore) || isNaN(awayScore) || homeScore < 0 || awayScore < 0) {
-      res.status(400).json({ error: "Los marcadores deben ser números válidos (0 o más)." });
-      return;
-    }
-
-    const [match] = await db
-      .select()
-      .from(matches)
-      .where(eq(matches.id, req.params.id))
-      .limit(1);
-
-    if (!match) {
-      res.status(404).json({ error: "Partido no encontrado." });
-      return;
-    }
-
-    // Actualizar resultado real
-    await db
-      .update(matches)
-      .set({ home_score_real: homeScore, away_score_real: awayScore, is_locked: true })
-      .where(eq(matches.id, match.id));
-
-    // Calcular puntos para todas las predicciones de este partido
-    const allPredictions = await db
-      .select()
-      .from(predictions)
-      .where(eq(predictions.match_id, match.id));
-
-    for (const pred of allPredictions) {
-      const points = calculatePoints(pred.home_score_pred, pred.away_score_pred, homeScore, awayScore);
-      await db.update(predictions).set({ points_earned: points }).where(eq(predictions.id, pred.id));
-    }
-
-    res.json({ message: `Resultado guardado. ${allPredictions.length} predicciones calculadas.` });
-  } catch (err) {
-    console.error("Save result error:", err);
-    res.status(500).json({ error: "Error al guardar resultado." });
-  }
-});
-
-// PATCH /api/admin/matches/:id/lock — toggle lock (admin)
-router.patch("/admin/matches/:id/lock", requireAdmin, async (req: Request, res: Response) => {
-  try {
-    const { locked } = req.body;
-    if (locked === undefined) {
-      res.status(400).json({ error: "Se requiere el campo locked." });
-      return;
-    }
-
-    if (locked) {
-      // Lock: just set is_locked = true
-      const [match] = await db
-        .update(matches)
-        .set({ is_locked: true })
-        .where(eq(matches.id, req.params.id))
-        .returning();
-      if (!match) {
-        res.status(404).json({ error: "Partido no encontrado." });
-        return;
-      }
-      res.json({ message: "Partido bloqueado.", match });
-    } else {
-      // Unlock: clear scores AND reset predictions points
-      const [match] = await db
-        .update(matches)
-        .set({ is_locked: false, home_score_real: null, away_score_real: null })
-        .where(eq(matches.id, req.params.id))
-        .returning();
-      if (!match) {
-        res.status(404).json({ error: "Partido no encontrado." });
-        return;
-      }
-      // Reset points for all predictions of this match
-      await db
-        .update(predictions)
-        .set({ points_earned: 0 })
-        .where(eq(predictions.match_id, req.params.id));
-
-      res.json({ message: "Partido desbloqueado. Resultado y puntos eliminados.", match });
-    }
-  } catch (err) {
-    console.error("Lock match error:", err);
-    res.status(500).json({ error: "Error al bloquear partido." });
   }
 });
 

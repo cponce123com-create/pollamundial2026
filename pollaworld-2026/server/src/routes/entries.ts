@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import { db } from "../db";
 import { entries } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, count } from "drizzle-orm";
 
 const router = Router();
 
@@ -25,6 +25,13 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
 // POST /api/entries — create new entry (ticket_number = max + 1)
 router.post("/", requireAuth, async (req: Request, res: Response) => {
   try {
+    const MAX_TICKETS = 5;
+    const [countResult] = await db.select({ count: count() }).from(entries).where(eq(entries.user_id, req.user!.userId));
+    if (countResult.count >= MAX_TICKETS) {
+      res.status(400).json({ error: `Máximo ${MAX_TICKETS} tickets por usuario.` });
+      return;
+    }
+
     const [maxEntry] = await db
       .select({ maxTicket: sql<number>`COALESCE(MAX(${entries.ticket_number}), 0)`.mapWith(Number) })
       .from(entries)
