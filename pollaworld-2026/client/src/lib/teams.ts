@@ -76,6 +76,7 @@ const ALIASES: Record<string, string> = {
   "Chequia": "República Checa",
   "Bosnia": "Bosnia y Herzegovina",
   "Congo": "RD Congo",
+  "Congo DR": "RD Congo",
   "República Democrática del Congo": "RD Congo",
   "Holland": "Países Bajos",
   "UK": "Inglaterra",
