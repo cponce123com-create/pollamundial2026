@@ -86,7 +86,7 @@ const TEAMS: TeamSeed[] = [
   { name: "Jordania", iso2: "jo", fifa_code: "JOR", group: "J" },
   // Group K
   { name: "Portugal", iso2: "pt", fifa_code: "POR", group: "K" },
-  { name: "República Democrática del Congo", iso2: "cd", fifa_code: "COD", group: "K" },
+  { name: "RD Congo", iso2: "cd", fifa_code: "COD", group: "K" },
   { name: "Uzbekistán", iso2: "uz", fifa_code: "UZB", group: "K" },
   { name: "Colombia", iso2: "co", fifa_code: "COL", group: "K" },
   // Group L

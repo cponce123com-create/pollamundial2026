@@ -51,7 +51,7 @@ const TEAM_NAME_MAP: Record<string, string> = {
   "Austria": "Austria",
   "Jordan": "Jordania",
   "Portugal": "Portugal",
-  "Democratic Republic of the Congo": "República Democrática del Congo",
+  "Democratic Republic of the Congo": "RD Congo",
   "Uzbekistan": "Uzbekistán",
   "Colombia": "Colombia",
   "England": "Inglaterra",
