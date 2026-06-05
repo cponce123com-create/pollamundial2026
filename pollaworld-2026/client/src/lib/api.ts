@@ -96,6 +96,7 @@ export const api = {
 
   // Matches
   getMatches: () => request<Match[]>("/matches"),
+  getLiveMatches: () => request<{ live: Match[]; recent: Match[] }>("/matches/live"),
 
   // Predictions
   getMyPredictions: () => request<{ prediction: Prediction; match: Match }[]>("/predictions/my"),

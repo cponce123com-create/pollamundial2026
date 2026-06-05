@@ -21,6 +21,7 @@ export default function Dashboard() {
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
   const [generatingPdf, setGeneratingPdf] = useState(false);
+  const [liveMatchIds, setLiveMatchIds] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -51,6 +52,22 @@ export default function Dashboard() {
       navigate("/login");
     }
   };
+
+  const checkLiveMatches = async () => {
+    try {
+      const data = await api.getLiveMatches();
+      const liveIds = new Set(data.live.map((m) => m.id));
+      setLiveMatchIds(liveIds);
+    } catch {
+      // Silently fail
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(checkLiveMatches, 30_000);
+    checkLiveMatches();
+    return () => clearInterval(interval);
+  }, []);
 
   const filteredMatches = matches.filter((m) =>
     activeTab === "groups" ? m.phase === "groups" : m.phase !== "groups"
@@ -260,6 +277,9 @@ export default function Dashboard() {
                     <div className="match-header">
                       <span className="match-group">{m.group_name ? `Grupo ${m.group_name}` : formatPhase(m.phase)}</span>
                       {getStatusBadge(m)}
+                      {liveMatchIds.has(m.id) && (
+                        <span className="badge badge-live">🔴 EN VIVO</span>
+                      )}
                     </div>
 
                     <div className="match-teams">

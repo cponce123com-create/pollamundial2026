@@ -18,6 +18,7 @@ import { eq, lte, and } from "drizzle-orm";
 import logger from "./lib/logger";
 import pinoHttp from "pino-http";
 import { sanitizeBody } from "./middleware/sanitize";
+import { startLiveScoreSync } from "./lib/livescore";
 
 // Validar variables de entorno requeridas
 const REQUIRED_VARS = ["DATABASE_URL", "JWT_SECRET", "CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"];
@@ -112,5 +113,8 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 app.listen(PORT, () => {
   logger.info(`Server running on http://localhost:${PORT}`);
 });
+
+// Iniciar sincronización de live scores
+startLiveScoreSync();
 
 export default app;
