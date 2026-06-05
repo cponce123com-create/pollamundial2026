@@ -100,10 +100,10 @@ const S = StyleSheet.create({
     fontSize: 7,
     paddingVertical: 0.5,
   },
-  matchNum: { width: "6%" },
-  matchGroup: { width: "10%", fontSize: 6, color: "#666" },
-  matchTeams: { width: "50%" },
-  matchPred: { width: "16%", textAlign: "right" as const },
+  matchNum: { width: "5%" },
+  matchGroup: { width: "8%", fontSize: 6, color: "#666" },
+  matchTeams: { width: "57%", fontSize: 6.5 },
+  matchPred: { width: "14%", textAlign: "right" as const },
   matchResult: { width: "18%", textAlign: "right" as const, color: "#333" },
   // ── Summary ──
   summaryRow: {
@@ -182,33 +182,6 @@ function buildPredMap(predictions: UserPrediction[]): Map<string, Prediction> {
   return new Map(predictions.map((p) => [p.match.id, p.prediction]));
 }
 
-// ── Short team names for thermal (max 4 chars) ────────────────────
-const SHORT_NAMES: Record<string, string> = {
-  "Argentina": "ARG", "Brasil": "BRA", "Uruguay": "URU",
-  "Estados Unidos": "USA", "México": "MEX", "Canadá": "CAN",
-  "Alemania": "GER", "España": "ESP", "Francia": "FRA",
-  "Inglaterra": "ENG", "Italia": "ITA", "Países Bajos": "NED",
-  "Portugal": "POR", "Bélgica": "BEL", "Croacia": "CRO",
-  "Suiza": "SUI", "Suecia": "SWE", "Noruega": "NOR",
-  "Dinamarca": "DEN", "Polonia": "POL", "Austria": "AUT",
-  "República Checa": "CZE", "Turquía": "TUR", "Ucrania": "UKR",
-  "Escocia": "SCO", "Gales": "WAL", "Irlanda": "IRL",
-  "Marruecos": "MAR", "Senegal": "SEN", "Argelia": "ALG",
-  "Túnez": "TUN", "Egipto": "EGY", "Costa de Marfil": "CIV",
-  "Ghana": "GHA", "RD Congo": "COD", "Cabo Verde": "CPV",
-  "Sudáfrica": "RSA", "Catar": "QAT", "Arabia Saudita": "KSA",
-  "Irak": "IRQ", "Irán": "IRN", "Jordania": "JOR",
-  "Japón": "JPN", "Corea del Sur": "KOR", "Australia": "AUS",
-  "Nueva Zelanda": "NZL", "Uzbekistán": "UZB",
-  "Colombia": "COL", "Ecuador": "ECU", "Paraguay": "PAR",
-  "Panamá": "PAN", "Haití": "HTI", "Curazao": "CUW",
-  "Bosnia y Herzegovina": "BIH",
-};
-
-function shortName(name: string): string {
-  return SHORT_NAMES[name] || name.slice(0, 4).toUpperCase();
-}
-
 function ParticipantPage({
   userName,
   userPhone,
@@ -274,7 +247,7 @@ function ParticipantPage({
             <Text style={S.matchNum}>{String(i + 1).padStart(2)}</Text>
             <Text style={S.matchGroup}>{m.group}</Text>
             <Text style={S.matchTeams}>
-              {shortName(m.home).padStart(4)} vs {shortName(m.away).padEnd(4)}
+              {m.home} vs {m.away}
             </Text>
             <Text style={S.matchPred}>
               {predMap.has(m.id) ? (
@@ -298,7 +271,7 @@ function ParticipantPage({
             <Text style={S.matchNum}>{String(groups.length + i + 1).padStart(2)}</Text>
             <Text style={S.matchGroup}>{m.group}</Text>
             <Text style={S.matchTeams}>
-              {shortName(m.home).padStart(4)} vs {shortName(m.away).padEnd(4)}
+              {m.home} vs {m.away}
             </Text>
             <Text style={S.matchPred}>
               {predMap.has(m.id) ? (
