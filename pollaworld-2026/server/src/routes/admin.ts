@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
 import { db } from "../db";
-import { users, entries } from "../db/schema";
+import { users, entries, matches, predictions } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
-import { eq, and } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 
 const router = Router();
 
@@ -177,6 +177,50 @@ router.patch("/entries/:id/reject", requireAdmin, async (req: Request, res: Resp
   } catch (err) {
     console.error("Reject entry error:", err);
     res.status(500).json({ error: "Error al rechazar pago." });
+  }
+});
+
+// GET /api/admin/predictions/export — export JSON de predicciones de entradas aprobadas
+router.get("/predictions/export", requireAdmin, async (_req: Request, res: Response) => {
+  try {
+    const approvedEntries = await db
+      .select()
+      .from(entries)
+      .where(eq(entries.payment_status, "approved"));
+
+    const allMatches = await db.select().from(matches).orderBy(asc(matches.match_order));
+
+    const result = [];
+    for (const entry of approvedEntries) {
+      const [user] = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, entry.user_id))
+        .limit(1);
+
+      const entryPreds = await db
+        .select({
+          prediction: predictions,
+          match: matches,
+        })
+        .from(predictions)
+        .innerJoin(matches, eq(predictions.match_id, matches.id))
+        .where(eq(predictions.entry_id, entry.id))
+        .orderBy(asc(matches.match_order));
+
+      if (user) {
+        result.push({
+          user: { id: user.id, name: user.name, phone: user.phone, emoji_id: user.emoji_id },
+          entry: { id: entry.id, ticketNumber: entry.ticket_number },
+          predictions: entryPreds,
+        });
+      }
+    }
+
+    res.json({ exported_at: new Date().toISOString(), users: result, matches: allMatches });
+  } catch (err) {
+    console.error("Export error:", err);
+    res.status(500).json({ error: "Error al exportar predicciones." });
   }
 });
 

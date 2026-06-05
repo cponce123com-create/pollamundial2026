@@ -182,17 +182,28 @@ export default function Dashboard() {
   const handleGeneratePdf = async () => {
     setGeneratingPdf(true);
     try {
-      const [myPreds, allMatches] = await Promise.all([
-        api.getMyPredictions(),
-        api.getMatches(),
-      ]);
+      const entryId = selectedEntry?.id;
+      if (!entryId) {
+        alert("Selecciona un ticket primero.");
+        return;
+      }
+      const matchesWithPreds = await api.getMatchesWithPredictions(entryId);
+
+      // Transform to the format PdfBoleto expects
+      const predictions = matchesWithPreds
+        .filter((m) => m.prediction)
+        .map((m) => ({
+          prediction: m.prediction!,
+          match: m as any,
+        }));
+      const allMatches = matchesWithPreds.map((m) => m as any);
 
       const blob = await pdf(
         <PdfBoleto
           userName={user!.name}
           userPhone={user!.phone}
           emojiId={user!.emoji_id}
-          predictions={myPreds}
+          predictions={predictions}
           allMatches={allMatches}
         />
       ).toBlob();

@@ -124,8 +124,6 @@ export const api = {
   createEntry: () => request<Entry>("/entries", { method: "POST" }),
 
   // Predictions
-  getMyPredictions: () => request<{ prediction: Prediction; match: Match }[]>("/predictions/my"),
-
   getMatchesWithPredictions: (entryId: string) =>
     request<MatchWithPrediction[]>(`/predictions/matches/${entryId}`),
 
