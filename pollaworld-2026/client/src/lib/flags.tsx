@@ -22,11 +22,11 @@ export function FlagImage({ teamName, size = 32, className }: FlagImageProps) {
   const iso2 = getTeamIso2(teamName);
   const emojiFlag = getEmojiFlag(teamName);
 
-  // Subdivision flags: use flagcdn.com PNG
+  // Subdivision flags (gb-eng, gb-sct): use lipis/flag-icons SVGs via jsdelivr
   if (iso2 && SUBDIVISIONS.has(iso2) && !error) {
     return (
       <img
-        src={`https://flagcdn.com/w${Math.round(size * 2)}/${iso2}.png`}
+        src={`https://cdn.jsdelivr.net/gh/lipis/flag-icons@main/flags/4x3/${iso2}.svg`}
         alt={teamName}
         className={className}
         style={{
