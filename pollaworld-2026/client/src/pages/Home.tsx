@@ -16,9 +16,9 @@ const SECTIONS = [
         </p>
         <ul className="home-checklist">
           <li>📝 Regístrate con tu nombre, celular y un emoji que te identifique.</li>
-          <li>💳 Realiza el pago de inscripción vía Yape.</li>
+          <li>🔮 Llena tus predicciones con los marcadores de todos los partidos.</li>
+          <li>💳 Realiza el pago de inscripción vía Yape (puedes pagar antes o después de llenar tus predicciones).</li>
           <li>✅ Espera la confirmación del organizador.</li>
-          <li>🔮 Predice el marcador de todos los partidos.</li>
           <li>🏆 Sigue tu puntuación en el ranking en vivo.</li>
         </ul>
       </>
@@ -91,7 +91,8 @@ const SECTIONS = [
             realistas: los equipos fuertes anotan más, los débiles menos, con
             ventaja de local y sorpresas ocasionales.
           </li>
-          <li>🔒 Una vez que el primer partido del torneo comience, las predicciones se <strong>cierran automáticamente</strong>.</li>
+          <li>✏️ Puedes editar tus predicciones <strong>todas las veces que quieras</strong> hasta el inicio del primer partido del torneo.</li>
+          <li>🔒 Una vez que el primer partido del torneo comience, las predicciones se <strong>cierran automáticamente</strong> y ya no se pueden modificar.</li>
           <li>📄 Puedes descargar un <strong>PDF</strong> con todas tus predicciones como respaldo.</li>
         </ul>
       </>
