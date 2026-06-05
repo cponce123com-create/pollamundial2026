@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { pdf } from "@react-pdf/renderer";
 import { api, MatchWithPrediction, PoolConfig } from "../lib/api";
+import { toast } from "sonner";
 import { getEmoji } from "../lib/emojis";
 import { FlagImage } from "../lib/flags";
 import PdfBoleto from "../components/PdfBoleto";
@@ -123,9 +124,9 @@ export default function Dashboard() {
     try {
       await api.uploadPaymentProof(file);
       await loadData();
-      setMessage("✅ Comprobante subido. Pendiente de revisión.");
+      toast.success("Comprobante subido. Pendiente de revisión.");
     } catch (err) {
-      setMessage(`❌ ${err instanceof Error ? err.message : "Error al subir"}`);
+      toast.error(err instanceof Error ? err.message : "Error al subir");
     } finally {
       setUploading(false);
       // Reset file input value so the same file can be re-selected
