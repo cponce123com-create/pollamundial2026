@@ -259,8 +259,13 @@ const SECTIONS = [
             <h4>Ganador final</h4>
             <p>
               Al término del Mundial, el participante con mayor puntaje acumulado
-              se lleva el primer premio. En caso de empate, se definirá según las
-              bases establecidas.
+              se lleva el primer premio.
+            </p>
+            <p style={{ marginTop: 6, fontSize: '0.78rem', color: 'var(--gold)' }}>
+              ⚖️ <strong>Desempate:</strong> Si dos o más jugadores igualan en
+              puntos, se contarán los <strong>aciertos al marcador exacto
+              (+5 pts)</strong>. Quien tenga más marcadores exactos acertados
+              ocupará la mejor posición.
             </p>
           </div>
         </div>
