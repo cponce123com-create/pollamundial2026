@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import rateLimit from "express-rate-limit";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import { db } from "../db";
@@ -8,6 +9,16 @@ import { signToken } from "../lib/jwt";
 import { requireAuth } from "../middleware/auth";
 
 const router = Router();
+
+// Rate limiting: 5 intentos por minuto por IP
+const authLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minuto
+  max: 5,
+  message: { error: "Demasiados intentos. Intenta de nuevo en 1 minuto." },
+  headers: true,
+  legacyHeaders: false,
+  standardHeaders: true,
+});
 
 const registerSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
@@ -22,7 +33,7 @@ const loginSchema = z.object({
 });
 
 // POST /api/auth/register
-router.post("/register", async (req: Request, res: Response) => {
+router.post("/register", authLimiter, async (req: Request, res: Response) => {
   try {
     const data = registerSchema.parse(req.body);
 
@@ -74,7 +85,7 @@ router.post("/register", async (req: Request, res: Response) => {
 });
 
 // POST /api/auth/login
-router.post("/login", async (req: Request, res: Response) => {
+router.post("/login", authLimiter, async (req: Request, res: Response) => {
   try {
     const data = loginSchema.parse(req.body);
 

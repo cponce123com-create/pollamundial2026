@@ -1,6 +1,17 @@
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
+function requireEnv(key: string): string {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(
+      `❌ Variable de entorno ${key} no definida. ` +
+      "Configúrala en .env con una clave segura (ej: openssl rand -hex 64)"
+    );
+  }
+  return value;
+}
+
+const JWT_SECRET = requireEnv("JWT_SECRET");
 
 export interface JwtPayload {
   userId: string;

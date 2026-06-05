@@ -84,6 +84,18 @@ router.get("/admin/payments/approved", requireAdmin, async (_req: Request, res: 
 // PATCH /api/admin/payments/:userId/approve — aprobar pago
 router.patch("/admin/payments/:userId/approve", requireAdmin, async (req: Request, res: Response) => {
   try {
+    // Verificar que el usuario tenga comprobante subido
+    const [existingUser] = await db
+      .select({ payment_proof_url: users.payment_proof_url })
+      .from(users)
+      .where(eq(users.id, req.params.userId))
+      .limit(1);
+
+    if (!existingUser || !existingUser.payment_proof_url) {
+      res.status(400).json({ error: "No hay comprobante de pago para este usuario." });
+      return;
+    }
+
     const [updated] = await db
       .update(users)
       .set({ payment_status: "approved" })

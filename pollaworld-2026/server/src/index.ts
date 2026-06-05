@@ -1,7 +1,16 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import express from "express";
+// Validar variables de entorno requeridas
+const REQUIRED_VARS = ["DATABASE_URL", "JWT_SECRET", "CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"];
+const missing = REQUIRED_VARS.filter((v) => !process.env[v]);
+if (missing.length > 0) {
+  console.error(`❌ Variables de entorno faltantes: ${missing.join(", ")}`);
+  console.error("Revisa tu archivo .env o las variables en Render.");
+  process.exit(1);
+}
+
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
@@ -82,6 +91,16 @@ async function checkTournamentStart() {
 setInterval(checkTournamentStart, 60_000);
 // Also run once on startup
 checkTournamentStart();
+
+// Global error handler (must be after all routes)
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  console.error("[ERROR]", err);
+  res.status(500).json({
+    error: process.env.NODE_ENV === "production"
+      ? "Error interno del servidor."
+      : err.message,
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
