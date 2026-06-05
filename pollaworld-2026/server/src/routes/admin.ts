@@ -52,11 +52,11 @@ router.get("/entries", requireAdmin, async (_req: Request, res: Response) => {
     const allEntries = await db
       .select({
         id: entries.id,
-        userId: entries.user_id,
-        ticketNumber: entries.ticket_number,
-        paymentStatus: entries.payment_status,
-        paymentProofUrl: entries.payment_proof_url,
-        createdAt: entries.created_at,
+        user_id: entries.user_id,
+        ticket_number: entries.ticket_number,
+        payment_status: entries.payment_status,
+        payment_proof_url: entries.payment_proof_url,
+        created_at: entries.created_at,
         userName: users.name,
         userPhone: users.phone,
         userEmojiId: users.emoji_id,
@@ -78,11 +78,11 @@ router.get("/entries/pending", requireAdmin, async (_req: Request, res: Response
     const pending = await db
       .select({
         id: entries.id,
-        userId: entries.user_id,
-        ticketNumber: entries.ticket_number,
-        paymentProofUrl: entries.payment_proof_url,
-        paymentStatus: entries.payment_status,
-        createdAt: entries.created_at,
+        user_id: entries.user_id,
+        ticket_number: entries.ticket_number,
+        payment_proof_url: entries.payment_proof_url,
+        payment_status: entries.payment_status,
+        created_at: entries.created_at,
         userName: users.name,
         userPhone: users.phone,
         userEmojiId: users.emoji_id,
@@ -105,11 +105,11 @@ router.get("/entries/approved", requireAdmin, async (_req: Request, res: Respons
     const approved = await db
       .select({
         id: entries.id,
-        userId: entries.user_id,
-        ticketNumber: entries.ticket_number,
-        paymentStatus: entries.payment_status,
-        paymentProofUrl: entries.payment_proof_url,
-        createdAt: entries.created_at,
+        user_id: entries.user_id,
+        ticket_number: entries.ticket_number,
+        payment_status: entries.payment_status,
+        payment_proof_url: entries.payment_proof_url,
+        created_at: entries.created_at,
         userName: users.name,
         userPhone: users.phone,
         userEmojiId: users.emoji_id,
@@ -130,12 +130,12 @@ router.get("/entries/approved", requireAdmin, async (_req: Request, res: Respons
 router.patch("/entries/:id/approve", requireAdmin, async (req: Request, res: Response) => {
   try {
     const [existingEntry] = await db
-      .select({ paymentProofUrl: entries.payment_proof_url })
+      .select({ payment_proof_url: entries.payment_proof_url })
       .from(entries)
       .where(eq(entries.id, req.params.id))
       .limit(1);
 
-    if (!existingEntry || !existingEntry.paymentProofUrl) {
+    if (!existingEntry || !existingEntry.payment_proof_url) {
       res.status(400).json({ error: "No hay comprobante de pago para esta entrada." });
       return;
     }
