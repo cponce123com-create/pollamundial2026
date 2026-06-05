@@ -299,8 +299,8 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* ── PREDICTIONS PANEL (only for approved entries) ── */}
-        {selectedEntry && selectedEntry.payment_status === "approved" ? (
+        {/* ── PREDICTIONS PANEL (visible for all entries) ── */}
+        {selectedEntry ? (
           <div className="card" style={{ marginBottom: 16 }}>
             <div className="dashboard-header">
               <h2>
@@ -506,39 +506,8 @@ export default function Dashboard() {
               </div>
             )}
           </div>
-        ) : selectedEntry ? (
-          /* ── UNAPPROVED ENTRY MESSAGE ── */
-          <div className="card" style={{ marginBottom: 16 }}>
-            <div className="dashboard-header">
-              <h2>Mis Predicciones</h2>
-              {user && (
-                <span className="header-user">
-                  {player && (
-                    <img
-                      src={player.image}
-                      alt={player.name}
-                    referrerPolicy="no-referrer"
-                      className="player-header-img"
-                    />
-                  )}
-                  {user.name}
-                </span>
-              )}
-            </div>
-            <div className="placeholder-page" style={{ padding: "32px 16px" }}>
-              <div style={{ fontSize: "3rem", marginBottom: 12 }}>🔒</div>
-              <h3 style={{ color: "var(--white)", marginBottom: 8 }}>
-                Ticket pendiente de pago
-              </h3>
-              <p className="placeholder-text" style={{ maxWidth: 400, margin: "0 auto" }}>
-                Para hacer tus predicciones, primero debes realizar el pago y subir el comprobante
-                desde el panel lateral. Una vez aprobado, podrás llenar tus pronósticos.
-              </p>
-            </div>
-          </div>
         ) : (
-          /* ── NO ENTRIES MESSAGE ── */
-          <div className="card" style={{ marginBottom: 16 }}>
+          /* ── NO ENTRIES MESSAGE ── */          <div className="card" style={{ marginBottom: 16 }}>
             <div className="placeholder-page" style={{ padding: "32px 16px" }}>
               <div style={{ fontSize: "3rem", marginBottom: 12 }}>🎫</div>
               <h3 style={{ color: "var(--white)", marginBottom: 8 }}>
