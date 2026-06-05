@@ -24,7 +24,7 @@ const registerSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
   phone: z.string().min(1, "El teléfono es requerido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-  emoji_id: z.string().min(1, "Debes seleccionar un emoji"),
+  player_slug: z.string().min(1, "Debes seleccionar un jugador"),
 });
 
 const loginSchema = z.object({
@@ -51,7 +51,7 @@ router.post("/register", authLimiter, async (req: Request, res: Response) => {
         name: data.name,
         phone: data.phone,
         password_hash,
-        emoji_id: data.emoji_id,
+        player_slug: data.player_slug,
       })
       .returning();
 
@@ -78,7 +78,7 @@ router.post("/register", authLimiter, async (req: Request, res: Response) => {
         id: newUser.id,
         name: newUser.name,
         phone: newUser.phone,
-        emoji_id: newUser.emoji_id,
+        player_slug: newUser.player_slug,
         role: newUser.role,
       },
     });
@@ -124,7 +124,7 @@ router.post("/login", authLimiter, async (req: Request, res: Response) => {
         id: user.id,
         name: user.name,
         phone: user.phone,
-        emoji_id: user.emoji_id,
+        player_slug: user.player_slug,
         role: user.role,
       },
     });
@@ -159,7 +159,7 @@ router.get("/me", requireAuth, async (req: Request, res: Response) => {
         id: user.id,
         name: user.name,
         phone: user.phone,
-        emoji_id: user.emoji_id,
+        player_slug: user.player_slug,
         role: user.role,
       },
     });

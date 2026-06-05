@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Entry, User, api } from "../../lib/api";
-import { getEmoji } from "../../lib/emojis";
+import { getPlayer } from "../../lib/players";
 
 interface PaymentsPanelProps {
   pendingEntries: Entry[];
@@ -45,13 +45,14 @@ export default function PaymentsPanel({
     }
   };
 
-  const getUserDisplay = (entry: Entry): { name: string; emoji: string } => {
+  const getUserDisplay = (entry: Entry): { name: string; playerImg: string | null } => {
     const user = userMap.get(entry.user_id);
-    if (!user) return { name: `Usuario #${entry.user_id.slice(0, 6)}`, emoji: "❓" };
+    if (!user) return { name: `Usuario #${entry.user_id.slice(0, 6)}`, playerImg: null };
     const name = entry.ticket_number > 1
       ? `${user.name} (Ticket ${entry.ticket_number})`
       : user.name;
-    return { name, emoji: getEmoji(user.emoji_id)?.emoji || "❓" };
+    const player = getPlayer(user.player_slug);
+    return { name, playerImg: player?.image || null };
   };
 
   return (
@@ -97,12 +98,28 @@ export default function PaymentsPanel({
             </thead>
             <tbody>
               {pendingWithProof.map((entry) => {
-                const { name, emoji } = getUserDisplay(entry);
+                const { name, playerImg } = getUserDisplay(entry);
                 const user = userMap.get(entry.user_id);
                 return (
                   <tr key={entry.id}>
                     <td>
-                      <span className="admin-user-emoji">{emoji}</span>
+                      {playerImg ? (
+                        <img
+                          src={playerImg}
+                          alt=""
+                          className="admin-user-emoji"
+                          style={{
+                            width: 24,
+                            height: 24,
+                            borderRadius: "50%",
+                            objectFit: "cover",
+                            verticalAlign: "middle",
+                            marginRight: 4,
+                          }}
+                        />
+                      ) : (
+                        <span className="admin-user-emoji">{"❓"}</span>
+                      )}
                       {name}
                     </td>
                     <td>
@@ -187,12 +204,28 @@ export default function PaymentsPanel({
             </thead>
             <tbody>
               {approvedEntries.map((entry) => {
-                const { name, emoji } = getUserDisplay(entry);
+                const { name, playerImg } = getUserDisplay(entry);
                 const user = userMap.get(entry.user_id);
                 return (
                   <tr key={entry.id}>
                     <td>
-                      <span className="admin-user-emoji">{emoji}</span>
+                      {playerImg ? (
+                        <img
+                          src={playerImg}
+                          alt=""
+                          className="admin-user-emoji"
+                          style={{
+                            width: 24,
+                            height: 24,
+                            borderRadius: "50%",
+                            objectFit: "cover",
+                            verticalAlign: "middle",
+                            marginRight: 4,
+                          }}
+                        />
+                      ) : (
+                        <span className="admin-user-emoji">{"❓"}</span>
+                      )}
                       {name}
                     </td>
                     <td>

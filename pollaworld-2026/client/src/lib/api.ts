@@ -4,7 +4,7 @@ export interface User {
   id: string;
   name: string;
   phone: string;
-  emoji_id: string;
+  player_slug: string;
   role: "participant" | "admin";
   created_at?: string;
 }
@@ -64,7 +64,7 @@ export interface RankingEntry {
   ticketNumber: number;
   userId: string;
   name: string;
-  emojiId: string;
+  playerSlug: string;
   totalPoints: number;
   exactScores: number;
   correctResults: number;
@@ -75,14 +75,14 @@ export interface Participant {
   userId: string;
   name: string;
   phone: string;
-  emoji_id: string;
+  player_slug: string;
   ticketNumber: number;
 }
 
 export interface ExportData {
   exported_at: string;
   users: {
-    user: { id: string; name: string; phone: string; emoji_id: string };
+    user: { id: string; name: string; phone: string; player_slug: string };
     predictions: { prediction: Prediction; match: Match }[];
   }[];
   matches: Match[];
@@ -101,7 +101,7 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
 
 // Auth
 export const api = {
-  register: (body: { name: string; phone: string; password: string; emoji_id: string }) =>
+  register: (body: { name: string; phone: string; password: string; player_slug: string }) =>
     request<{ user: User }>("/auth/register", { method: "POST", body: JSON.stringify(body) }),
 
   login: (body: { phone: string; password: string }) =>

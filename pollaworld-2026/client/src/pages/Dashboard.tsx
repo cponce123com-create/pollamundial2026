@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { pdf } from "@react-pdf/renderer";
 import { api, MatchWithPrediction, PoolConfig, Entry } from "../lib/api";
 import { toast } from "sonner";
-import { getEmoji } from "../lib/emojis";
+import { getPlayer } from "../lib/players";
 import { FlagImage } from "../lib/flags";
 import PdfBoleto from "../components/PdfBoleto";
 import { autofillModerate, autofillSmart } from "../lib/predictionsLogic";
@@ -202,7 +202,7 @@ export default function Dashboard() {
         <PdfBoleto
           userName={user!.name}
           userPhone={user!.phone}
-          emojiId={user!.emoji_id}
+          playerSlug={user!.player_slug}
           predictions={predictions}
           allMatches={allMatches}
         />
@@ -244,7 +244,7 @@ export default function Dashboard() {
     return <span className="badge badge-pending">Sin predecir</span>;
   };
 
-  const emoji = user ? getEmoji(user.emoji_id) : null;
+  const player = user ? getPlayer(user.player_slug) : null;
   const tournamentStarted = config?.tournament_started;
 
   return (
@@ -311,7 +311,13 @@ export default function Dashboard() {
               </h2>
               {user && (
                 <span className="header-user">
-                  <span className="header-emoji">{emoji?.emoji}</span>
+                  {player && (
+                    <img
+                      src={player.image}
+                      alt={player.name}
+                      className="player-header-img"
+                    />
+                  )}
                   {user.name}
                 </span>
               )}
@@ -506,7 +512,13 @@ export default function Dashboard() {
               <h2>Mis Predicciones</h2>
               {user && (
                 <span className="header-user">
-                  <span className="header-emoji">{emoji?.emoji}</span>
+                  {player && (
+                    <img
+                      src={player.image}
+                      alt={player.name}
+                      className="player-header-img"
+                    />
+                  )}
                   {user.name}
                 </span>
               )}

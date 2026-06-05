@@ -45,7 +45,7 @@ router.get("/participants", async (_req: Request, res: Response) => {
         userId: entries.user_id,
         userName: users.name,
         phone: users.phone,
-        emoji_id: users.emoji_id,
+        player_slug: users.player_slug,
         ticketNumber: entries.ticket_number,
       })
       .from(entries)
@@ -59,7 +59,7 @@ router.get("/participants", async (_req: Request, res: Response) => {
       userId: p.userId,
       name: p.ticketNumber > 1 ? `${p.userName} (Ticket ${p.ticketNumber})` : p.userName,
       phone: p.phone ? `****${p.phone.slice(-4)}` : "****",
-      emoji_id: p.emoji_id,
+      player_slug: p.player_slug,
       ticketNumber: p.ticketNumber,
     }));
 
@@ -116,7 +116,7 @@ router.get("/ranking", async (_req: Request, res: Response) => {
         ticketNumber: entries.ticket_number,
         userId: users.id,
         name: users.name,
-        emojiId: users.emoji_id,
+        playerSlug: users.player_slug,
         totalPoints: sql<number>`COALESCE(SUM(${predictions.points_earned}), 0)`.mapWith(Number),
         exactScores: sql<number>`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 5 THEN 1 ELSE 0 END), 0)`.mapWith(Number),
         correctResults: sql<number>`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 3 THEN 1 ELSE 0 END), 0)`.mapWith(Number),

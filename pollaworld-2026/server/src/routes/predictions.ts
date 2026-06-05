@@ -295,7 +295,7 @@ router.get("/ranking", async (_req: Request, res: Response) => {
         ticketNumber: entries.ticket_number,
         userId: users.id,
         name: users.name,
-        emojiId: users.emoji_id,
+        playerSlug: users.player_slug,
         totalPoints: sql<number>`COALESCE(SUM(${predictions.points_earned}), 0)`.mapWith(Number),
       })
       .from(entries)

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { api, PoolStats, RankingEntry } from "../lib/api";
-import { getEmoji } from "../lib/emojis";
+import { getPlayer } from "../lib/players";
 
 export default function RankingPage() {
   const [ranking, setRanking] = useState<RankingEntry[]>([]);
@@ -79,7 +79,7 @@ export default function RankingPage() {
         {podiumPositions.map((p) => {
           const entry = top3[p.pos - 1];
           if (!entry) return null;
-          const emoji = getEmoji(entry.emojiId);
+          const player = getPlayer(entry.playerSlug);
           const prize =
             p.pos === 1
               ? stats?.prizes.first
@@ -102,8 +102,22 @@ export default function RankingPage() {
               }}
             >
               <div style={{ fontSize: "2rem" }}>{p.medal}</div>
-              <div style={{ fontSize: "2.5rem", margin: "4px 0" }}>
-                {emoji?.emoji || "❓"}
+              <div style={{ margin: "4px 0" }}>
+                {player ? (
+                  <img
+                    src={player.image}
+                    alt={player.name}
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      border: "2px solid rgba(0,0,0,0.2)",
+                    }}
+                  />
+                ) : (
+                  <div style={{ fontSize: "2.5rem" }}>{"❓"}</div>
+                )}
               </div>
               <div style={{ fontWeight: 700, fontSize: "1rem" }}>{entry.name}</div>
               {entry.ticketNumber > 1 && (
@@ -141,7 +155,7 @@ export default function RankingPage() {
             </thead>
             <tbody>
               {ranking.map((entry, idx) => {
-                const emoji = getEmoji(entry.emojiId);
+                const player = getPlayer(entry.playerSlug);
                 const isCurrentUser = entry.userId === currentUserId;
                 return (
                   <tr
@@ -157,9 +171,22 @@ export default function RankingPage() {
                       {idx + 1}
                     </td>
                     <td>
-                      <span style={{ fontSize: "1.2rem", marginRight: 6 }}>
-                        {emoji?.emoji || "❓"}
-                      </span>
+                      {player ? (
+                        <img
+                          src={player.image}
+                          alt={player.name}
+                          style={{
+                            width: 24,
+                            height: 24,
+                            borderRadius: "50%",
+                            objectFit: "cover",
+                            verticalAlign: "middle",
+                            marginRight: 6,
+                          }}
+                        />
+                      ) : (
+                        <span style={{ fontSize: "1.2rem", marginRight: 6 }}>{"❓"}</span>
+                      )}
                       {entry.name}
                       {isCurrentUser && (
                         <span

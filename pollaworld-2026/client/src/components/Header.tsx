@@ -1,7 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api, User } from "../lib/api";
-import { getEmoji } from "../lib/emojis";
+import { getPlayer } from "../lib/players";
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
@@ -20,7 +20,7 @@ export default function Header() {
     navigate("/login");
   };
 
-  const emoji = user ? getEmoji(user.emoji_id) : null;
+  const player = user ? getPlayer(user.player_slug) : null;
 
   const isActive = (path: string) => location.pathname === path ? "active" : "";
 
@@ -44,7 +44,13 @@ export default function Header() {
               )}
               <button onClick={handleLogout}>Salir</button>
               <span className="header-user">
-                <span className="header-emoji">{emoji?.emoji}</span>
+                {player && (
+                  <img
+                    src={player.image}
+                    alt={player.name}
+                    className="player-header-img"
+                  />
+                )}
                 {user.name}
               </span>
             </>

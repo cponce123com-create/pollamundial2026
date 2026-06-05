@@ -59,7 +59,7 @@ router.get("/entries", requireAdmin, async (_req: Request, res: Response) => {
         created_at: entries.created_at,
         userName: users.name,
         userPhone: users.phone,
-        userEmojiId: users.emoji_id,
+        userPlayerSlug: users.player_slug,
       })
       .from(entries)
       .innerJoin(users, eq(entries.user_id, users.id))
@@ -85,7 +85,7 @@ router.get("/entries/pending", requireAdmin, async (_req: Request, res: Response
         created_at: entries.created_at,
         userName: users.name,
         userPhone: users.phone,
-        userEmojiId: users.emoji_id,
+        userPlayerSlug: users.player_slug,
       })
       .from(entries)
       .innerJoin(users, eq(entries.user_id, users.id))
@@ -112,7 +112,7 @@ router.get("/entries/approved", requireAdmin, async (_req: Request, res: Respons
         created_at: entries.created_at,
         userName: users.name,
         userPhone: users.phone,
-        userEmojiId: users.emoji_id,
+        userPlayerSlug: users.player_slug,
       })
       .from(entries)
       .innerJoin(users, eq(entries.user_id, users.id))
@@ -210,7 +210,7 @@ router.get("/predictions/export", requireAdmin, async (_req: Request, res: Respo
 
       if (user) {
         result.push({
-          user: { id: user.id, name: user.name, phone: user.phone, emoji_id: user.emoji_id },
+          user: { id: user.id, name: user.name, phone: user.phone, player_slug: user.player_slug },
           entry: { id: entry.id, ticketNumber: entry.ticket_number },
           predictions: entryPreds,
         });

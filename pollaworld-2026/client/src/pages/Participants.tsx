@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { pdf } from "@react-pdf/renderer";
 import { api, PoolStats, Participant, Match, Prediction } from "../lib/api";
-import { getEmoji } from "../lib/emojis";
+import { getPlayer } from "../lib/players";
 import PdfBoleto from "../components/PdfBoleto";
 
 export default function Participants() {
@@ -12,7 +12,7 @@ export default function Participants() {
   const [modalData, setModalData] = useState<{
     userName: string;
     userPhone: string;
-    emojiId: string;
+    playerSlug: string;
     predictions: { prediction: Prediction; match: Match }[];
     allMatches: Match[];
   } | null>(null);
@@ -45,7 +45,7 @@ export default function Participants() {
       setModalData({
         userName: participant.name,
         userPhone: participant.phone,
-        emojiId: participant.emoji_id,
+        playerSlug: participant.player_slug,
         predictions: userPreds,
         allMatches: matches,
       });
@@ -69,7 +69,7 @@ export default function Participants() {
         <PdfBoleto
           userName={modalData.userName}
           userPhone={modalData.userPhone}
-          emojiId={modalData.emojiId}
+          playerSlug={modalData.playerSlug}
           predictions={modalData.predictions}
           allMatches={modalData.allMatches}
         />
@@ -186,7 +186,7 @@ export default function Participants() {
           className="participant-grid-responsive"
         >
           {participants.map((p) => {
-            const emoji = getEmoji(p.emoji_id);
+            const player = getPlayer(p.player_slug);
             const maskedPhone =
               p.phone.length >= 7
                 ? p.phone.slice(0, 3) + "***" + p.phone.slice(-3)
@@ -208,8 +208,22 @@ export default function Participants() {
                 }}
                 onClick={() => stats?.tournamentStarted && openModal(p)}
               >
-                <div style={{ fontSize: "2.5rem", marginBottom: 4 }}>
-                  {emoji?.emoji || "❓"}
+                <div style={{ marginBottom: 4 }}>
+                  {player ? (
+                    <img
+                      src={player.image}
+                      alt={player.name}
+                      style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        border: "2px solid var(--border)",
+                      }}
+                    />
+                  ) : (
+                    <div style={{ fontSize: "2.5rem" }}>{"❓"}</div>
+                  )}
                 </div>
                 <div style={{ fontWeight: 600, fontSize: "0.95rem" }}>{displayName}</div>
                 <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
@@ -281,8 +295,15 @@ export default function Participants() {
                     marginBottom: 16,
                   }}
                 >
-                  <h3 style={{ fontFamily: "var(--font-heading)", color: "var(--white)" }}>
-                    {getEmoji(modalData.emojiId)?.emoji} {modalData.userName}
+                  <h3 style={{ fontFamily: "var(--font-heading)", color: "var(--white)", display: "flex", alignItems: "center", gap: 8 }}>
+                    {getPlayer(modalData.playerSlug) && (
+                      <img
+                        src={getPlayer(modalData.playerSlug)!.image}
+                        alt={getPlayer(modalData.playerSlug)!.name}
+                        style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover" }}
+                      />
+                    )}
+                    {modalData.userName}
                   </h3>
                   <button
                     className="btn btn-outline"
@@ -333,7 +354,7 @@ export default function Participants() {
                               return (
                                 <tr key={m.id}>
                                   <td>
-                                    {m.home_flag} {m.home_team} vs {m.away_team}{" "}
+                                    {m.home_flag} {m.home_team} vs {m.away_team} {" "}
                                     {m.away_flag}
                                   </td>
                                   <td>{m.group_name || "-"}</td>
@@ -386,7 +407,7 @@ export default function Participants() {
                                 <tr key={m.id}>
                                   <td>{PHASE_LABELS[m.phase] || m.phase}</td>
                                   <td>
-                                    {m.home_flag} {m.home_team} vs {m.away_team}{" "}
+                                    {m.home_flag} {m.home_team} vs {m.away_team} {" "}
                                     {m.away_flag}
                                   </td>
                                   <td style={{ fontSize: "0.75rem" }}>

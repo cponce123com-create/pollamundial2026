@@ -1,6 +1,6 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import { Match, Prediction } from "../lib/api";
-import { getEmoji } from "../lib/emojis";
+import { getPlayer } from "../lib/players";
 import { TEAMS } from "../lib/teams";
 
 // ── Text flags (reliable in PDF vs emoji) ──────────────────────────
@@ -149,7 +149,7 @@ interface UserPrediction {
 interface PdfBoletoProps {
   userName: string;
   userPhone: string;
-  emojiId: string;
+  playerSlug: string;
   predictions: UserPrediction[];
   allMatches: Match[];
 }
@@ -187,13 +187,13 @@ function buildPredMap(predictions: UserPrediction[]): Map<string, Prediction> {
 function ParticipantPage({
   userName,
   userPhone,
-  emojiId,
+  playerSlug,
   predictions,
   allMatches,
   isMassExport,
   exportTime,
 }: PdfBoletoProps & { isMassExport?: boolean; exportTime?: string }) {
-  const emoji = getEmoji(emojiId);
+  const player = getPlayer(playerSlug);
   const preMatches = precomputeMatches(allMatches);
   const predMap = buildPredMap(predictions);
 
@@ -227,7 +227,7 @@ function ParticipantPage({
       <View style={S.userInfo}>
         <View style={S.userLine}>
           <Text>
-            {emoji?.emoji || ""} {userName}
+            {player?.name || ""} {userName}
           </Text>
           <Text>{userPhone}</Text>
         </View>
@@ -318,7 +318,7 @@ interface MassExportProps {
   data: {
     exported_at: string;
     users: {
-      user: { id: string; name: string; phone: string; emoji_id: string };
+      user: { id: string; name: string; phone: string; player_slug: string };
       predictions: UserPrediction[];
     }[];
     matches: Match[];
@@ -333,7 +333,7 @@ export function PdfMassExport({ data }: MassExportProps) {
           key={u.user.id}
           userName={u.user.name}
           userPhone={u.user.phone}
-          emojiId={u.user.emoji_id}
+          playerSlug={u.user.player_slug}
           predictions={u.predictions}
           allMatches={data.matches}
           isMassExport

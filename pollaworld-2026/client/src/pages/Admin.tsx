@@ -171,7 +171,7 @@ export default function Admin() {
 
       const esc = (s: string) => '"' + s.replace(/"/g, '""') + '"';
 
-      let csv = "nombre,telefono,emoji,ticket,fecha_aprobacion,puntos,posicion\n";
+      let csv = "nombre,telefono,jugador,ticket,fecha_aprobacion,puntos,posicion\n";
       approved.forEach((entry) => {
         const user = userMap.get(entry.user_id);
         if (!user) return;
@@ -180,7 +180,7 @@ export default function Admin() {
           [
             esc(user.name),
             esc(user.phone),
-            esc(user.emoji_id),
+            esc(user.player_slug),
             entry.ticket_number,
             esc(
               entry.created_at

@@ -9,7 +9,7 @@ export const users = pgTable("users", {
   name: varchar("name", { length: 100 }).notNull(),
   phone: varchar("phone", { length: 20 }).unique().notNull(),
   password_hash: text("password_hash"),
-  emoji_id: text("emoji_id"),
+  player_slug: text("player_slug"),
   role: roleEnum("role").default("participant").notNull(),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });

@@ -1,13 +1,13 @@
 import { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
-import { EMOJIS } from "../lib/emojis";
+import { PLAYERS } from "../lib/players";
 
 export default function Register() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [emojiId, setEmojiId] = useState("");
+  const [playerSlug, setPlayerSlug] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,8 +16,8 @@ export default function Register() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!emojiId) {
-      setError("Debes seleccionar un emoji de personaje.");
+    if (!playerSlug) {
+      setError("Debes seleccionar un jugador.");
       return;
     }
 
@@ -25,7 +25,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      await register(name, phone, password, emojiId);
+      await register(name, phone, password, playerSlug);
       navigate("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al registrarse");
@@ -81,16 +81,21 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Elige tu personaje</label>
-            <div className="emoji-grid">
-              {EMOJIS.map((emoji) => (
+            <label className="form-label">Elige tu jugador favorito</label>
+            <div className="player-grid">
+              {PLAYERS.map((player) => (
                 <div
-                  key={emoji.id}
-                  className={`emoji-card ${emojiId === emoji.id ? "selected" : ""}`}
-                  onClick={() => setEmojiId(emoji.id)}
+                  key={player.id}
+                  className={`player-card ${playerSlug === player.id ? "selected" : ""}`}
+                  onClick={() => setPlayerSlug(player.id)}
                 >
-                  <span className="emoji-card-icon">{emoji.emoji}</span>
-                  <span className="emoji-card-name">{emoji.name}</span>
+                  <img
+                    src={player.image}
+                    alt={player.name}
+                    className="player-card-img"
+                    loading="lazy"
+                  />
+                  <span className="player-card-name">{player.name}</span>
                 </div>
               ))}
             </div>
