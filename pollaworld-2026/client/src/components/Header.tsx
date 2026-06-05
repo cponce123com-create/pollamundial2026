@@ -34,6 +34,7 @@ export default function Header() {
         <nav className="header-nav">
           {user ? (
             <>
+              <Link to="/" className={isActive("/")}>Inicio</Link>
               <Link to="/dashboard" className={isActive("/dashboard")}>Predicciones</Link>
               <Link to="/participants" className={isActive("/participants")}>Participantes</Link>
               <Link to="/ranking" className={isActive("/ranking")}>Ranking</Link>
@@ -49,6 +50,7 @@ export default function Header() {
             </>
           ) : (
             <>
+              <Link to="/" className={isActive("/")}>Inicio</Link>
               <Link to="/login">Ingresar</Link>
               <Link to="/register">Registrarse</Link>
               <Link to="/participants">Participantes</Link>
