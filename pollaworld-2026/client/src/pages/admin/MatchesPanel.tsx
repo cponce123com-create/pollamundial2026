@@ -228,7 +228,7 @@ export default function MatchesPanel({
                   </span>
                 </td>
                 <td>
-                  {m.home_score_real !== null && m.away_score_real !== null ? (
+                  {m.is_locked && m.home_score_real !== null && m.away_score_real !== null ? (
                     <span className="admin-result-display">
                       {m.home_score_real} - {m.away_score_real}
                     </span>
@@ -238,12 +238,20 @@ export default function MatchesPanel({
                 </td>
                 <td>
                   <div className="admin-action-group">
-                    {m.home_score_real === null && (
+                    {!m.is_locked && (
                       <button
                         className="btn btn-outline btn-sm"
                         onClick={() => onOpenResultModal(m)}
                       >
                         Ingresar resultado
+                      </button>
+                    )}
+                    {m.is_locked && m.home_score_real !== null && (
+                      <button
+                        className="btn btn-outline btn-sm"
+                        onClick={() => onOpenResultModal(m)}
+                      >
+                        Editar resultado
                       </button>
                     )}
                     <button

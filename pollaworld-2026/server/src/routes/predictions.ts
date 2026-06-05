@@ -374,16 +374,38 @@ router.patch("/admin/matches/:id/lock", requireAdmin, async (req: Request, res: 
       res.status(400).json({ error: "Se requiere el campo locked." });
       return;
     }
-    const [match] = await db
-      .update(matches)
-      .set({ is_locked: locked })
-      .where(eq(matches.id, req.params.id))
-      .returning();
-    if (!match) {
-      res.status(404).json({ error: "Partido no encontrado." });
-      return;
+
+    if (locked) {
+      // Lock: just set is_locked = true
+      const [match] = await db
+        .update(matches)
+        .set({ is_locked: true })
+        .where(eq(matches.id, req.params.id))
+        .returning();
+      if (!match) {
+        res.status(404).json({ error: "Partido no encontrado." });
+        return;
+      }
+      res.json({ message: "Partido bloqueado.", match });
+    } else {
+      // Unlock: clear scores AND reset predictions points
+      const [match] = await db
+        .update(matches)
+        .set({ is_locked: false, home_score_real: null, away_score_real: null })
+        .where(eq(matches.id, req.params.id))
+        .returning();
+      if (!match) {
+        res.status(404).json({ error: "Partido no encontrado." });
+        return;
+      }
+      // Reset points for all predictions of this match
+      await db
+        .update(predictions)
+        .set({ points_earned: 0 })
+        .where(eq(predictions.match_id, req.params.id));
+
+      res.json({ message: "Partido desbloqueado. Resultado y puntos eliminados.", match });
     }
-    res.json({ message: `Partido ${locked ? "bloqueado" : "desbloqueado"}.`, match });
   } catch (err) {
     console.error("Lock match error:", err);
     res.status(500).json({ error: "Error al bloquear partido." });
