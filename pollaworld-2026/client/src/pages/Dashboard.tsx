@@ -267,27 +267,61 @@ export default function Dashboard() {
                         )}
                       </div>
                     ) : (
-                      <div className="match-prediction-inputs">
-                        <input
-                          type="number"
-                          className="pred-input"
-                          min={0}
-                          max={20}
-                          placeholder="0"
-                          value={pred?.home ?? ""}
-                          onChange={(e) => handlePredictionChange(m.id, "home", e.target.value)}
-                        />
-                        <span className="pred-dash">—</span>
-                        <input
-                          type="number"
-                          className="pred-input"
-                          min={0}
-                          max={20}
-                          placeholder="0"
-                          value={pred?.away ?? ""}
-                          onChange={(e) => handlePredictionChange(m.id, "away", e.target.value)}
-                        />
-                      </div>
+                      <>
+                        <div className="match-quick-bets">
+                          <button
+                            className="quick-bet-btn quick-bet-home"
+                            onClick={() => {
+                              handlePredictionChange(m.id, "home", "1");
+                              handlePredictionChange(m.id, "away", "0");
+                            }}
+                            title="Gana local"
+                          >
+                            🏠 1-0
+                          </button>
+                          <button
+                            className="quick-bet-btn quick-bet-draw"
+                            onClick={() => {
+                              handlePredictionChange(m.id, "home", "0");
+                              handlePredictionChange(m.id, "away", "0");
+                            }}
+                            title="Empate"
+                          >
+                            🤝 0-0
+                          </button>
+                          <button
+                            className="quick-bet-btn quick-bet-away"
+                            onClick={() => {
+                              handlePredictionChange(m.id, "home", "0");
+                              handlePredictionChange(m.id, "away", "1");
+                            }}
+                            title="Gana visitante"
+                          >
+                            0-1 🚌
+                          </button>
+                        </div>
+                        <div className="match-prediction-inputs">
+                          <input
+                            type="number"
+                            className="pred-input"
+                            min={0}
+                            max={20}
+                            placeholder="0"
+                            value={pred?.home ?? ""}
+                            onChange={(e) => handlePredictionChange(m.id, "home", e.target.value)}
+                          />
+                          <span className="pred-dash">—</span>
+                          <input
+                            type="number"
+                            className="pred-input"
+                            min={0}
+                            max={20}
+                            placeholder="0"
+                            value={pred?.away ?? ""}
+                            onChange={(e) => handlePredictionChange(m.id, "away", e.target.value)}
+                          />
+                        </div>
+                      </>
                     )}
                   </div>
                 );

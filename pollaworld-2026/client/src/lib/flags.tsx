@@ -1,4 +1,4 @@
-// Map team names to ISO 3166-1 alpha-2 country codes for flagcdn.com
+// Map team names to ISO 3166-1 alpha-2 country codes (or subdivision codes like gb-eng)
 const FLAG_MAP: Record<string, string> = {
   "Canadá": "ca",
   "México": "mx",
@@ -34,17 +34,24 @@ const FLAG_MAP: Record<string, string> = {
   "Irán": "ir",
 };
 
-export function getFlagUrl(teamName: string): string | null {
+// Reliable CDN: flag-icons via jsdelivr
+function getFlagUrl(teamName: string): string | null {
   const code = FLAG_MAP[teamName];
   if (!code) return null;
-  return `https://flagcdn.com/w80/${code}.png`;
+  return `https://cdn.jsdelivr.net/gh/lipis/flag-icons@main/flags/4x3/${code}.svg`;
 }
 
-export function getFlagSrcSet(teamName: string): string | null {
-  const code = FLAG_MAP[teamName];
-  if (!code) return null;
-  return `https://flagcdn.com/w160/${code}.png 2x`;
-}
+// Fallback emoji flags
+const EMOJI_FALLBACK: Record<string, string> = {
+  "Canadá": "🇨🇦", "México": "🇲🇽", "Argentina": "🇦🇷", "Croacia": "🇭🇷",
+  "EEUU": "🇺🇸", "Inglaterra": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Senegal": "🇸🇳", "Japón": "🇯🇵",
+  "Brasil": "🇧🇷", "Alemania": "🇩🇪", "Marruecos": "🇲🇦", "Corea Sur": "🇰🇷",
+  "Francia": "🇫🇷", "España": "🇪🇸", "Ecuador": "🇪🇨", "Arabia S.": "🇸🇦",
+  "Portugal": "🇵🇹", "Uruguay": "🇺🇾", "Nigeria": "🇳🇬", "Australia": "🇦🇺",
+  "Países Bajos": "🇳🇱", "Italia": "🇮🇹", "Colombia": "🇨🇴", "Egipto": "🇪🇬",
+  "Bélgica": "🇧🇪", "Dinamarca": "🇩🇰", "Chile": "🇨🇱", "Catar": "🇶🇦",
+  "Suiza": "🇨🇭", "Serbia": "🇷🇸", "Perú": "🇵🇪", "Irán": "🇮🇷",
+};
 
 interface FlagImageProps {
   teamName: string;
@@ -54,27 +61,27 @@ interface FlagImageProps {
 
 export function FlagImage({ teamName, size = 32, className }: FlagImageProps) {
   const url = getFlagUrl(teamName);
+
   if (!url) {
-    // Fallback to emoji flag
-    const emojiMap: Record<string, string> = {
-      "Canadá": "🇨🇦", "México": "🇲🇽", "Argentina": "🇦🇷", "Croacia": "🇭🇷",
-      "EEUU": "🇺🇸", "Inglaterra": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Senegal": "🇸🇳", "Japón": "🇯🇵",
-      "Brasil": "🇧🇷", "Alemania": "🇩🇪", "Marruecos": "🇲🇦", "Corea Sur": "🇰🇷",
-      "Francia": "🇫🇷", "España": "🇪🇸", "Ecuador": "🇪🇨", "Arabia S.": "🇸🇦",
-      "Portugal": "🇵🇹", "Uruguay": "🇺🇾", "Nigeria": "🇳🇬", "Australia": "🇦🇺",
-      "Países Bajos": "🇳🇱", "Italia": "🇮🇹", "Colombia": "🇨🇴", "Egipto": "🇪🇬",
-      "Bélgica": "🇧🇪", "Dinamarca": "🇩🇰", "Chile": "🇨🇱", "Catar": "🇶🇦",
-      "Suiza": "🇨🇭", "Serbia": "🇷🇸", "Perú": "🇵🇪", "Irán": "🇮🇷",
-    };
-    return <span className={className} style={{ fontSize: size }}>{emojiMap[teamName] || "🏳️"}</span>;
+    return (
+      <span className={className} style={{ fontSize: size * 0.8 }}>
+        {EMOJI_FALLBACK[teamName] || "🏳️"}
+      </span>
+    );
   }
+
   return (
     <img
       src={url}
-      srcSet={getFlagSrcSet(teamName) || undefined}
       alt={teamName}
       className={className}
-      style={{ width: size, height: size * 0.75, objectFit: "contain", borderRadius: 2 }}
+      style={{
+        width: size,
+        height: Math.round(size * 0.75),
+        objectFit: "cover",
+        borderRadius: 3,
+        border: "1px solid #30363d",
+      }}
       loading="lazy"
     />
   );
