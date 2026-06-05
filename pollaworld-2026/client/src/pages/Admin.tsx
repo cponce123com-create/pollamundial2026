@@ -127,7 +127,7 @@ export default function Admin() {
         prize_2nd_pct: prize2,
         prize_3rd_pct: prize3,
       });
-      toast.success("Configuraci\u00f3n guardada");
+      toast.success("Configuración guardada");
       await loadAll();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Error");
@@ -227,7 +227,7 @@ export default function Admin() {
     <div>
       <div className="card">
         <h2 className="card-title">
-          {"\u2699\ufe0f"} Panel de Administraci\u00f3n
+          ⚙️ Panel de Administración
         </h2>
 
         <AdminTabs
