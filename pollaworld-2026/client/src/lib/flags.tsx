@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ReactCountryFlag from "react-country-flag";
 import { getTeamIso2, getTeamFlag as getEmojiFlag } from "./teams";
 
 interface FlagImageProps {
@@ -7,20 +8,22 @@ interface FlagImageProps {
   className?: string;
 }
 
+// Subdivision flags not covered by react-country-flag's ISO set
+const SUBDIVISIONS = new Set(["gb-eng", "gb-sct", "gb-wls", "gb-nir", "sco", "eng"]);
+
 /**
- * FlagImage renders a flag using flagcdn.com PNG images (ISO 3166).
- * Falls back to emoji flag if the image fails to load.
- * 
- * URL format: https://flagcdn.com/w{width}/{iso2}.png
- * Example: https://flagcdn.com/w40/mx.png
+ * FlagImage renders flags using:
+ * 1. react-country-flag (SVG) for standard ISO codes
+ * 2. flagcdn.com PNG for subdivision flags (gb-eng, gb-sct)
+ * 3. Emoji fallback if both fail
  */
 export function FlagImage({ teamName, size = 32, className }: FlagImageProps) {
   const [error, setError] = useState(false);
   const iso2 = getTeamIso2(teamName);
   const emojiFlag = getEmojiFlag(teamName);
 
-  // If we have an ISO2 code and no error yet, show the PNG image
-  if (iso2 && !error) {
+  // Subdivision flags: use flagcdn.com PNG
+  if (iso2 && SUBDIVISIONS.has(iso2) && !error) {
     return (
       <img
         src={`https://flagcdn.com/w${Math.round(size * 2)}/${iso2}.png`}
@@ -39,7 +42,24 @@ export function FlagImage({ teamName, size = 32, className }: FlagImageProps) {
     );
   }
 
-  // Fallback: show emoji flag
+  // Standard ISO codes: use react-country-flag SVG
+  if (iso2 && !SUBDIVISIONS.has(iso2)) {
+    return (
+      <ReactCountryFlag
+        countryCode={iso2.toUpperCase()}
+        svg
+        style={{
+          width: size,
+          height: Math.round(size * 0.75),
+          fontSize: size * 0.8,
+        }}
+        className={className}
+        aria-label={teamName}
+      />
+    );
+  }
+
+  // Fallback: emoji flag
   return (
     <span
       className={className}
