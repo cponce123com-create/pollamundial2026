@@ -37,6 +37,7 @@ export default function Header() {
               <Link to="/dashboard" className={isActive("/dashboard")}>Predicciones</Link>
               <Link to="/participants" className={isActive("/participants")}>Participantes</Link>
               <Link to="/ranking" className={isActive("/ranking")}>Ranking</Link>
+              <Link to="/teams" className={isActive("/teams")}>🌍 Equipos</Link>
               {user.role === "admin" && (
                 <Link to="/admin" className={isActive("/admin")}>Admin</Link>
               )}

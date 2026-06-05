@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Participants from "./pages/Participants";
 import RankingPage from "./pages/Ranking";
 import Admin from "./pages/Admin";
+import Teams from "./pages/Teams";
 import { AuthProvider, useAuth } from "./lib/AuthContext";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -51,6 +52,7 @@ function AppRoutes() {
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/participants" element={<ProtectedRoute><Participants /></ProtectedRoute>} />
       <Route path="/ranking" element={<ProtectedRoute><RankingPage /></ProtectedRoute>} />
+      <Route path="/teams" element={<ProtectedRoute><Teams /></ProtectedRoute>} />
       <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
     </Routes>
   );

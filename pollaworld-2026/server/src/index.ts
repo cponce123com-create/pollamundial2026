@@ -12,6 +12,7 @@ import predictionRoutes from "./routes/predictions";
 import paymentRoutes from "./routes/payments";
 import adminRoutes from "./routes/admin";
 import poolRoutes from "./routes/pool";
+import teamRoutes from "./routes/teams";
 import { db } from "./db";
 import { matches, poolConfig } from "./db/schema";
 import { eq, lte, and } from "drizzle-orm";
