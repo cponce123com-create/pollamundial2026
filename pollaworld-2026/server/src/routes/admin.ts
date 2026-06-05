@@ -254,4 +254,24 @@ router.put("/players", requireAdmin, async (req: Request, res: Response) => {
   }
 });
 
+// DELETE /api/admin/entries/:id — eliminar entrada y sus predicciones
+router.delete("/entries/:id", requireAdmin, async (req: Request, res: Response) => {
+  try {
+    const [deleted] = await db
+      .delete(entries)
+      .where(eq(entries.id, req.params.id))
+      .returning({ id: entries.id, ticket_number: entries.ticket_number });
+
+    if (!deleted) {
+      res.status(404).json({ error: "Entrada no encontrada." });
+      return;
+    }
+
+    res.json({ message: `Ticket #${deleted.ticket_number} eliminado.` });
+  } catch (err) {
+    console.error("Delete entry error:", err);
+    res.status(500).json({ error: "Error al eliminar entrada." });
+  }
+});
+
 export default router;

@@ -21,6 +21,7 @@ export default function PaymentsPanel({
 }: PaymentsPanelProps) {
   const [rejectReason, setRejectReason] = useState("");
   const [rejectingId, setRejectingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const userMap = new Map(allUsers.map((u) => [u.id, u]));
   const pendingWithProof = pendingEntries.filter((e) => e.payment_proof_url);
@@ -42,6 +43,19 @@ export default function PaymentsPanel({
       onReload();
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleDelete = async (entryId: string) => {
+    if (!confirm("¿Eliminar esta entrada? Se borrarán sus predicciones. Esta acción no se puede deshacer.")) return;
+    try {
+      setDeletingId(entryId);
+      await api.deleteEntry(entryId);
+      setDeletingId(null);
+      onReload();
+    } catch (err) {
+      console.error(err);
+      setDeletingId(null);
     }
   };
 
@@ -174,6 +188,14 @@ export default function PaymentsPanel({
                           >
                             Rechazar
                           </button>
+                          <button
+                            className="btn btn-outline btn-sm"
+                            style={{ color: "var(--error)", borderColor: "var(--error)", fontSize: "0.7rem" }}
+                            onClick={() => handleDelete(entry.id)}
+                            disabled={deletingId === entry.id}
+                          >
+                            {deletingId === entry.id ? "..." : "🗑️"}
+                          </button>
                         </div>
                       )}
                     </td>
@@ -200,6 +222,7 @@ export default function PaymentsPanel({
                 <th>Ticket</th>
                 <th>Teléfono</th>
                 <th>Estado</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -215,6 +238,7 @@ export default function PaymentsPanel({
                           alt=""
                           className="admin-user-emoji"
                           style={{
+
                             width: 24,
                             height: 24,
                             borderRadius: "50%",
@@ -238,6 +262,16 @@ export default function PaymentsPanel({
                       <span className="badge badge-approved">
                         ✓ Aprobado
                       </span>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-outline btn-sm"
+                        style={{ color: "var(--error)", borderColor: "var(--error)", fontSize: "0.7rem" }}
+                        onClick={() => handleDelete(entry.id)}
+                        disabled={deletingId === entry.id}
+                      >
+                        {deletingId === entry.id ? "..." : "🗑️"}
+                      </button>
                     </td>
                   </tr>
                 );

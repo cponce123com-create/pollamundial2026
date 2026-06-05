@@ -175,6 +175,9 @@ export const api = {
       body: JSON.stringify({ reason }),
     }),
 
+  deleteEntry: (id: string) =>
+    request<{ message: string }>(`/admin/entries/${id}`, { method: "DELETE" }),
+
   getAdminUsers: () => request<User[]>("/admin/users"),
 
   getExportData: () => request<ExportData>("/admin/predictions/export"),
