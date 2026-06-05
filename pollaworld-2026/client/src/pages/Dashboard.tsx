@@ -105,10 +105,15 @@ export default function Dashboard() {
     try {
       await api.uploadPaymentProof(file);
       await loadData();
+      setMessage("✅ Comprobante subido. Pendiente de revisión.");
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al subir");
+      setMessage(`❌ ${err instanceof Error ? err.message : "Error al subir"}`);
     } finally {
       setUploading(false);
+      // Reset file input value so the same file can be re-selected
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
 

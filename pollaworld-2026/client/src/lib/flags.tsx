@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 // Map team names to ISO 3166-1 alpha-2 country codes (or subdivision codes like gb-eng)
 const FLAG_MAP: Record<string, string> = {
   "Canadá": "ca",
@@ -41,7 +43,7 @@ function getFlagUrl(teamName: string): string | null {
   return `https://cdn.jsdelivr.net/gh/lipis/flag-icons@main/flags/4x3/${code}.svg`;
 }
 
-// Fallback emoji flags
+// Emoji fallback flags — includes all 32 teams plus extra countries
 const EMOJI_FALLBACK: Record<string, string> = {
   "Canadá": "🇨🇦", "México": "🇲🇽", "Argentina": "🇦🇷", "Croacia": "🇭🇷",
   "EEUU": "🇺🇸", "Inglaterra": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Senegal": "🇸🇳", "Japón": "🇯🇵",
@@ -51,6 +53,15 @@ const EMOJI_FALLBACK: Record<string, string> = {
   "Países Bajos": "🇳🇱", "Italia": "🇮🇹", "Colombia": "🇨🇴", "Egipto": "🇪🇬",
   "Bélgica": "🇧🇪", "Dinamarca": "🇩🇰", "Chile": "🇨🇱", "Catar": "🇶🇦",
   "Suiza": "🇨🇭", "Serbia": "🇷🇸", "Perú": "🇵🇪", "Irán": "🇮🇷",
+  // Extra countries that might appear
+  "Sudáfrica": "🇿🇦", "Túnez": "🇹🇳", "Costa de Marfil": "🇨🇮",
+  "Ghana": "🇬🇭", "Camerún": "🇨🇲", "Argelia": "🇩🇿", "Costa Rica": "🇨🇷",
+  "Panamá": "🇵🇦", "Honduras": "🇭🇳", "Paraguay": "🇵🇾", "Bolivia": "🇧🇴",
+  "Venezuela": "🇻🇪", "Escocia": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "Gales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+  "Noruega": "🇳🇴", "Suecia": "🇸🇪", "Polonia": "🇵🇱", "Austria": "🇦🇹",
+  "Hungría": "🇭🇺", "República Checa": "🇨🇿", "Turquía": "🇹🇷", "Grecia": "🇬🇷",
+  "Rusia": "🇷🇺", "Ucrania": "🇺🇦", "Corea del Norte": "🇰🇵", "Irak": "🇮🇶",
+  "Siria": "🇸🇾", "Jordania": "🇯🇴", "Emiratos Árabes": "🇦🇪",
 };
 
 interface FlagImageProps {
@@ -60,11 +71,13 @@ interface FlagImageProps {
 }
 
 export function FlagImage({ teamName, size = 32, className }: FlagImageProps) {
+  const [hasError, setHasError] = useState(false);
   const url = getFlagUrl(teamName);
 
-  if (!url) {
+  // If no URL mapping or image failed to load, show emoji fallback
+  if (!url || hasError) {
     return (
-      <span className={className} style={{ fontSize: size * 0.8 }}>
+      <span className={className} style={{ fontSize: size * 0.8, lineHeight: 1 }}>
         {EMOJI_FALLBACK[teamName] || "🏳️"}
       </span>
     );
@@ -83,6 +96,7 @@ export function FlagImage({ teamName, size = 32, className }: FlagImageProps) {
         border: "1px solid #30363d",
       }}
       loading="lazy"
+      onError={() => setHasError(true)}
     />
   );
 }
