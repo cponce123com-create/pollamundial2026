@@ -53,3 +53,9 @@ export const PLAYERS: PlayerOption[] = [
 export function getPlayer(slug: string): PlayerOption | undefined {
   return PLAYERS.find((p) => p.id === slug);
 }
+
+export function getPlayerDisplayName(slug: string, customNames?: Record<string, string>): string {
+  const player = PLAYERS.find((p) => p.id === slug);
+  if (!player) return slug;
+  return (customNames && customNames[slug]) || player.name;
+}

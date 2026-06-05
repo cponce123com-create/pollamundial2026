@@ -65,4 +65,5 @@ export const poolConfig = pgTable("pool_config", {
   tournament_started: boolean("tournament_started").default(false).notNull(),
   yape_qr_url: text("yape_qr_url"),
   yape_phone: text("yape_phone"),
+  player_custom_names: text("player_custom_names"),
 });

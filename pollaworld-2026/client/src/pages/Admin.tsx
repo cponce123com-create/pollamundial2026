@@ -10,8 +10,9 @@ import PaymentsPanel from "./admin/PaymentsPanel";
 import ConfigPanel from "./admin/ConfigPanel";
 import ExportPanel from "./admin/ExportPanel";
 import ResultModal from "./admin/ResultModal";
+import { PLAYERS } from "../lib/players";
 
-type AdminTab = "matches" | "payments" | "config" | "export";
+type AdminTab = "matches" | "payments" | "config" | "export" | "players";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -33,6 +34,12 @@ export default function Admin() {
     away: string;
   } | null>(null);
 
+  // Players state
+  const [playerCustomNames, setPlayerCustomNames] = useState<Record<string, string>>({});
+  const [playerEditSlug, setPlayerEditSlug] = useState<string | null>(null);
+  const [playerEditName, setPlayerEditName] = useState("");
+  const [playersSaved, setPlayersSaved] = useState(false);
+
   // Config state
   const [config, setConfig] = useState<PoolConfig | null>(null);
   const [yapePhone, setYapePhone] = useState("");
@@ -49,19 +56,22 @@ export default function Admin() {
   const loadAll = async () => {
     try {
       setLoading(true);
-      const [pending, approved, users, entries, m, cfg] = await Promise.all([
+      const [pending, approved, users, entries, m, cfg, players] = await Promise.all([
         api.getAdminPendingEntries().catch(() => [] as Entry[]),
         api.getAdminApprovedEntries().catch(() => [] as Entry[]),
         api.getAdminUsers().catch(() => [] as User[]),
         api.getAdminEntries().catch(() => [] as Entry[]),
         api.getMatches().catch(() => [] as Match[]),
         api.getPoolConfig().catch(() => null as PoolConfig | null),
+        api.getAdminPlayers().catch(() => ({ customNames: {} as Record<string, string> })),
       ]);
       setPendingEntries(pending);
       setApprovedEntries(approved);
       setAllUsers(users);
       setAllEntries(entries);
       setMatches(m);
+      setPlayerCustomNames(players.customNames);
+      setPlayersSaved(false);
       if (cfg) {
         setConfig(cfg);
         setYapePhone(cfg.yape_phone || "");
@@ -208,6 +218,44 @@ export default function Admin() {
     }
   };
 
+  // ── Players handlers ──
+  const savePlayers = async () => {
+    try {
+      const data = await api.saveAdminPlayers(playerCustomNames);
+      toast.success(data.message || "Nombres guardados");
+      setPlayersSaved(true);
+      await loadAll();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error al guardar nombres");
+    }
+  };
+
+  const startEditPlayer = (slug: string, name: string) => {
+    setPlayerEditSlug(slug);
+    setPlayerEditName(name);
+  };
+
+  const saveEditPlayer = () => {
+    if (!playerEditSlug) return;
+    const updated = { ...playerCustomNames, [playerEditSlug]: playerEditName };
+    setPlayerCustomNames(updated);
+    setPlayerEditSlug(null);
+    setPlayerEditName("");
+    setPlayersSaved(false);
+  };
+
+  const cancelEditPlayer = () => {
+    setPlayerEditSlug(null);
+    setPlayerEditName("");
+  };
+
+  const clearCustomName = (slug: string) => {
+    const updated = { ...playerCustomNames };
+    delete updated[slug];
+    setPlayerCustomNames(updated);
+    setPlayersSaved(false);
+  };
+
   // Derived
   const pendingWithProof = pendingEntries.filter((e) => e.payment_proof_url);
   const pendingCount = pendingWithProof.length;
@@ -288,6 +336,83 @@ export default function Admin() {
             onMassExport={handleMassExport}
             onCsvExport={handleCsvExport}
           />
+        )}
+
+        {activeTab === "players" && (
+          <div className="players-panel">
+            <div className="players-panel-header">
+              <h3>🏷️ Editar Nombres de Jugadores</h3>
+              {!playersSaved && (
+                <button className="btn btn-primary" onClick={savePlayers}>
+                  💾 Guardar Cambios
+                </button>
+              )}
+              {playersSaved && (
+                <span className="badge badge-success">✓ Guardado</span>
+              )}
+            </div>
+            <p className="text-muted">
+              Personaliza los nombres de los personajes que se mostrarán en el registro y perfil de usuarios.
+            </p>
+            <div className="player-edit-grid">
+              {PLAYERS.map((player) => {
+                const currentName = playerCustomNames[player.id] || player.name;
+                const isEditing = playerEditSlug === player.id;
+                const hasCustom = playerCustomNames[player.id] !== undefined;
+                return (
+                  <div key={player.id} className={`player-edit-card ${hasCustom ? "has-custom" : ""}`}>
+                    <img
+                      src={player.image}
+                      alt={player.name}
+                      className="player-edit-img"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                    />
+                    {isEditing ? (
+                      <div className="player-edit-form">
+                        <input
+                          className="form-input player-edit-input"
+                          type="text"
+                          value={playerEditName}
+                          onChange={(e) => setPlayerEditName(e.target.value)}
+                          autoFocus
+                        />
+                        <div className="player-edit-actions">
+                          <button className="btn btn-sm btn-primary" onClick={saveEditPlayer}>
+                            ✓
+                          </button>
+                          <button className="btn btn-sm btn-outline" onClick={cancelEditPlayer}>
+                            ✗
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="player-edit-info">
+                        <span className="player-edit-name">{currentName}</span>
+                        {hasCustom && <span className="player-edit-badge">Editado</span>}
+                        <div className="player-edit-actions">
+                          <button
+                            className="btn btn-sm btn-outline"
+                            onClick={() => startEditPlayer(player.id, currentName)}
+                          >
+                            ✏️
+                          </button>
+                          {hasCustom && (
+                            <button
+                              className="btn btn-sm btn-outline btn-danger"
+                              onClick={() => clearCustomName(player.id)}
+                            >
+                              ↺
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         )}
       </div>
 

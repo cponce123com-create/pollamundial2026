@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { db } from "../db";
-import { users, entries, matches, predictions } from "../db/schema";
+import { users, entries, matches, predictions, poolConfig } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
 import { eq, asc } from "drizzle-orm";
 
@@ -221,6 +221,36 @@ router.get("/predictions/export", requireAdmin, async (_req: Request, res: Respo
   } catch (err) {
     console.error("Export error:", err);
     res.status(500).json({ error: "Error al exportar predicciones." });
+  }
+});
+
+// GET /api/admin/players — list all players with custom names
+router.get("/players", requireAdmin, async (_req: Request, res: Response) => {
+  try {
+    const [config] = await db.select({ names: poolConfig.player_custom_names }).from(poolConfig).limit(1);
+    const customNames: Record<string, string> = config?.names ? JSON.parse(config.names) : {};
+    res.json({ customNames });
+  } catch (err) {
+    console.error("Admin players error:", err);
+    res.status(500).json({ error: "Error al obtener jugadores." });
+  }
+});
+
+// PUT /api/admin/players — save custom player names
+router.put("/players", requireAdmin, async (req: Request, res: Response) => {
+  try {
+    const { customNames } = req.body;
+    const json = JSON.stringify(customNames || {});
+    const configs = await db.select().from(poolConfig).limit(1);
+    if (configs.length === 0) {
+      await db.insert(poolConfig).values({ player_custom_names: json });
+    } else {
+      await db.update(poolConfig).set({ player_custom_names: json }).where(eq(poolConfig.id, configs[0].id));
+    }
+    res.json({ message: "Nombres actualizados.", customNames });
+  } catch (err) {
+    console.error("Admin save players error:", err);
+    res.status(500).json({ error: "Error al guardar nombres." });
   }
 });
 

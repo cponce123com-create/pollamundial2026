@@ -57,6 +57,7 @@ export interface PoolConfig {
   tournament_started: boolean;
   yape_qr_url: string | null;
   yape_phone: string | null;
+  player_custom_names: string | null;
 }
 
 export interface RankingEntry {
@@ -177,6 +178,14 @@ export const api = {
   getAdminUsers: () => request<User[]>("/admin/users"),
 
   getExportData: () => request<ExportData>("/admin/predictions/export"),
+
+  getAdminPlayers: () => request<{ customNames: Record<string, string> }>("/admin/players"),
+
+  saveAdminPlayers: (customNames: Record<string, string>) =>
+    request<{ message: string; customNames: Record<string, string> }>("/admin/players", {
+      method: "PUT",
+      body: JSON.stringify({ customNames }),
+    }),
 
   // Pool stats & participants
   getPoolStats: () => request<PoolStats>("/pool/stats"),

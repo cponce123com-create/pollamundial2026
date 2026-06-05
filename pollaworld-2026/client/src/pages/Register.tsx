@@ -1,17 +1,29 @@
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
-import { PLAYERS } from "../lib/players";
+import { PLAYERS, getPlayerDisplayName } from "../lib/players";
+import { api } from "../lib/api";
 
 export default function Register() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [playerSlug, setPlayerSlug] = useState("");
+  const [customNames, setCustomNames] = useState<Record<string, string>>({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { register } = useAuth();
+
+  useEffect(() => {
+    api.getPoolConfig().then((cfg) => {
+      if (cfg.player_custom_names) {
+        try {
+          setCustomNames(JSON.parse(cfg.player_custom_names));
+        } catch {}
+      }
+    }).catch(() => {});
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -81,7 +93,7 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Elige tu jugador favorito</label>
+            <label className="form-label">Elige tu personaje para tu perfil</label>
             <div className="player-grid">
               {PLAYERS.map((player) => (
                 <div
@@ -96,7 +108,7 @@ export default function Register() {
                     loading="lazy"
                     referrerPolicy="no-referrer"
                   />
-                  <span className="player-card-name">{player.name}</span>
+                  <span className="player-card-name">{getPlayerDisplayName(player.id, customNames)}</span>
                 </div>
               ))}
             </div>

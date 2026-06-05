@@ -1,4 +1,4 @@
-type AdminTab = "matches" | "payments" | "config" | "export";
+type AdminTab = "matches" | "payments" | "config" | "export" | "players";
 
 interface AdminTabsProps {
   activeTab: AdminTab;
@@ -10,6 +10,7 @@ export default function AdminTabs({ activeTab, onTabChange, pendingCount }: Admi
   const tabs: { key: AdminTab; label: string; icon: string }[] = [
     { key: "matches", label: "Partidos", icon: "⚽" },
     { key: "payments", label: "Pagos", icon: "💳" },
+    { key: "players", label: "Jugadores", icon: "🏷️" },
     { key: "config", label: "Configuración", icon: "⚙️" },
     { key: "export", label: "Exportar", icon: "📄" },
   ];
