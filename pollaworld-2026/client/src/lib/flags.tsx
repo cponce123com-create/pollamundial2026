@@ -13,13 +13,11 @@ export function FlagImage({ teamName, size = 32, className }: FlagImageProps) {
     <span
       className={className}
       style={{
-        fontSize: size * 0.8,
+        fontSize: size,
         lineHeight: 1,
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        width: size,
-        height: Math.round(size * 0.75),
       }}
       title={teamName}
     >
