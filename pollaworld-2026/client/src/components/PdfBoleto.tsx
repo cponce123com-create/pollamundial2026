@@ -1,58 +1,14 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import { Match, Prediction } from "../lib/api";
 import { getEmoji } from "../lib/emojis";
+import { TEAMS } from "../lib/teams";
 
 // ── Text flags (reliable in PDF vs emoji) ──────────────────────────
-const TEXT_FLAGS: Record<string, string> = {
-  México: "MEX",
-  Sudáfrica: "RSA",
-  "Corea del Sur": "KOR",
-  "República Checa": "CZE",
-  Canadá: "CAN",
-  "Bosnia y Herzegovina": "BIH",
-  Catar: "QAT",
-  Suiza: "SUI",
-  Brasil: "BRA",
-  Marruecos: "MAR",
-  Haití: "HAI",
-  Escocia: "SCO",
-  "Estados Unidos": "USA",
-  Paraguay: "PAR",
-  Australia: "AUS",
-  Turquía: "TUR",
-  Alemania: "GER",
-  Curazao: "CUW",
-  "Costa de Marfil": "CIV",
-  Ecuador: "ECU",
-  "Países Bajos": "NED",
-  Japón: "JPN",
-  Suecia: "SWE",
-  Túnez: "TUN",
-  Bélgica: "BEL",
-  Egipto: "EGY",
-  Irán: "IRN",
-  "Nueva Zelanda": "NZL",
-  España: "ESP",
-  "Cabo Verde": "CPV",
-  "Arabia Saudita": "KSA",
-  Uruguay: "URU",
-  Francia: "FRA",
-  Senegal: "SEN",
-  Irak: "IRQ",
-  Noruega: "NOR",
-  Argentina: "ARG",
-  Argelia: "ALG",
-  Austria: "AUT",
-  Jordania: "JOR",
-  Portugal: "POR",
-  "República Democrática del Congo": "COD",
-  Uzbekistán: "UZB",
-  Colombia: "COL",
-  Inglaterra: "ENG",
-  Croacia: "CRO",
-  Ghana: "GHA",
-  Panamá: "PAN",
-};
+const TEXT_FLAGS: Record<string, string> = {};
+TEAMS.forEach(t => {
+  TEXT_FLAGS[t.name] = t.fifa;
+  TEXT_FLAGS[t.name_en] = t.fifa;
+});
 
 function getTextFlag(team: string): string {
   return TEXT_FLAGS[team] || team.slice(0, 3).toUpperCase();

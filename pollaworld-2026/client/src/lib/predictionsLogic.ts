@@ -1,3 +1,5 @@
+import { TEAMS } from "./teams";
+
 /**
  * Team strength ratings (1-5) based on FIFA ranking, qualifiers performance,
  * and recent World Cup history (2022).
@@ -8,61 +10,17 @@
  * 2 = Lower tier
  * 1 = Underdog
  */
-const TEAM_STRENGTH: Record<string, number> = {
-  // Elite (5)
-  Argentina: 5,
-  Brasil: 5,
-  Francia: 5,
-  Inglaterra: 5,
-  // Strong (4)
-  Alemania: 4,
-  España: 4,
-  "Países Bajos": 4,
-  Portugal: 4,
-  Bélgica: 4,
-  // Competitive (3)
-  Croacia: 3,
-  Uruguay: 3,
-  Colombia: 3,
-  Marruecos: 3,
-  Suiza: 3,
-  Japón: 3,
-  "Estados Unidos": 3,
-  México: 3,
-  Senegal: 3,
-  "Corea del Sur": 3,
-  Ecuador: 3,
-  Noruega: 3,
-  Suecia: 3,
-  // Lower (2)
-  Canadá: 2,
-  Australia: 2,
-  "Costa de Marfil": 2,
-  Egipto: 2,
-  Ghana: 2,
-  Turquía: 2,
-  "República Checa": 2,
-  Austria: 2,
-  "Arabia Saudita": 2,
-  Paraguay: 2,
-  // Underdog (1)
-  "Cabo Verde": 1,
-  Catar: 1,
-  Irán: 1,
-  Túnez: 1,
-  Irak: 1,
-  Jordania: 1,
-  "Bosnia y Herzegovina": 1,
-  "República Democrática del Congo": 1,
-  Uzbekistán: 1,
-  Panamá: 1,
-  Haití: 1,
-  Escocia: 1,
-  Sudáfrica: 1,
-  "Nueva Zelanda": 1,
-  Argelia: 1,
-  Curazao: 1,
-};
+const TEAM_STRENGTH: Record<string, number> = {};
+TEAMS.forEach(t => { TEAM_STRENGTH[t.name] = 3; }); // default 3
+
+// Override elite teams
+const ELITE = ["Argentina", "Brasil", "Francia", "Inglaterra", "Alemania", "España"];
+const STRONG = ["Países Bajos", "Portugal", "Bélgica", "Croacia"];
+const WEAK = ["Haití", "Catar", "Curazao", "Cabo Verde", "Panamá", "Jordania", "Uzbekistán"];
+
+ELITE.forEach(t => { TEAM_STRENGTH[t] = 5; });
+STRONG.forEach(t => { TEAM_STRENGTH[t] = 4; });
+WEAK.forEach(t => { TEAM_STRENGTH[t] = 1; });
 
 const DEFAULT_STRENGTH = 2;
 

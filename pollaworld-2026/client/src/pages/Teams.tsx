@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api, Match } from "../lib/api";
 import { FlagImage } from "../lib/flags";
+import { TEAMS } from "../lib/teams";
 
 interface SquadPlayer {
   name: string;
@@ -20,7 +21,7 @@ export default function Teams() {
   const navigate = useNavigate();
   const [matches, setMatches] = useState<Match[]>([]);
   const [squads, setSquads] = useState<TeamSquad[]>([]);
-  const [selectedTeam, setSelectedTeam] = useState<TeamSquad | null>(null);
+  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [selectedTeamMatches, setSelectedTeamMatches] = useState<Match[]>([]);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function Teams() {
       .then(setMatches)
       .catch(() => navigate("/login"));
 
-    // Load squads from static JSON
+    // Load squads from static JSON (player data only)
     fetch("/api/teams/squads")
       .then((r) => r.json())
       .then((data) => setSquads(data))
@@ -42,11 +43,15 @@ export default function Teams() {
     }
     const teamMatches = matches.filter(
       (m) =>
-        m.home_team === selectedTeam.team ||
-        m.away_team === selectedTeam.team
+        m.home_team === selectedTeam ||
+        m.away_team === selectedTeam
     );
     setSelectedTeamMatches(teamMatches);
   }, [selectedTeam, matches]);
+
+  const getTeamSquad = (teamName: string): TeamSquad | undefined => {
+    return squads.find((s) => s.team === teamName);
+  };
 
   // Position index for pitch placement (4-3-3 as default, parse formation)
   const getPitchPositions = (formation: string): { x: number; y: number }[] => {
@@ -98,6 +103,9 @@ export default function Teams() {
     });
   };
 
+  const selectedSquad = selectedTeam ? getTeamSquad(selectedTeam) : null;
+  const selectedTeamInfo = selectedTeam ? TEAMS.find(t => t.name === selectedTeam) : null;
+
   return (
     <div>
       <h2 className="card-title" style={{ marginBottom: 16 }}>
@@ -121,15 +129,15 @@ export default function Teams() {
             />
           </div>
           <div className="team-cards">
-            {squads.map((s) => (
+            {TEAMS.map((t) => (
               <button
-                key={s.team}
-                className={`team-card-btn ${selectedTeam?.team === s.team ? "team-selected" : ""}`}
-                data-team={s.team}
-                onClick={() => setSelectedTeam(s)}
+                key={t.name}
+                className={`team-card-btn ${selectedTeam === t.name ? "team-selected" : ""}`}
+                data-team={t.name}
+                onClick={() => setSelectedTeam(t.name)}
               >
-                <FlagImage teamName={s.team} size={28} />
-                <span className="team-card-name">{s.team}</span>
+                <FlagImage teamName={t.name} size={28} />
+                <span className="team-card-name">{t.name}</span>
               </button>
             ))}
           </div>
@@ -146,52 +154,61 @@ export default function Teams() {
           ) : (
             <>
               <div className="team-detail-header">
-                <FlagImage teamName={selectedTeam.team} size={48} />
+                <FlagImage teamName={selectedTeam} size={48} />
                 <div>
-                  <h3>{selectedTeam.team}</h3>
-                  <p className="placeholder-text">
-                    DT: {selectedTeam.coach} | Formación: {selectedTeam.formation}
-                  </p>
+                  <h3>{selectedTeam}</h3>
+                  {selectedTeamInfo && (
+                    <p className="placeholder-text">
+                      Grupo {selectedTeamInfo.group} · {selectedTeamInfo.confed} · {selectedTeamInfo.continent}
+                    </p>
+                  )}
+                  {selectedSquad && (
+                    <p className="placeholder-text">
+                      DT: {selectedSquad.coach} | Formación: {selectedSquad.formation}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="team-detail-sections">
                 {/* Pitch View */}
-                <div className="team-pitch-card">
-                  <h4 className="card-title">⚽ 11 Titular</h4>
-                  <div className="pitch-container">
-                    <div className="pitch-field">
-                      <div className="pitch-center-circle" />
-                      <div className="pitch-center-line" />
-                      {getPitchPositions(selectedTeam.formation).map((pos, i) => {
-                        const player = selectedTeam.players[i];
-                        if (!player) return null;
-                        return (
-                          <div
-                            key={i}
-                            className="pitch-player"
-                            style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
-                          >
-                            <span className="pitch-player-num">{player.num}</span>
-                            <span className="pitch-player-name">{player.name}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div className="pitch-squad-list">
-                      <h5>Jugadores</h5>
-                      <div className="pitch-squad-grid">
-                        {selectedTeam.players.map((p) => (
-                          <div key={p.num} className="pitch-squad-item">
-                            <span className="pitch-squad-pos">{p.pos}</span>
-                            <span className="pitch-squad-num">{p.num}</span>
-                            <span className="pitch-squad-name">{p.name}</span>
-                          </div>
-                        ))}
+                {selectedSquad && (
+                  <div className="team-pitch-card">
+                    <h4 className="card-title">⚽ 11 Titular</h4>
+                    <div className="pitch-container">
+                      <div className="pitch-field">
+                        <div className="pitch-center-circle" />
+                        <div className="pitch-center-line" />
+                        {getPitchPositions(selectedSquad.formation).map((pos, i) => {
+                          const player = selectedSquad.players[i];
+                          if (!player) return null;
+                          return (
+                            <div
+                              key={i}
+                              className="pitch-player"
+                              style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
+                            >
+                              <span className="pitch-player-num">{player.num}</span>
+                              <span className="pitch-player-name">{player.name}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className="pitch-squad-list">
+                        <h5>Jugadores</h5>
+                        <div className="pitch-squad-grid">
+                          {selectedSquad.players.map((p) => (
+                            <div key={p.num} className="pitch-squad-item">
+                              <span className="pitch-squad-pos">{p.pos}</span>
+                              <span className="pitch-squad-num">{p.num}</span>
+                              <span className="pitch-squad-name">{p.name}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 {/* Matches */}
                 <div className="team-matches-card">
@@ -204,12 +221,12 @@ export default function Teams() {
                         <div key={m.id} className="team-match-row">
                           <div className="team-match-teams">
                             <FlagImage teamName={m.home_team} size={18} />
-                            <span className={m.home_team === selectedTeam.team ? "team-match-highlight" : ""}>
+                            <span className={m.home_team === selectedTeam ? "team-match-highlight" : ""}>
                               {m.home_team}
                             </span>
                             <span className="team-match-vs">vs</span>
                             <FlagImage teamName={m.away_team} size={18} />
-                            <span className={m.away_team === selectedTeam.team ? "team-match-highlight" : ""}>
+                            <span className={m.away_team === selectedTeam ? "team-match-highlight" : ""}>
                               {m.away_team}
                             </span>
                           </div>
