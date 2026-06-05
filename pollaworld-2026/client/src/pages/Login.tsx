@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { api } from "../lib/api";
+import { useAuth } from "../lib/AuthContext";
 
 export default function Login() {
   const [phone, setPhone] = useState("");
@@ -8,6 +8,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -15,7 +16,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      await api.login({ phone, password });
+      await login(phone, password);
       navigate("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al iniciar sesión");

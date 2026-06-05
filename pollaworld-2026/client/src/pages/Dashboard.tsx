@@ -1,17 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { pdf } from "@react-pdf/renderer";
-import { api, MatchWithPrediction, User, PoolConfig } from "../lib/api";
+import { api, MatchWithPrediction, PoolConfig } from "../lib/api";
 import { getEmoji } from "../lib/emojis";
 import { FlagImage } from "../lib/flags";
 import PdfBoleto from "../components/PdfBoleto";
 import { autofillModerate, autofillSmart } from "../lib/predictionsLogic";
+import { useAuth } from "../lib/AuthContext";
 
 type Tab = "groups" | "elimination";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
+  const { user } = useAuth();
   const [config, setConfig] = useState<PoolConfig | null>(null);
   const [matches, setMatches] = useState<MatchWithPrediction[]>([]);
   const [activeTab, setActiveTab] = useState<Tab>("groups");
@@ -28,12 +29,10 @@ export default function Dashboard() {
 
   const loadData = async () => {
     try {
-      const [userData, configData, matchData] = await Promise.all([
-        api.me(),
+      const [configData, matchData] = await Promise.all([
         api.getPoolConfig(),
         api.getMatchesWithPredictions(),
       ]);
-      setUser(userData.user);
       setConfig(configData);
       setMatches(matchData);
 

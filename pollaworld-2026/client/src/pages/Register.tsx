@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { api } from "../lib/api";
+import { useAuth } from "../lib/AuthContext";
 import { EMOJIS } from "../lib/emojis";
 
 export default function Register() {
@@ -11,6 +11,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -24,7 +25,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      await api.register({ name, phone, password, emoji_id: emojiId });
+      await register(name, phone, password, emojiId);
       navigate("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al registrarse");

@@ -1,0 +1,12 @@
+{
+  "name": "pollamundial2026",
+  "private": true,
+  "scripts": {
+    "dev:server": "cd pollaworld-2026/server && npm run dev",
+    "dev:client": "cd pollaworld-2026/client && npm run dev",
+    "build": "cd pollaworld-2026/server && npm install && npm run build && cd ../client && npm install && npm run build",
+    "start": "cd pollaworld-2026/server && node dist/index.js",
+    "db:migrate": "cd pollaworld-2026/server && npm run db:migrate",
+    "db:seed": "cd pollaworld-2026/server && npm run db:seed"
+  }
+}

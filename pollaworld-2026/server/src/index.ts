@@ -1,15 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-// Validar variables de entorno requeridas
-const REQUIRED_VARS = ["DATABASE_URL", "JWT_SECRET", "CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"];
-const missing = REQUIRED_VARS.filter((v) => !process.env[v]);
-if (missing.length > 0) {
-  console.error(`❌ Variables de entorno faltantes: ${missing.join(", ")}`);
-  console.error("Revisa tu archivo .env o las variables en Render.");
-  process.exit(1);
-}
-
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -23,7 +14,19 @@ import adminRoutes from "./routes/admin";
 import poolRoutes from "./routes/pool";
 import { db } from "./db";
 import { matches, poolConfig } from "./db/schema";
-import { eq, lte, and, sql } from "drizzle-orm";
+import { eq, lte, and } from "drizzle-orm";
+import logger from "./lib/logger";
+import pinoHttp from "pino-http";
+import { sanitizeBody } from "./middleware/sanitize";
+
+// Validar variables de entorno requeridas
+const REQUIRED_VARS = ["DATABASE_URL", "JWT_SECRET", "CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"];
+const missing = REQUIRED_VARS.filter((v) => !process.env[v]);
+if (missing.length > 0) {
+  logger.error(`❌ Variables de entorno faltantes: ${missing.join(", ")}`);
+  logger.error("Revisa tu archivo .env o las variables en Render.");
+  process.exit(1);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -35,7 +38,11 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
+app.use(sanitizeBody);
 app.use(cookieParser());
+
+// HTTP request logging
+app.use(pinoHttp({ logger }));
 
 // API Routes
 app.use("/api/auth", authRoutes);
@@ -80,10 +87,10 @@ async function checkTournamentStart() {
       // Lock all group phase matches
       await db.update(matches).set({ is_locked: true }).where(eq(matches.phase, "groups"));
 
-      console.log(`[CRON] Tournament auto-started at ${now.toISOString()}`);
+      logger.info(`[CRON] Tournament auto-started at ${now.toISOString()}`);
     }
   } catch (err) {
-    console.error("[CRON] Error checking tournament start:", err);
+    logger.error(err, "[CRON] Error checking tournament start:");
   }
 }
 
@@ -94,7 +101,7 @@ checkTournamentStart();
 
 // Global error handler (must be after all routes)
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.error("[ERROR]", err);
+  logger.error(err, "[ERROR]");
   res.status(500).json({
     error: process.env.NODE_ENV === "production"
       ? "Error interno del servidor."
@@ -103,7 +110,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  logger.info(`Server running on http://localhost:${PORT}`);
 });
 
 export default app;

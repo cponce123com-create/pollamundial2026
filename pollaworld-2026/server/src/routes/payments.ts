@@ -20,7 +20,11 @@ router.post("/upload", requireAuth, upload.single("proof"), async (req: Request,
 
     const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: `pollaworld/payments/${req.user!.userId}` },
+        {
+          folder: `pollaworld/payments/${req.user!.userId}`,
+          allowed_formats: ["jpg", "jpeg", "png", "gif", "webp"],
+          max_file_size: 5 * 1024 * 1024, // 5MB
+        },
         (err, result) => {
           if (err) reject(err);
           else resolve(result as { secure_url: string });
