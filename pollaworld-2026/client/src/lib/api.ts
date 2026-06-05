@@ -6,6 +6,7 @@ export interface User {
   phone: string;
   player_slug: string;
   role: "participant" | "admin";
+  avatar_url: string | null;
   created_at?: string;
 }
 
@@ -118,6 +119,27 @@ export const api = {
   // Matches
   getMatches: () => request<Match[]>("/matches"),
   getLiveMatches: () => request<{ live: Match[]; recent: Match[] }>("/matches/live"),
+
+  // Profile
+  updateName: (name: string) =>
+    request<{ user: User }>("/profile/name", {
+      method: "PATCH",
+      body: JSON.stringify({ name }),
+    }),
+
+  uploadAvatar: (file: File) => {
+    const fd = new FormData();
+    fd.append("avatar", file);
+    return fetch(`${API_BASE}/profile/avatar`, {
+      method: "POST",
+      credentials: "include",
+      body: fd,
+    }).then(async (res) => {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error al subir avatar");
+      return data as { avatar_url: string; message: string };
+    });
+  },
 
   // ── Entries ──
   getEntries: () => request<Entry[]>("/entries"),

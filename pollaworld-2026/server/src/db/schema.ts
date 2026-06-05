@@ -10,6 +10,7 @@ export const users = pgTable("users", {
   phone: varchar("phone", { length: 20 }).unique().notNull(),
   password_hash: text("password_hash"),
   player_slug: text("player_slug"),
+  avatar_url: text("avatar_url"),
   role: roleEnum("role").default("participant").notNull(),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });

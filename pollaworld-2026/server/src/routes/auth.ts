@@ -80,6 +80,7 @@ router.post("/register", authLimiter, async (req: Request, res: Response) => {
         phone: newUser.phone,
         player_slug: newUser.player_slug,
         role: newUser.role,
+        avatar_url: newUser.avatar_url,
       },
     });
   } catch (err) {
@@ -126,6 +127,7 @@ router.post("/login", authLimiter, async (req: Request, res: Response) => {
         phone: user.phone,
         player_slug: user.player_slug,
         role: user.role,
+        avatar_url: user.avatar_url,
       },
     });
   } catch (err) {
@@ -161,6 +163,7 @@ router.get("/me", requireAuth, async (req: Request, res: Response) => {
         phone: user.phone,
         player_slug: user.player_slug,
         role: user.role,
+        avatar_url: user.avatar_url,
       },
     });
   } catch (err) {

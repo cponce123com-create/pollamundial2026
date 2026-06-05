@@ -9,6 +9,7 @@ import Participants from "./pages/Participants";
 import RankingPage from "./pages/Ranking";
 import Admin from "./pages/Admin";
 import Teams from "./pages/Teams";
+import Profile from "./pages/Profile";
 import { AuthProvider, useAuth } from "./lib/AuthContext";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -54,6 +55,7 @@ function AppRoutes() {
       <Route path="/participants" element={<Participants />} />
       <Route path="/ranking" element={<RankingPage />} />
       <Route path="/teams" element={<ProtectedRoute><Teams /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
     </Routes>
   );

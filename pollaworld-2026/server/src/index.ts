@@ -14,6 +14,7 @@ import paymentRoutes from "./routes/payments";
 import adminRoutes from "./routes/admin";
 import poolRoutes from "./routes/pool";
 import teamRoutes from "./routes/teams";
+import profileRoutes from "./routes/profile";
 import { db } from "./db";
 import { matches, poolConfig } from "./db/schema";
 import { eq, lte, and } from "drizzle-orm";
@@ -55,6 +56,7 @@ app.use("/api/predictions", predictionRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/pool", poolRoutes);
+app.use("/api/profile", profileRoutes);
 
 // Health check
 app.get("/api/health", (_req, res) => {
@@ -121,3 +123,4 @@ app.listen(PORT, () => {
 startLiveScoreSync();
 
 export default app;
+ app;

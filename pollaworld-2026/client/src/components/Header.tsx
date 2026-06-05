@@ -39,19 +39,27 @@ export default function Header() {
               <Link to="/participants" className={isActive("/participants")}>Participantes</Link>
               <Link to="/ranking" className={isActive("/ranking")}>Ranking</Link>
               <Link to="/teams" className={isActive("/teams")}>🌍 Equipos</Link>
+              <Link to="/profile" className={isActive("/profile")}>Mi perfil</Link>
               {user.role === "admin" && (
                 <Link to="/admin" className={isActive("/admin")}>Admin</Link>
               )}
               <button onClick={handleLogout}>Salir</button>
               <span className="header-user">
-                {player && (
+                {user.avatar_url ? (
+                  <img
+                    src={user.avatar_url}
+                    alt=""
+                    className="player-header-img"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : player ? (
                   <img
                     src={player.image}
                     alt={player.name}
                     className="player-header-img"
                     referrerPolicy="no-referrer"
                   />
-                )}
+                ) : null}
                 {user.name}
               </span>
             </>
