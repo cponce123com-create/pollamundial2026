@@ -34,12 +34,12 @@ export default function Participants() {
   }, []);
 
   const openModal = async (participant: Participant) => {
-    setModalUserId(participant.id);
+    setModalUserId(participant.userId);
     setModalLoading(true);
     setModalTab("groups");
     try {
       const [userPreds, matches] = await Promise.all([
-        api.getUserPredictions(participant.id),
+        api.getUserPredictions(participant.userId),
         api.getMatches(),
       ]);
       setModalData({
@@ -192,6 +192,10 @@ export default function Participants() {
                 ? p.phone.slice(0, 3) + "***" + p.phone.slice(-3)
                 : p.phone;
 
+            const displayName = p.ticketNumber > 1
+              ? `${p.name} (Ticket ${p.ticketNumber})`
+              : p.name;
+
             return (
               <div
                 key={p.id}
@@ -207,10 +211,15 @@ export default function Participants() {
                 <div style={{ fontSize: "2.5rem", marginBottom: 4 }}>
                   {emoji?.emoji || "❓"}
                 </div>
-                <div style={{ fontWeight: 600, fontSize: "0.95rem" }}>{p.name}</div>
+                <div style={{ fontWeight: 600, fontSize: "0.95rem" }}>{displayName}</div>
                 <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
                   {maskedPhone}
                 </div>
+                {p.ticketNumber > 1 && (
+                  <div style={{ fontSize: "0.75rem", color: "var(--gold)", marginTop: 4 }}>
+                    Ticket #{p.ticketNumber}
+                  </div>
+                )}
                 {!stats?.tournamentStarted && (
                   <div
                     style={{

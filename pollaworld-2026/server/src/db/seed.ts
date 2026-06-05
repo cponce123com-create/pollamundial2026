@@ -240,7 +240,6 @@ async function seed() {
       password_hash: hash,
       emoji_id: "pele",
       role: "admin",
-      payment_status: "approved",
     });
     console.log("✓ Admin user created (999000001 / admin2026)");
   } else {

@@ -382,6 +382,82 @@ a:hover {
   font-size: 0.95rem;
 }
 
+/* ===== ENTRY SELECTOR ===== */
+.entry-selector-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.entry-selector-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.entry-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.entry-tab {
+  padding: 6px 14px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font-body);
+}
+
+.entry-tab:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--gold);
+}
+
+.entry-tab-active {
+  background: var(--green);
+  border-color: var(--green-light);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.entry-tab-approved {
+  border-color: var(--success);
+}
+
+.entry-tab-rejected {
+  border-color: var(--error);
+}
+
+.entry-tab-add {
+  background: transparent;
+  border: 1px dashed var(--text-muted);
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  padding: 6px 12px;
+  min-width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.entry-tab-add:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: transparent;
+}
+
+.entry-status-row {
+  margin-top: 10px;
+}
+
 /* ===== DASHBOARD LAYOUT ===== */
 .dashboard {
   display: grid;

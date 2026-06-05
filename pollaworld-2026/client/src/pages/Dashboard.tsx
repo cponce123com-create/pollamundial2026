@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { pdf } from "@react-pdf/renderer";
-import { api, MatchWithPrediction, PoolConfig } from "../lib/api";
+import { api, MatchWithPrediction, PoolConfig, Entry } from "../lib/api";
 import { toast } from "sonner";
 import { getEmoji } from "../lib/emojis";
 import { FlagImage } from "../lib/flags";
@@ -26,15 +26,42 @@ export default function Dashboard() {
   const [liveMatchIds, setLiveMatchIds] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // ── Multi-entry state ──
+  const [entries, setEntries] = useState<Entry[]>([]);
+  const [selectedEntryId, setSelectedEntryId] = useState<string | null>(null);
+  const [creatingEntry, setCreatingEntry] = useState(false);
+
+  const selectedEntry = entries.find((e) => e.id === selectedEntryId) || null;
+
+  // Load entries on mount
   useEffect(() => {
-    loadData();
+    loadEntries();
   }, []);
 
-  const loadData = async () => {
+  // When selectedEntryId changes, load matches + predictions
+  useEffect(() => {
+    if (selectedEntryId) {
+      loadData(selectedEntryId);
+    }
+  }, [selectedEntryId]);
+
+  const loadEntries = async () => {
+    try {
+      const data = await api.getEntries();
+      setEntries(data);
+      if (data.length > 0 && !selectedEntryId) {
+        setSelectedEntryId(data[0].id);
+      }
+    } catch {
+      // not logged in
+    }
+  };
+
+  const loadData = async (entryId: string) => {
     try {
       const [configData, matchData] = await Promise.all([
         api.getPoolConfig(),
-        api.getMatchesWithPredictions(),
+        api.getMatchesWithPredictions(entryId),
       ]);
       setConfig(configData);
       setMatches(matchData);
@@ -52,6 +79,20 @@ export default function Dashboard() {
       setPredictions(preds);
     } catch {
       navigate("/login");
+    }
+  };
+
+  const handleCreateEntry = async () => {
+    setCreatingEntry(true);
+    try {
+      const newEntry = await api.createEntry();
+      setEntries((prev) => [...prev, newEntry]);
+      setSelectedEntryId(newEntry.id);
+      toast.success(`Ticket #${newEntry.ticket_number} creado`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error al crear ticket");
+    } finally {
+      setCreatingEntry(false);
     }
   };
 
@@ -91,6 +132,7 @@ export default function Dashboard() {
   };
 
   const handleSaveAll = async () => {
+    if (!selectedEntryId) return;
     setSaving(true);
     setMessage("");
     try {
@@ -107,9 +149,9 @@ export default function Dashboard() {
         return;
       }
 
-      await api.saveBulkPredictions({ predictions: toSave });
+      await api.saveBulkPredictions(selectedEntryId, toSave);
       setMessage(`✅ ${toSave.length} predicciones guardadas.`);
-      await loadData(); // Refresh
+      await loadData(selectedEntryId); // Refresh
     } catch (err) {
       setMessage(`❌ ${err instanceof Error ? err.message : "Error al guardar"}`);
     } finally {
@@ -119,17 +161,18 @@ export default function Dashboard() {
 
   const handleUploadProof = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || !selectedEntryId) return;
     setUploading(true);
     try {
-      await api.uploadPaymentProof(file);
-      await loadData();
+      await api.uploadPaymentProof(selectedEntryId, file);
+      // Reload entries to get updated payment_status
+      const updatedEntries = await api.getEntries();
+      setEntries(updatedEntries);
       toast.success("Comprobante subido. Pendiente de revisión.");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Error al subir");
     } finally {
       setUploading(false);
-      // Reset file input value so the same file can be re-selected
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -197,199 +240,294 @@ export default function Dashboard() {
     <div className="dashboard">
       {/* LEFT COLUMN */}
       <div className="dashboard-main">
+        {/* ── ENTRY SELECTOR ── */}
         <div className="card" style={{ marginBottom: 16 }}>
-          <div className="dashboard-header">
-            <h2>Mis Predicciones</h2>
-            {user && (
-              <span className="header-user">
-                <span className="header-emoji">{emoji?.emoji}</span>
-                {user.name}
-              </span>
-            )}
-          </div>
-
-          {tournamentStarted && (
-            <div className="alert alert-warning">
-              ⚠️ El torneo ya inició. Las predicciones están cerradas.
-            </div>
-          )}
-
-          {/* Tabs */}
-          <div className="tabs">
-            <button
-              className={`tab ${activeTab === "groups" ? "tab-active" : ""}`}
-              onClick={() => setActiveTab("groups")}
-            >
-              🏟️ Fase de Grupos
-            </button>
-            <button
-              className={`tab ${activeTab === "elimination" ? "tab-active" : ""}`}
-              onClick={() => setActiveTab("elimination")}
-            >
-              🏆 Fase Eliminatoria
-            </button>
-          </div>
-
-          {/* Progress */}
-          <div className="progress-bar-container">
-            <div className="progress-label">
-              {predictionCount} de {filteredMatches.length} partidos predichos
-            </div>
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{ width: `${filteredMatches.length ? (predictionCount / filteredMatches.length) * 100 : 0}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Autofill Buttons */}
-          {!tournamentStarted && filteredMatches.length > 0 && (
-            <div className="autofill-row">
+          <div className="entry-selector-row">
+            <span className="entry-selector-label">🎫 Tickets:</span>
+            <div className="entry-tabs">
+              {entries.map((entry) => (
+                <button
+                  key={entry.id}
+                  className={`entry-tab ${selectedEntryId === entry.id ? "entry-tab-active" : ""} ${
+                    entry.payment_status === "approved"
+                      ? "entry-tab-approved"
+                      : entry.payment_status === "rejected"
+                        ? "entry-tab-rejected"
+                        : ""
+                  }`}
+                  onClick={() => setSelectedEntryId(entry.id)}
+                >
+                  Ticket {entry.ticket_number}
+                  {entry.payment_status === "approved" && " ✅"}
+                  {entry.payment_status === "rejected" && " ❌"}
+                  {entry.payment_status === "pending" && entry.payment_proof_url && " ⏳"}
+                </button>
+              ))}
               <button
-                className="btn btn-autofill btn-autofill-luck"
-                onClick={() => setPredictions(autofillModerate(filteredMatches))}
-                title="Llena todos los partidos con resultados 0-1"
+                className="entry-tab entry-tab-add"
+                onClick={handleCreateEntry}
+                disabled={creatingEntry}
+                title="Crear nuevo ticket"
               >
-                🎲 Llenar con suerte
-              </button>
-              <button
-                className="btn btn-autofill btn-autofill-smart"
-                onClick={() => setPredictions(autofillSmart(filteredMatches))}
-                title="Llena todos los partidos según la fuerza de cada selección"
-              >
-                🧠 Llenar con lógica
+                {creatingEntry ? "..." : "+"}
               </button>
             </div>
-          )}
-
-          {/* Matches Grid */}
-          {filteredMatches.length === 0 ? (
-            <p className="placeholder-text" style={{ padding: 24, textAlign: "center" }}>
-              No hay partidos registrados para esta fase aún.
-            </p>
-          ) : (
-            <div className="match-grid">
-              {filteredMatches.map((m) => {
-                const pred = predictions[m.id];
-                const locked = m.is_locked || tournamentStarted;
-
-                return (
-                  <div key={m.id} className={`match-card ${m.is_locked ? "match-locked" : ""} ${m.prediction ? "match-predicted" : ""}`}>
-                    <div className="match-header">
-                      <span className="match-group">{m.group_name ? `Grupo ${m.group_name}` : formatPhase(m.phase)}</span>
-                      {getStatusBadge(m)}
-                      {liveMatchIds.has(m.id) && (
-                        <span className="badge badge-live">🔴 EN VIVO</span>
-                      )}
-                    </div>
-
-                    <div className="match-teams">
-                      <div className="match-team">
-                        <FlagImage teamName={m.home_team} size={36} className="match-flag" />
-                        <span className="match-name">{getTeamDisplayName(m.home_team)}</span>
-                      </div>
-                      <span className="match-vs">vs</span>
-                      <div className="match-team">
-                        <span className="match-name">{getTeamDisplayName(m.away_team)}</span>
-                        <FlagImage teamName={m.away_team} size={36} className="match-flag" />
-                      </div>
-                    </div>
-
-                    <div className="match-date">{formatDate(m.match_date)}</div>
-
-                    {locked ? (
-                      <div className="match-prediction-locked">
-                        {m.prediction ? (
-                          <span className="prediction-saved">
-                            {m.prediction.home_score_pred} - {m.prediction.away_score_pred}
-                          </span>
-                        ) : (
-                          <span className="prediction-none">Sin predicción</span>
-                        )}
-                        {m.home_score_real !== null && (
-                          <div className="real-score">
-                            Resultado: {m.home_score_real} - {m.away_score_real}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <>
-                        <div className="match-quick-bets">
-                          <button
-                            className="quick-bet-btn quick-bet-home"
-                            onClick={() => {
-                              handlePredictionChange(m.id, "home", "1");
-                              handlePredictionChange(m.id, "away", "0");
-                            }}
-                            title="Gana local"
-                          >
-                            🏠 1-0
-                          </button>
-                          <button
-                            className="quick-bet-btn quick-bet-draw"
-                            onClick={() => {
-                              handlePredictionChange(m.id, "home", "0");
-                              handlePredictionChange(m.id, "away", "0");
-                            }}
-                            title="Empate"
-                          >
-                            🤝 0-0
-                          </button>
-                          <button
-                            className="quick-bet-btn quick-bet-away"
-                            onClick={() => {
-                              handlePredictionChange(m.id, "home", "0");
-                              handlePredictionChange(m.id, "away", "1");
-                            }}
-                            title="Gana visitante"
-                          >
-                            0-1 🚌
-                          </button>
-                        </div>
-                        <div className="match-prediction-inputs">
-                          <input
-                            type="number"
-                            className="pred-input"
-                            min={0}
-                            max={20}
-                            placeholder="0"
-                            value={pred?.home ?? ""}
-                            onChange={(e) => handlePredictionChange(m.id, "home", e.target.value)}
-                          />
-                          <span className="pred-dash">—</span>
-                          <input
-                            type="number"
-                            className="pred-input"
-                            min={0}
-                            max={20}
-                            placeholder="0"
-                            value={pred?.away ?? ""}
-                            onChange={(e) => handlePredictionChange(m.id, "away", e.target.value)}
-                          />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Save Button */}
-          {!tournamentStarted && filteredMatches.length > 0 && (
-            <div style={{ marginTop: 16, textAlign: "center" }}>
-              <button className="btn btn-gold btn-block" onClick={handleSaveAll} disabled={saving}>
-                {saving ? "Guardando..." : "💾 Guardar todas mis predicciones"}
-              </button>
-              {message && (
-                <p className={message.startsWith("✅") ? "msg-success" : "msg-error"} style={{ marginTop: 8 }}>
-                  {message}
-                </p>
+          </div>
+          {selectedEntry && (
+            <div className="entry-status-row">
+              {selectedEntry.payment_status === "approved" ? (
+                <span className="badge badge-approved">✅ Pago confirmado — Ticket habilitado</span>
+              ) : selectedEntry.payment_status === "rejected" ? (
+                <span className="badge badge-rejected">❌ Pago rechazado — Sube un nuevo comprobante</span>
+              ) : selectedEntry.payment_proof_url ? (
+                <span className="badge badge-pending">⏳ Comprobante en revisión</span>
+              ) : (
+                <span className="badge badge-pending">💳 Pendiente de pago</span>
               )}
             </div>
           )}
         </div>
+
+        {/* ── PREDICTIONS PANEL (only for approved entries) ── */}
+        {selectedEntry && selectedEntry.payment_status === "approved" ? (
+          <div className="card" style={{ marginBottom: 16 }}>
+            <div className="dashboard-header">
+              <h2>
+                Mis Predicciones
+                <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginLeft: 8 }}>
+                  (Ticket {selectedEntry.ticket_number})
+                </span>
+              </h2>
+              {user && (
+                <span className="header-user">
+                  <span className="header-emoji">{emoji?.emoji}</span>
+                  {user.name}
+                </span>
+              )}
+            </div>
+
+            {tournamentStarted && (
+              <div className="alert alert-warning">
+                ⚠️ El torneo ya inició. Las predicciones están cerradas.
+              </div>
+            )}
+
+            {/* Tabs */}
+            <div className="tabs">
+              <button
+                className={`tab ${activeTab === "groups" ? "tab-active" : ""}`}
+                onClick={() => setActiveTab("groups")}
+              >
+                🏟️ Fase de Grupos
+              </button>
+              <button
+                className={`tab ${activeTab === "elimination" ? "tab-active" : ""}`}
+                onClick={() => setActiveTab("elimination")}
+              >
+                🏆 Fase Eliminatoria
+              </button>
+            </div>
+
+            {/* Progress */}
+            <div className="progress-bar-container">
+              <div className="progress-label">
+                {predictionCount} de {filteredMatches.length} partidos predichos
+              </div>
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${filteredMatches.length ? (predictionCount / filteredMatches.length) * 100 : 0}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Autofill Buttons */}
+            {!tournamentStarted && filteredMatches.length > 0 && (
+              <div className="autofill-row">
+                <button
+                  className="btn btn-autofill btn-autofill-luck"
+                  onClick={() => setPredictions(autofillModerate(filteredMatches))}
+                  title="Llena todos los partidos con resultados 0-1"
+                >
+                  🎲 Llenar con suerte
+                </button>
+                <button
+                  className="btn btn-autofill btn-autofill-smart"
+                  onClick={() => setPredictions(autofillSmart(filteredMatches))}
+                  title="Llena todos los partidos según la fuerza de cada selección"
+                >
+                  🧠 Llenar con lógica
+                </button>
+              </div>
+            )}
+
+            {/* Matches Grid */}
+            {filteredMatches.length === 0 ? (
+              <p className="placeholder-text" style={{ padding: 24, textAlign: "center" }}>
+                No hay partidos registrados para esta fase aún.
+              </p>
+            ) : (
+              <div className="match-grid">
+                {filteredMatches.map((m) => {
+                  const pred = predictions[m.id];
+                  const locked = m.is_locked || tournamentStarted;
+
+                  return (
+                    <div key={m.id} className={`match-card ${m.is_locked ? "match-locked" : ""} ${m.prediction ? "match-predicted" : ""}`}>
+                      <div className="match-header">
+                        <span className="match-group">{m.group_name ? `Grupo ${m.group_name}` : formatPhase(m.phase)}</span>
+                        {getStatusBadge(m)}
+                        {liveMatchIds.has(m.id) && (
+                          <span className="badge badge-live">🔴 EN VIVO</span>
+                        )}
+                      </div>
+
+                      <div className="match-teams">
+                        <div className="match-team">
+                          <FlagImage teamName={m.home_team} size={36} className="match-flag" />
+                          <span className="match-name">{getTeamDisplayName(m.home_team)}</span>
+                        </div>
+                        <span className="match-vs">vs</span>
+                        <div className="match-team">
+                          <span className="match-name">{getTeamDisplayName(m.away_team)}</span>
+                          <FlagImage teamName={m.away_team} size={36} className="match-flag" />
+                        </div>
+                      </div>
+
+                      <div className="match-date">{formatDate(m.match_date)}</div>
+
+                      {locked ? (
+                        <div className="match-prediction-locked">
+                          {m.prediction ? (
+                            <span className="prediction-saved">
+                              {m.prediction.home_score_pred} - {m.prediction.away_score_pred}
+                            </span>
+                          ) : (
+                            <span className="prediction-none">Sin predicción</span>
+                          )}
+                          {m.home_score_real !== null && (
+                            <div className="real-score">
+                              Resultado: {m.home_score_real} - {m.away_score_real}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <>
+                          <div className="match-quick-bets">
+                            <button
+                              className="quick-bet-btn quick-bet-home"
+                              onClick={() => {
+                                handlePredictionChange(m.id, "home", "1");
+                                handlePredictionChange(m.id, "away", "0");
+                              }}
+                              title="Gana local"
+                            >
+                              🏠 1-0
+                            </button>
+                            <button
+                              className="quick-bet-btn quick-bet-draw"
+                              onClick={() => {
+                                handlePredictionChange(m.id, "home", "0");
+                                handlePredictionChange(m.id, "away", "0");
+                              }}
+                              title="Empate"
+                            >
+                              🤝 0-0
+                            </button>
+                            <button
+                              className="quick-bet-btn quick-bet-away"
+                              onClick={() => {
+                                handlePredictionChange(m.id, "home", "0");
+                                handlePredictionChange(m.id, "away", "1");
+                              }}
+                              title="Gana visitante"
+                            >
+                              0-1 🚌
+                            </button>
+                          </div>
+                          <div className="match-prediction-inputs">
+                            <input
+                              type="number"
+                              className="pred-input"
+                              min={0}
+                              max={20}
+                              placeholder="0"
+                              value={pred?.home ?? ""}
+                              onChange={(e) => handlePredictionChange(m.id, "home", e.target.value)}
+                            />
+                            <span className="pred-dash">—</span>
+                            <input
+                              type="number"
+                              className="pred-input"
+                              min={0}
+                              max={20}
+                              placeholder="0"
+                              value={pred?.away ?? ""}
+                              onChange={(e) => handlePredictionChange(m.id, "away", e.target.value)}
+                            />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Save Button */}
+            {!tournamentStarted && filteredMatches.length > 0 && (
+              <div style={{ marginTop: 16, textAlign: "center" }}>
+                <button className="btn btn-gold btn-block" onClick={handleSaveAll} disabled={saving}>
+                  {saving ? "Guardando..." : "💾 Guardar todas mis predicciones"}
+                </button>
+                {message && (
+                  <p className={message.startsWith("✅") ? "msg-success" : "msg-error"} style={{ marginTop: 8 }}>
+                    {message}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        ) : selectedEntry ? (
+          /* ── UNAPPROVED ENTRY MESSAGE ── */
+          <div className="card" style={{ marginBottom: 16 }}>
+            <div className="dashboard-header">
+              <h2>Mis Predicciones</h2>
+              {user && (
+                <span className="header-user">
+                  <span className="header-emoji">{emoji?.emoji}</span>
+                  {user.name}
+                </span>
+              )}
+            </div>
+            <div className="placeholder-page" style={{ padding: "32px 16px" }}>
+              <div style={{ fontSize: "3rem", marginBottom: 12 }}>🔒</div>
+              <h3 style={{ color: "var(--white)", marginBottom: 8 }}>
+                Ticket pendiente de pago
+              </h3>
+              <p className="placeholder-text" style={{ maxWidth: 400, margin: "0 auto" }}>
+                Para hacer tus predicciones, primero debes realizar el pago y subir el comprobante
+                desde el panel lateral. Una vez aprobado, podrás llenar tus pronósticos.
+              </p>
+            </div>
+          </div>
+        ) : (
+          /* ── NO ENTRIES MESSAGE ── */
+          <div className="card" style={{ marginBottom: 16 }}>
+            <div className="placeholder-page" style={{ padding: "32px 16px" }}>
+              <div style={{ fontSize: "3rem", marginBottom: 12 }}>🎫</div>
+              <h3 style={{ color: "var(--white)", marginBottom: 8 }}>
+                Aún no tienes tickets
+              </h3>
+              <p className="placeholder-text" style={{ maxWidth: 400, margin: "0 auto 16px" }}>
+                Crea tu primer ticket de participación para empezar a hacer tus predicciones.
+              </p>
+              <button className="btn btn-gold" onClick={handleCreateEntry} disabled={creatingEntry}>
+                {creatingEntry ? "Creando..." : "🎫 Crear mi primer ticket"}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* RIGHT COLUMN */}
@@ -398,10 +536,12 @@ export default function Dashboard() {
         <div className="card">
           <h3 className="card-title">💳 Pago Yape</h3>
 
-          {user?.payment_status === "approved" ? (
+          {selectedEntry?.payment_status === "approved" ? (
             <div className="payment-approved">
               <span className="badge badge-approved">✓ Pago confirmado</span>
-              <p className="placeholder-text" style={{ marginTop: 8 }}>Ya estás habilitado para participar.</p>
+              <p className="placeholder-text" style={{ marginTop: 8 }}>
+                Ticket #{selectedEntry.ticket_number} habilitado.
+              </p>
             </div>
           ) : (
             <>
@@ -425,22 +565,22 @@ export default function Dashboard() {
               <button
                 className="btn btn-primary btn-block"
                 onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
+                disabled={uploading || !selectedEntryId}
                 style={{ marginTop: 12 }}
               >
                 {uploading ? "Subiendo..." : "📎 Subir comprobante de pago"}
               </button>
 
-              {user?.payment_proof_url && (
+              {selectedEntry?.payment_proof_url && (
                 <div className="proof-preview" style={{ marginTop: 12 }}>
                   <img
-                    src={user.payment_proof_url}
+                    src={selectedEntry.payment_proof_url}
                     alt="Comprobante"
                     className="proof-thumb"
-                    onClick={() => window.open(user.payment_proof_url!, "_blank")}
+                    onClick={() => window.open(selectedEntry.payment_proof_url!, "_blank")}
                   />
-                  <span className={`badge ${user.payment_status === "pending" ? "badge-pending" : "badge-rejected"}`}>
-                    {user.payment_status === "pending" ? "Pendiente" : "Rechazado"}
+                  <span className={`badge ${selectedEntry.payment_status === "pending" ? "badge-pending" : "badge-rejected"}`}>
+                    {selectedEntry.payment_status === "pending" ? "Pendiente" : "Rechazado"}
                   </span>
                 </div>
               )}

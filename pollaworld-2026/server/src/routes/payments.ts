@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import multer from "multer";
 import { db } from "../db";
-import { users } from "../db/schema";
+import { entries } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { eq } from "drizzle-orm";
 import cloudinary from "../lib/cloudinary";
@@ -17,7 +17,7 @@ const upload = multer({
   },
 });
 
-// POST /api/payments/upload — subir comprobante a Cloudinary (auth)
+// POST /api/payments/upload — subir comprobante a Cloudinary para una entrada específica
 router.post("/upload", requireAuth, (req: Request, res: Response, next) => {
   upload.single("proof")(req, res, (err) => {
     if (err instanceof multer.MulterError) {
@@ -38,6 +38,29 @@ router.post("/upload", requireAuth, (req: Request, res: Response, next) => {
       return;
     }
 
+    const { entry_id } = req.body;
+    if (!entry_id) {
+      res.status(400).json({ error: "Se requiere el entry_id." });
+      return;
+    }
+
+    // Verify the entry belongs to the current user
+    const [entry] = await db
+      .select()
+      .from(entries)
+      .where(eq(entries.id, entry_id))
+      .limit(1);
+
+    if (!entry) {
+      res.status(404).json({ error: "Entrada no encontrada." });
+      return;
+    }
+
+    if (entry.user_id !== req.user!.userId) {
+      res.status(403).json({ error: "Esta entrada no te pertenece." });
+      return;
+    }
+
     const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
@@ -54,9 +77,9 @@ router.post("/upload", requireAuth, (req: Request, res: Response, next) => {
     });
 
     await db
-      .update(users)
+      .update(entries)
       .set({ payment_proof_url: result.secure_url, payment_status: "pending" })
-      .where(eq(users.id, req.user!.userId));
+      .where(eq(entries.id, entry_id));
 
     res.json({ url: result.secure_url, message: "Comprobante subido. Pendiente de revisión." });
   } catch (err: any) {

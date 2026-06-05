@@ -11,8 +11,6 @@ export const users = pgTable("users", {
   password_hash: text("password_hash"),
   emoji_id: text("emoji_id"),
   role: roleEnum("role").default("participant").notNull(),
-  payment_status: paymentStatusEnum("payment_status").default("pending").notNull(),
-  payment_proof_url: text("payment_proof_url"),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
@@ -31,11 +29,21 @@ export const matches = pgTable("matches", {
   match_order: integer("match_order").notNull(),
 });
 
+export const entries = pgTable("entries", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  user_id: uuid("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  ticket_number: integer("ticket_number").notNull(),
+  payment_status: paymentStatusEnum("payment_status").default("pending").notNull(),
+  payment_proof_url: text("payment_proof_url"),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
 export const predictions = pgTable(
   "predictions",
   {
     id: uuid("id").primaryKey().defaultRandom(),
     user_id: uuid("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+    entry_id: uuid("entry_id").references(() => entries.id, { onDelete: "cascade" }).notNull(),
     match_id: uuid("match_id").references(() => matches.id, { onDelete: "cascade" }).notNull(),
     home_score_pred: integer("home_score_pred").notNull(),
     away_score_pred: integer("away_score_pred").notNull(),
@@ -44,7 +52,7 @@ export const predictions = pgTable(
     updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => ({
-    uniqueUserMatch: uniqueIndex("unique_user_match").on(table.user_id, table.match_id),
+    uniqueEntryMatch: uniqueIndex("unique_entry_match").on(table.entry_id, table.match_id),
   })
 );
 

@@ -1,14 +1,10 @@
 import { Router, Request, Response } from "express";
-import multer from "multer";
 import { db } from "../db";
-import { poolConfig, users, predictions } from "../db/schema";
-import { requireAuth } from "../middleware/auth";
+import { poolConfig, users, entries, predictions } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
-import { eq, sql, count } from "drizzle-orm";
-import cloudinary from "../lib/cloudinary";
+import { eq, sql, count, desc } from "drizzle-orm";
 
 const router = Router();
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
 // GET /api/pool/stats — estadísticas públicas del pozo
 router.get("/stats", async (_req: Request, res: Response) => {
@@ -16,8 +12,8 @@ router.get("/stats", async (_req: Request, res: Response) => {
     const [config] = await db.select().from(poolConfig).limit(1);
     const [result] = await db
       .select({ count: count() })
-      .from(users)
-      .where(eq(users.payment_status, "approved"));
+      .from(entries)
+      .where(eq(entries.payment_status, "approved"));
 
     const approvedCount = result?.count ?? 0;
     const entryFee = config?.entry_fee ?? 20;
@@ -40,24 +36,31 @@ router.get("/stats", async (_req: Request, res: Response) => {
   }
 });
 
-// GET /api/participants — lista pública de aprobados
+// GET /api/participants — lista pública de entradas aprobadas
 router.get("/participants", async (_req: Request, res: Response) => {
   try {
     const participants = await db
       .select({
-        id: users.id,
-        name: users.name,
+        id: entries.id,
+        userId: entries.user_id,
+        userName: users.name,
         phone: users.phone,
         emoji_id: users.emoji_id,
+        ticketNumber: entries.ticket_number,
       })
-      .from(users)
-      .where(eq(users.payment_status, "approved"))
-      .orderBy(users.name);
+      .from(entries)
+      .innerJoin(users, eq(entries.user_id, users.id))
+      .where(eq(entries.payment_status, "approved"))
+      .orderBy(users.name, entries.ticket_number);
 
-    // Mask phone numbers
+    // Mask phone numbers and format
     const masked = participants.map((p) => ({
-      ...p,
+      id: p.ticketNumber > 1 ? `${p.userId}-${p.ticketNumber}` : p.id,
+      userId: p.userId,
+      name: p.ticketNumber > 1 ? `${p.userName} (Ticket ${p.ticketNumber})` : p.userName,
       phone: p.phone ? `****${p.phone.slice(-4)}` : "****",
+      emoji_id: p.emoji_id,
+      ticketNumber: p.ticketNumber,
     }));
 
     res.json(masked);
@@ -104,55 +107,26 @@ router.put("/config", requireAdmin, async (req: Request, res: Response) => {
   }
 });
 
-// POST /api/pool/upload-yape-qr — subir QR de Yape (admin)
-router.post("/upload-yape-qr", requireAdmin, upload.single("qr"), async (req: Request, res: Response) => {
-  try {
-    if (!req.file) {
-      res.status(400).json({ error: "Debes enviar una imagen del QR." });
-      return;
-    }
-    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        { folder: "pollaworld/config" },
-        (err, result) => {
-          if (err) reject(err);
-          else resolve(result as { secure_url: string });
-        }
-      );
-      stream.end(req.file!.buffer);
-    });
-
-    const configs = await db.select().from(poolConfig).limit(1);
-    if (configs.length === 0) {
-      await db.insert(poolConfig).values({ yape_qr_url: result.secure_url });
-    } else {
-      await db.update(poolConfig).set({ yape_qr_url: result.secure_url }).where(eq(poolConfig.id, configs[0].id));
-    }
-
-    res.json({ url: result.secure_url, message: "QR subido correctamente." });
-  } catch (err) {
-    console.error("Upload QR error:", err);
-    res.status(500).json({ error: "Error al subir QR." });
-  }
-});
-
-// GET /api/ranking — ranking detallado público
+// GET /api/ranking — ranking detallado público, rankea por entry
 router.get("/ranking", async (_req: Request, res: Response) => {
   try {
     const ranking = await db
       .select({
+        entryId: entries.id,
+        ticketNumber: entries.ticket_number,
         userId: users.id,
         name: users.name,
-        emoji_id: users.emoji_id,
-        total_points: sql<number>`COALESCE(SUM(${predictions.points_earned}), 0)`.mapWith(Number),
-        exact_scores: sql<number>`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 5 THEN 1 ELSE 0 END), 0)`.mapWith(Number),
-        correct_results: sql<number>`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 3 THEN 1 ELSE 0 END), 0)`.mapWith(Number),
+        emojiId: users.emoji_id,
+        totalPoints: sql<number>`COALESCE(SUM(${predictions.points_earned}), 0)`.mapWith(Number),
+        exactScores: sql<number>`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 5 THEN 1 ELSE 0 END), 0)`.mapWith(Number),
+        correctResults: sql<number>`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 3 THEN 1 ELSE 0 END), 0)`.mapWith(Number),
       })
-      .from(users)
-      .leftJoin(predictions, eq(users.id, predictions.user_id))
-      .where(eq(users.payment_status, "approved"))
-      .groupBy(users.id)
-      .orderBy(sql`COALESCE(SUM(${predictions.points_earned}), 0) DESC`);
+      .from(entries)
+      .innerJoin(users, eq(entries.user_id, users.id))
+      .leftJoin(predictions, eq(entries.id, predictions.entry_id))
+      .where(eq(entries.payment_status, "approved"))
+      .groupBy(entries.id, users.id)
+      .orderBy(desc(sql`COALESCE(SUM(${predictions.points_earned}), 0)`));
 
     res.json(ranking);
   } catch (err) {

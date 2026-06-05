@@ -1,25 +1,16 @@
 import { useState, useEffect } from "react";
-import { api, PoolStats } from "../lib/api";
+import { api, PoolStats, RankingEntry } from "../lib/api";
 import { getEmoji } from "../lib/emojis";
 
-interface RankingDetail {
-  user_id: string;
-  name: string;
-  emoji_id: string;
-  aciertos: number;
-  exactos: number;
-  total_points: number;
-}
-
 export default function RankingPage() {
-  const [ranking, setRanking] = useState<RankingDetail[]>([]);
+  const [ranking, setRanking] = useState<RankingEntry[]>([]);
   const [stats, setStats] = useState<PoolStats | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
-      api.getRanking() as Promise<RankingDetail[]>,
+      api.getRanking() as Promise<RankingEntry[]>,
       api.getPoolStats(),
       api.me().then((d) => d.user).catch(() => null),
     ])
@@ -40,7 +31,7 @@ export default function RankingPage() {
     );
   }
 
-  const allZero = ranking.every((r) => r.total_points === 0);
+  const allZero = ranking.every((r) => r.totalPoints === 0);
   if (allZero || ranking.length === 0) {
     return (
       <div className="placeholder-page">
@@ -88,7 +79,7 @@ export default function RankingPage() {
         {podiumPositions.map((p) => {
           const entry = top3[p.pos - 1];
           if (!entry) return null;
-          const emoji = getEmoji(entry.emoji_id);
+          const emoji = getEmoji(entry.emojiId);
           const prize =
             p.pos === 1
               ? stats?.prizes.first
@@ -115,8 +106,13 @@ export default function RankingPage() {
                 {emoji?.emoji || "❓"}
               </div>
               <div style={{ fontWeight: 700, fontSize: "1rem" }}>{entry.name}</div>
+              {entry.ticketNumber > 1 && (
+                <div style={{ fontSize: "0.8rem", fontWeight: 500, marginTop: 2 }}>
+                  Ticket #{entry.ticketNumber}
+                </div>
+              )}
               <div style={{ fontWeight: 800, fontSize: "1.3rem", marginTop: 4 }}>
-                {entry.total_points} pts
+                {entry.totalPoints} pts
               </div>
               {prize !== undefined && (
                 <div style={{ fontSize: "0.85rem", fontWeight: 600, marginTop: 2 }}>
@@ -137,6 +133,7 @@ export default function RankingPage() {
               <tr>
                 <th>#</th>
                 <th>Participante</th>
+                <th>Ticket</th>
                 <th>Aciertos (3pts)</th>
                 <th>Exactos (5pts)</th>
                 <th>Total Puntos</th>
@@ -144,11 +141,11 @@ export default function RankingPage() {
             </thead>
             <tbody>
               {ranking.map((entry, idx) => {
-                const emoji = getEmoji(entry.emoji_id);
-                const isCurrentUser = entry.user_id === currentUserId;
+                const emoji = getEmoji(entry.emojiId);
+                const isCurrentUser = entry.userId === currentUserId;
                 return (
                   <tr
-                    key={entry.user_id}
+                    key={entry.entryId}
                     style={{
                       border: isCurrentUser ? "2px solid var(--gold)" : undefined,
                       background: isCurrentUser
@@ -176,10 +173,15 @@ export default function RankingPage() {
                         </span>
                       )}
                     </td>
-                    <td>{entry.aciertos ?? 0}</td>
-                    <td>{entry.exactos ?? 0}</td>
+                    <td>
+                      <span className="badge badge-pending" style={{ fontSize: "0.75rem" }}>
+                        #{entry.ticketNumber}
+                      </span>
+                    </td>
+                    <td>{entry.correctResults ?? 0}</td>
+                    <td>{entry.exactScores ?? 0}</td>
                     <td style={{ fontWeight: 700, color: "var(--gold)" }}>
-                      {entry.total_points}
+                      {entry.totalPoints}
                     </td>
                   </tr>
                 );

@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 
 import authRoutes from "./routes/auth";
+import entryRoutes from "./routes/entries";
 import matchRoutes from "./routes/matches";
 import predictionRoutes from "./routes/predictions";
 import paymentRoutes from "./routes/payments";
@@ -48,6 +49,7 @@ app.use(pinoHttp({ logger }));
 
 // API Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/entries", entryRoutes);
 app.use("/api/matches", matchRoutes);
 app.use("/api/predictions", predictionRoutes);
 app.use("/api/payments", paymentRoutes);

@@ -1,18 +1,20 @@
 import { useState } from "react";
-import { User, api } from "../../lib/api";
+import { Entry, User, api } from "../../lib/api";
 import { getEmoji } from "../../lib/emojis";
 
 interface PaymentsPanelProps {
-  pendingPayments: User[];
-  approvedPayments: User[];
+  pendingEntries: Entry[];
+  approvedEntries: Entry[];
+  allUsers: User[];
   rejectedCount: number;
   onReload: () => void;
   onOpenImage: (url: string) => void;
 }
 
 export default function PaymentsPanel({
-  pendingPayments,
-  approvedPayments,
+  pendingEntries,
+  approvedEntries,
+  allUsers,
   rejectedCount,
   onReload,
   onOpenImage,
@@ -20,26 +22,36 @@ export default function PaymentsPanel({
   const [rejectReason, setRejectReason] = useState("");
   const [rejectingId, setRejectingId] = useState<string | null>(null);
 
-  const pendingWithProof = pendingPayments.filter((p) => p.payment_proof_url);
+  const userMap = new Map(allUsers.map((u) => [u.id, u]));
+  const pendingWithProof = pendingEntries.filter((e) => e.payment_proof_url);
 
-  const handleApprove = async (userId: string) => {
+  const handleApprove = async (entryId: string) => {
     try {
-      await api.approvePayment(userId);
+      await api.approveEntry(entryId);
       onReload();
     } catch (err) {
       console.error(err);
     }
   };
 
-  const handleReject = async (userId: string) => {
+  const handleReject = async (entryId: string) => {
     try {
-      await api.rejectPayment(userId, rejectReason || undefined);
+      await api.rejectEntry(entryId, rejectReason || undefined);
       setRejectingId(null);
       setRejectReason("");
       onReload();
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const getUserDisplay = (entry: Entry): { name: string; emoji: string } => {
+    const user = userMap.get(entry.user_id);
+    if (!user) return { name: `Usuario #${entry.user_id.slice(0, 6)}`, emoji: "❓" };
+    const name = entry.ticket_number > 1
+      ? `${user.name} (Ticket ${entry.ticket_number})`
+      : user.name;
+    return { name, emoji: getEmoji(user.emoji_id)?.emoji || "❓" };
   };
 
   return (
@@ -53,7 +65,7 @@ export default function PaymentsPanel({
         </div>
         <div className="admin-stats-card">
           <div className="admin-stats-value admin-stats-success">
-            {approvedPayments.length}
+            {approvedEntries.length}
           </div>
           <div className="admin-stats-label">Aprobados</div>
         </div>
@@ -77,31 +89,38 @@ export default function PaymentsPanel({
             <thead>
               <tr>
                 <th>Participante</th>
+                <th>Ticket</th>
                 <th>Teléfono</th>
                 <th>Comprobante</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {pendingWithProof.map((user) => {
-                const emoji = getEmoji(user.emoji_id);
+              {pendingWithProof.map((entry) => {
+                const { name, emoji } = getUserDisplay(entry);
+                const user = userMap.get(entry.user_id);
                 return (
-                  <tr key={user.id}>
+                  <tr key={entry.id}>
                     <td>
-                      <span className="admin-user-emoji">{emoji?.emoji}</span>
-                      {user.name}
+                      <span className="admin-user-emoji">{emoji}</span>
+                      {name}
                     </td>
-                    <td>{user.phone}</td>
+                    <td>
+                      <span className="badge badge-pending" style={{ fontSize: "0.75rem" }}>
+                        #{entry.ticket_number}
+                      </span>
+                    </td>
+                    <td>{user?.phone || "—"}</td>
                     <td>
                       <img
-                        src={user.payment_proof_url!}
+                        src={entry.payment_proof_url!}
                         alt="Comprobante"
                         className="proof-thumb"
-                        onClick={() => onOpenImage(user.payment_proof_url!)}
+                        onClick={() => onOpenImage(entry.payment_proof_url!)}
                       />
                     </td>
                     <td>
-                      {rejectingId === user.id ? (
+                      {rejectingId === entry.id ? (
                         <div className="admin-payment-actions">
                           <input
                             className="form-input"
@@ -112,7 +131,7 @@ export default function PaymentsPanel({
                           <div className="admin-action-group">
                             <button
                               className="btn btn-primary btn-sm"
-                              onClick={() => handleReject(user.id)}
+                              onClick={() => handleReject(entry.id)}
                             >
                               Confirmar
                             </button>
@@ -128,13 +147,13 @@ export default function PaymentsPanel({
                         <div className="admin-action-group">
                           <button
                             className="btn btn-primary btn-sm"
-                            onClick={() => handleApprove(user.id)}
+                            onClick={() => handleApprove(entry.id)}
                           >
                             Aprobar
                           </button>
                           <button
                             className="btn btn-outline btn-sm btn-reject"
-                            onClick={() => setRejectingId(user.id)}
+                            onClick={() => setRejectingId(entry.id)}
                           >
                             Rechazar
                           </button>
@@ -150,10 +169,10 @@ export default function PaymentsPanel({
       )}
 
       <h3 className="admin-section-title">
-        Pagos aprobados ({approvedPayments.length})
+        Pagos aprobados ({approvedEntries.length})
       </h3>
 
-      {approvedPayments.length === 0 ? (
+      {approvedEntries.length === 0 ? (
         <p className="placeholder-text">No hay pagos aprobados aún.</p>
       ) : (
         <div className="admin-table-wrapper">
@@ -161,20 +180,27 @@ export default function PaymentsPanel({
             <thead>
               <tr>
                 <th>Participante</th>
+                <th>Ticket</th>
                 <th>Teléfono</th>
                 <th>Estado</th>
               </tr>
             </thead>
             <tbody>
-              {approvedPayments.map((user) => {
-                const emoji = getEmoji(user.emoji_id);
+              {approvedEntries.map((entry) => {
+                const { name, emoji } = getUserDisplay(entry);
+                const user = userMap.get(entry.user_id);
                 return (
-                  <tr key={user.id}>
+                  <tr key={entry.id}>
                     <td>
-                      <span className="admin-user-emoji">{emoji?.emoji}</span>
-                      {user.name}
+                      <span className="admin-user-emoji">{emoji}</span>
+                      {name}
                     </td>
-                    <td>{user.phone}</td>
+                    <td>
+                      <span className="badge badge-approved" style={{ fontSize: "0.75rem" }}>
+                        #{entry.ticket_number}
+                      </span>
+                    </td>
+                    <td>{user?.phone || "—"}</td>
                     <td>
                       <span className="badge badge-approved">
                         ✓ Aprobado

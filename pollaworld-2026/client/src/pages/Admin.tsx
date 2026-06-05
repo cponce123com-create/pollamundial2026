@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { pdf } from "@react-pdf/renderer";
 import { toast } from "sonner";
-import { api, User, Match, PoolConfig } from "../lib/api";
+import { api, User, Entry, Match, PoolConfig, RankingEntry } from "../lib/api";
 import { PdfMassExport } from "../components/PdfBoleto";
 import AdminTabs from "./admin/AdminTabs";
 import MatchesPanel from "./admin/MatchesPanel";
@@ -18,10 +18,11 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState<AdminTab>("payments");
   const [loading, setLoading] = useState(true);
 
-  // Payments state
-  const [pendingPayments, setPendingPayments] = useState<User[]>([]);
-  const [approvedPayments, setApprovedPayments] = useState<User[]>([]);
+  // Payments state (now entries)
+  const [pendingEntries, setPendingEntries] = useState<Entry[]>([]);
+  const [approvedEntries, setApprovedEntries] = useState<Entry[]>([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [allEntries, setAllEntries] = useState<Entry[]>([]);
   const [modalImage, setModalImage] = useState<string | null>(null);
 
   // Matches state
@@ -48,16 +49,18 @@ export default function Admin() {
   const loadAll = async () => {
     try {
       setLoading(true);
-      const [pending, approved, users, m, cfg] = await Promise.all([
-        api.getPendingPayments().catch(() => [] as User[]),
-        api.getApprovedPayments().catch(() => [] as User[]),
+      const [pending, approved, users, entries, m, cfg] = await Promise.all([
+        api.getAdminPendingEntries().catch(() => [] as Entry[]),
+        api.getAdminApprovedEntries().catch(() => [] as Entry[]),
         api.getAdminUsers().catch(() => [] as User[]),
+        api.getAdminEntries().catch(() => [] as Entry[]),
         api.getMatches().catch(() => [] as Match[]),
         api.getPoolConfig().catch(() => null as PoolConfig | null),
       ]);
-      setPendingPayments(pending);
-      setApprovedPayments(approved);
+      setPendingEntries(pending);
+      setApprovedEntries(approved);
       setAllUsers(users);
+      setAllEntries(entries);
       setMatches(m);
       if (cfg) {
         setConfig(cfg);
@@ -158,35 +161,34 @@ export default function Admin() {
   const handleCsvExport = async () => {
     setExportingCsv(true);
     try {
-      type RankEntry = {
-        user_id: string;
-        name: string;
-        emoji_id: string;
-        total_points: number;
-      };
-      const rank = (await api.getRanking()) as RankEntry[];
-      const approved = await api.getApprovedPayments();
-      const rankMap = new Map(rank.map((r) => [r.user_id, r]));
-      const sorted = [...rank].sort((a, b) => b.total_points - a.total_points);
-      const posMap = new Map(sorted.map((r, i) => [r.user_id, i + 1]));
+      const rank = (await api.getRanking()) as RankingEntry[];
+      const approved = await api.getAdminApprovedEntries();
+      const users = await api.getAdminUsers();
+      const userMap = new Map(users.map((u) => [u.id, u]));
+      const rankMap = new Map(rank.map((r) => [r.entryId, r]));
+      const sorted = [...rank].sort((a, b) => b.totalPoints - a.totalPoints);
+      const posMap = new Map(sorted.map((r, i) => [r.entryId, i + 1]));
 
       const esc = (s: string) => '"' + s.replace(/"/g, '""') + '"';
 
-      let csv = "nombre,telefono,emoji,fecha_aprobacion,puntos,posicion\n";
-      approved.forEach((u) => {
-        const r = rankMap.get(u.id);
+      let csv = "nombre,telefono,emoji,ticket,fecha_aprobacion,puntos,posicion\n";
+      approved.forEach((entry) => {
+        const user = userMap.get(entry.user_id);
+        if (!user) return;
+        const r = rankMap.get(entry.id);
         csv +=
           [
-            esc(u.name),
-            esc(u.phone),
-            esc(u.emoji_id),
+            esc(user.name),
+            esc(user.phone),
+            esc(user.emoji_id),
+            entry.ticket_number,
             esc(
-              u.created_at
-                ? new Date(u.created_at).toISOString().slice(0, 10)
+              entry.created_at
+                ? new Date(entry.created_at).toISOString().slice(0, 10)
                 : ""
             ),
-            r?.total_points ?? 0,
-            posMap.get(u.id) ?? "",
+            r?.totalPoints ?? 0,
+            posMap.get(entry.id) ?? "",
           ].join(",") + "\n";
       });
 
@@ -207,12 +209,11 @@ export default function Admin() {
   };
 
   // Derived
-  const pendingCount = pendingPayments.filter(
-    (p) => p.payment_proof_url
-  ).length;
-  const approvedCount = approvedPayments.length;
-  const rejectedCount = allUsers.filter(
-    (u) => u.payment_status === "rejected"
+  const pendingWithProof = pendingEntries.filter((e) => e.payment_proof_url);
+  const pendingCount = pendingWithProof.length;
+  const approvedCount = approvedEntries.length;
+  const rejectedCount = allEntries.filter(
+    (e) => e.payment_status === "rejected"
   ).length;
 
   if (loading) {
@@ -250,8 +251,9 @@ export default function Admin() {
 
         {activeTab === "payments" && (
           <PaymentsPanel
-            pendingPayments={pendingPayments}
-            approvedPayments={approvedPayments}
+            pendingEntries={pendingEntries}
+            approvedEntries={approvedEntries}
+            allUsers={allUsers}
             rejectedCount={rejectedCount}
             onReload={loadAll}
             onOpenImage={setModalImage}

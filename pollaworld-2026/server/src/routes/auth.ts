@@ -3,8 +3,8 @@ import rateLimit from "express-rate-limit";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import { db } from "../db";
-import { users } from "../db/schema";
-import { eq } from "drizzle-orm";
+import { users, entries } from "../db/schema";
+import { eq, sql } from "drizzle-orm";
 import { signToken } from "../lib/jwt";
 import { requireAuth } from "../middleware/auth";
 
@@ -57,6 +57,15 @@ router.post("/register", authLimiter, async (req: Request, res: Response) => {
 
     const token = signToken({ userId: newUser.id, role: newUser.role });
 
+    // Create first entry for the new user
+    await db
+      .insert(entries)
+      .values({
+        user_id: newUser.id,
+        ticket_number: 1,
+      })
+      .returning();
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -71,7 +80,6 @@ router.post("/register", authLimiter, async (req: Request, res: Response) => {
         phone: newUser.phone,
         emoji_id: newUser.emoji_id,
         role: newUser.role,
-        payment_status: newUser.payment_status,
       },
     });
   } catch (err) {
@@ -118,7 +126,6 @@ router.post("/login", authLimiter, async (req: Request, res: Response) => {
         phone: user.phone,
         emoji_id: user.emoji_id,
         role: user.role,
-        payment_status: user.payment_status,
       },
     });
   } catch (err) {
@@ -154,7 +161,6 @@ router.get("/me", requireAuth, async (req: Request, res: Response) => {
         phone: user.phone,
         emoji_id: user.emoji_id,
         role: user.role,
-        payment_status: user.payment_status,
       },
     });
   } catch (err) {

@@ -6,9 +6,16 @@ export interface User {
   phone: string;
   emoji_id: string;
   role: "participant" | "admin";
-  payment_status: "pending" | "approved" | "rejected";
-  payment_proof_url?: string | null;
   created_at?: string;
+}
+
+export interface Entry {
+  id: string;
+  user_id: string;
+  ticket_number: number;
+  payment_status: "pending" | "approved" | "rejected";
+  payment_proof_url: string | null;
+  created_at: string;
 }
 
 export interface Match {
@@ -53,10 +60,23 @@ export interface PoolConfig {
 }
 
 export interface RankingEntry {
-  user_id: string;
+  entryId: string;
+  ticketNumber: number;
+  userId: string;
   name: string;
+  emojiId: string;
+  totalPoints: number;
+  exactScores: number;
+  correctResults: number;
+}
+
+export interface Participant {
+  id: string;
+  userId: string;
+  name: string;
+  phone: string;
   emoji_id: string;
-  total_points: number;
+  ticketNumber: number;
 }
 
 export interface ExportData {
@@ -98,23 +118,36 @@ export const api = {
   getMatches: () => request<Match[]>("/matches"),
   getLiveMatches: () => request<{ live: Match[]; recent: Match[] }>("/matches/live"),
 
+  // ── Entries ──
+  getEntries: () => request<Entry[]>("/entries"),
+
+  createEntry: () => request<Entry>("/entries", { method: "POST" }),
+
   // Predictions
   getMyPredictions: () => request<{ prediction: Prediction; match: Match }[]>("/predictions/my"),
 
-  getMatchesWithPredictions: () => request<MatchWithPrediction[]>("/predictions/matches"),
+  getMatchesWithPredictions: (entryId: string) =>
+    request<MatchWithPrediction[]>(`/predictions/matches/${entryId}`),
 
-  savePrediction: (body: { match_id: string; home_score_pred: number; away_score_pred: number }) =>
-    request<Prediction>("/predictions", { method: "POST", body: JSON.stringify(body) }),
+  savePrediction: (entryId: string, matchId: string, home_score_pred: number, away_score_pred: number) =>
+    request<Prediction>("/predictions", {
+      method: "POST",
+      body: JSON.stringify({ entry_id: entryId, match_id: matchId, home_score_pred, away_score_pred }),
+    }),
 
-  saveBulkPredictions: (body: { predictions: { match_id: string; home_score_pred: number; away_score_pred: number }[] }) =>
-    request<{ saved: number; predictions: Prediction[] }>("/predictions/bulk", { method: "POST", body: JSON.stringify(body) }),
+  saveBulkPredictions: (entryId: string, predictions: { match_id: string; home_score_pred: number; away_score_pred: number }[]) =>
+    request<{ saved: number; predictions: Prediction[] }>("/predictions/bulk", {
+      method: "POST",
+      body: JSON.stringify({ entry_id: entryId, predictions }),
+    }),
 
   getPopularPredictions: () =>
     request<Record<string, { home_score_pred: number; away_score_pred: number }>>("/predictions/popular"),
 
-  // Payments
-  uploadPaymentProof: (file: File) => {
+  // Payments (per entry)
+  uploadPaymentProof: (entryId: string, file: File) => {
     const formData = new FormData();
+    formData.append("entry_id", entryId);
     formData.append("proof", file);
     return fetch(`${API_BASE}/payments/upload`, {
       method: "POST",
@@ -127,18 +160,18 @@ export const api = {
     });
   },
 
-  // Admin
-  getPendingPayments: () =>
-    request<User[]>("/admin/payments/pending"),
+  // ── Admin: Entries ──
+  getAdminEntries: () => request<Entry[]>("/admin/entries"),
 
-  getApprovedPayments: () =>
-    request<User[]>("/admin/payments/approved"),
+  getAdminPendingEntries: () => request<Entry[]>("/admin/entries/pending"),
 
-  approvePayment: (userId: string) =>
-    request<{ message: string; user: User }>(`/admin/payments/${userId}/approve`, { method: "PATCH" }),
+  getAdminApprovedEntries: () => request<Entry[]>("/admin/entries/approved"),
 
-  rejectPayment: (userId: string, reason?: string) =>
-    request<{ message: string; user: User }>(`/admin/payments/${userId}/reject`, {
+  approveEntry: (id: string) =>
+    request<{ message: string; entry: Entry }>(`/admin/entries/${id}/approve`, { method: "PATCH" }),
+
+  rejectEntry: (id: string, reason?: string) =>
+    request<{ message: string; entry: Entry }>(`/admin/entries/${id}/reject`, {
       method: "PATCH",
       body: JSON.stringify({ reason }),
     }),
@@ -201,11 +234,4 @@ export interface PoolStats {
   totalPool: number;
   prizes: { first: number; second: number; third: number };
   tournamentStarted: boolean;
-}
-
-export interface Participant {
-  id: string;
-  name: string;
-  phone: string;
-  emoji_id: string;
 }
