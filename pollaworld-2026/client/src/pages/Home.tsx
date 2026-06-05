@@ -79,7 +79,18 @@ const SECTIONS = [
         <ul className="home-checklist">
           <li>📋 Debes predecir <strong>todos</strong> los partidos del torneo.</li>
           <li>🏠 Ingresa el marcador que crees que tendrá cada partido (local - visitante).</li>
-          <li>🔄 Usa los botones de <strong>relleno automático</strong> si no estás seguro de algunos partidos.</li>
+          <li>🔄 Usa los botones de <strong>relleno automático</strong> si no estás seguro de algunos partidos:</li>
+          <li style={{ marginLeft: 24, listStyle: 'none' }}>
+            🎲 <strong>Llenar con suerte</strong> — Asigna 0 o 1 a cada equipo
+            de forma completamente aleatoria. Ideal si no sabes de fútbol y
+            quieres pura suerte.
+          </li>
+          <li style={{ marginLeft: 24, listStyle: 'none' }}>
+            🧠 <strong>Llenar con lógica</strong> — Analiza la fuerza de cada
+            selección (según ranking FIFA e historial) y genera marcadores
+            realistas: los equipos fuertes anotan más, los débiles menos, con
+            ventaja de local y sorpresas ocasionales.
+          </li>
           <li>🔒 Una vez que el primer partido del torneo comience, las predicciones se <strong>cierran automáticamente</strong>.</li>
           <li>📄 Puedes descargar un <strong>PDF</strong> con todas tus predicciones como respaldo.</li>
         </ul>
