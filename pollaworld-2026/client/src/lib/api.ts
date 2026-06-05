@@ -162,6 +162,23 @@ export const api = {
   updatePoolConfig: (body: Partial<PoolConfig>) =>
     request<PoolConfig>("/pool/config", { method: "PUT", body: JSON.stringify(body) }),
 
+  // Admin: matches
+  createMatch: (data: {
+    phase: string;
+    group_name: string;
+    home_team: string;
+    away_team: string;
+    home_flag: string;
+    away_flag: string;
+    match_date: string;
+  }) => request<Match>("/matches", { method: "POST", body: JSON.stringify(data) }),
+
+  toggleLock: (matchId: string, locked: boolean) =>
+    request<{ message: string }>(`/admin/matches/${matchId}/lock`, { method: "PATCH", body: JSON.stringify({ locked }) }),
+
+  saveMatchResult: (matchId: string, home_score_real: number, away_score_real: number) =>
+    request<{ message: string }>(`/admin/matches/${matchId}/result`, { method: "POST", body: JSON.stringify({ home_score_real, away_score_real }) }),
+
   uploadYapeQr: (file: File) => {
     const fd = new FormData();
     fd.append("qr", file);

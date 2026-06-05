@@ -284,6 +284,30 @@ router.post("/admin/matches/:id/result", requireAdmin, async (req: Request, res:
   }
 });
 
+// PATCH /api/admin/matches/:id/lock — toggle lock (admin)
+router.patch("/admin/matches/:id/lock", requireAdmin, async (req: Request, res: Response) => {
+  try {
+    const { locked } = req.body;
+    if (locked === undefined) {
+      res.status(400).json({ error: "Se requiere el campo locked." });
+      return;
+    }
+    const [match] = await db
+      .update(matches)
+      .set({ is_locked: locked })
+      .where(eq(matches.id, req.params.id))
+      .returning();
+    if (!match) {
+      res.status(404).json({ error: "Partido no encontrado." });
+      return;
+    }
+    res.json({ message: `Partido ${locked ? "bloqueado" : "desbloqueado"}.`, match });
+  } catch (err) {
+    console.error("Lock match error:", err);
+    res.status(500).json({ error: "Error al bloquear partido." });
+  }
+});
+
 // GET /api/admin/predictions/export — export JSON de predicciones de usuarios aprobados
 router.get("/admin/predictions/export", requireAdmin, async (_req: Request, res: Response) => {
   try {
