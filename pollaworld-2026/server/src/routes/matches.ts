@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
 import { db } from "../db";
 import { matches } from "../db/schema";
-import { requireAuth } from "../middleware/auth";
 import { requireAdmin } from "../middleware/admin";
 import { eq, asc, lte, gte, desc, and } from "drizzle-orm";
 
@@ -15,6 +14,44 @@ router.get("/", async (_req: Request, res: Response) => {
   } catch (err) {
     console.error("Get matches error:", err);
     res.status(500).json({ error: "Error al obtener partidos." });
+  }
+});
+
+// GET /api/matches/live — información de partidos en vivo (debe ir ANTES de /:id)
+router.get("/live", async (_req: Request, res: Response) => {
+  try {
+    const now = new Date();
+    // Partidos que están ocurriendo ahora (fecha pasada, no bloqueados, sin resultado)
+    const liveMatches = await db
+      .select()
+      .from(matches)
+      .where(
+        and(
+          lte(matches.match_date, now),
+          eq(matches.is_locked, false)
+        )
+      )
+      .orderBy(asc(matches.match_date));
+
+    // Partidos que terminaron recientemente (últimas 24h)
+    const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const recentMatches = await db
+      .select()
+      .from(matches)
+      .where(
+        and(
+          gte(matches.match_date, yesterday),
+          eq(matches.is_locked, true),
+          gte(matches.home_score_real, 0)
+        )
+      )
+      .orderBy(desc(matches.match_date))
+      .limit(20);
+
+    res.json({ live: liveMatches, recent: recentMatches });
+  } catch (err) {
+    console.error("Live matches error:", err);
+    res.status(500).json({ error: "Error al obtener partidos en vivo." });
   }
 });
 
@@ -60,44 +97,6 @@ router.put("/:id", requireAdmin, async (req: Request, res: Response) => {
   } catch (err) {
     console.error("Update match error:", err);
     res.status(500).json({ error: "Error al actualizar partido." });
-  }
-});
-
-// GET /api/matches/live — información de partidos en vivo
-router.get("/live", async (_req: Request, res: Response) => {
-  try {
-    const now = new Date();
-    // Partidos que están ocurriendo ahora (fecha pasada, no bloqueados, sin resultado)
-    const liveMatches = await db
-      .select()
-      .from(matches)
-      .where(
-        and(
-          lte(matches.match_date, now),
-          eq(matches.is_locked, false)
-        )
-      )
-      .orderBy(asc(matches.match_date));
-
-    // Partidos que terminaron recientemente (últimas 24h)
-    const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    const recentMatches = await db
-      .select()
-      .from(matches)
-      .where(
-        and(
-          gte(matches.match_date, yesterday),
-          eq(matches.is_locked, true),
-          gte(matches.home_score_real, 0)
-        )
-      )
-      .orderBy(desc(matches.match_date))
-      .limit(20);
-
-    res.json({ live: liveMatches, recent: recentMatches });
-  } catch (err) {
-    console.error("Live matches error:", err);
-    res.status(500).json({ error: "Error al obtener partidos en vivo." });
   }
 });
 
