@@ -94,6 +94,7 @@ export default function Register() {
                     alt={player.name}
                     className="player-card-img"
                     loading="lazy"
+                    referrerPolicy="no-referrer"
                   />
                   <span className="player-card-name">{player.name}</span>
                 </div>

@@ -49,6 +49,7 @@ export default function Header() {
                     src={player.image}
                     alt={player.name}
                     className="player-header-img"
+                    referrerPolicy="no-referrer"
                   />
                 )}
                 {user.name}

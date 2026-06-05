@@ -107,6 +107,7 @@ export default function RankingPage() {
                   <img
                     src={player.image}
                     alt={player.name}
+                    referrerPolicy="no-referrer"
                     style={{
                       width: 48,
                       height: 48,
@@ -175,6 +176,7 @@ export default function RankingPage() {
                         <img
                           src={player.image}
                           alt={player.name}
+                    referrerPolicy="no-referrer"
                           style={{
                             width: 24,
                             height: 24,

@@ -220,6 +220,7 @@ export default function Participants() {
                         objectFit: "cover",
                         border: "2px solid var(--border)",
                       }}
+                      referrerPolicy="no-referrer"
                     />
                   ) : (
                     <div style={{ fontSize: "2.5rem" }}>{"❓"}</div>
@@ -301,6 +302,7 @@ export default function Participants() {
                         src={getPlayer(modalData.playerSlug)!.image}
                         alt={getPlayer(modalData.playerSlug)!.name}
                         style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover" }}
+                        referrerPolicy="no-referrer"
                       />
                     )}
                     {modalData.userName}

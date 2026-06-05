@@ -315,6 +315,7 @@ export default function Dashboard() {
                     <img
                       src={player.image}
                       alt={player.name}
+                    referrerPolicy="no-referrer"
                       className="player-header-img"
                     />
                   )}
@@ -516,6 +517,7 @@ export default function Dashboard() {
                     <img
                       src={player.image}
                       alt={player.name}
+                    referrerPolicy="no-referrer"
                       className="player-header-img"
                     />
                   )}
