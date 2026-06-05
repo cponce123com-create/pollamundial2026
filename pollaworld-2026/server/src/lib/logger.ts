@@ -4,23 +4,17 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const logger = pino({
   level: process.env.LOG_LEVEL || (isProduction ? "info" : "debug"),
-  transport: isProduction
-    ? undefined
+  ...(isProduction
+    ? {}
     : {
-        target: "pino/file",
-        options: { destination: 1 }, // stdout
-      },
+        transport: {
+          target: "pino/file",
+          options: { destination: 1 },
+        },
+      }),
   redact: {
     paths: ["req.headers.cookie", "req.headers.authorization", "body.password", "body.password_hash"],
     censor: "[REDACTED]",
-  },
-  serializers: {
-    req: (req) => ({
-      method: req.method,
-      url: req.url,
-      ip: req.ip,
-    }),
-    err: pino.stdSerializers.err,
   },
 });
 
