@@ -66,25 +66,42 @@ export const TEAMS: TeamInfo[] = [
 ];
 
 // Aliases for backwards compatibility with legacy seed data
+// Aliases for backwards compatibility — cubre nombres cortos, inglés y variantes
 const ALIASES: Record<string, string> = {
+  // Legacy 32-team seed names
   "EEUU": "Estados Unidos",
   "Corea Sur": "Corea del Sur",
   "Arabia S.": "Arabia Saudita",
+  // Nombres cortos / variantes en español
+  "Chequia": "República Checa",
   "Bosnia": "Bosnia y Herzegovina",
-  "Bosnia & Herzegovina": "Bosnia y Herzegovina",
   "Congo": "República Democrática del Congo",
+  "Holland": "Países Bajos",
+  "UK": "Inglaterra",
+  "Gran Bretaña": "Inglaterra",
+  // Inglés → español
+  "Czech Republic": "República Checa",
+  "Bosnia & Herzegovina": "Bosnia y Herzegovina",
   "DR Congo": "República Democrática del Congo",
   "Democratic Republic of the Congo": "República Democrática del Congo",
-  "Costa de Marfil": "Costa de Marfil",
   "Ivory Coast": "Costa de Marfil",
-  "Escocia": "Escocia",
   "Scotland": "Escocia",
-  "Inglaterra": "Inglaterra",
   "England": "Inglaterra",
-  "Países Bajos": "Países Bajos",
   "Netherlands": "Países Bajos",
-  "Curazao": "Curazao",
   "Curaçao": "Curazao",
+  "USA": "Estados Unidos",
+  "United States": "Estados Unidos",
+  "South Korea": "Corea del Sur",
+  "Saudi Arabia": "Arabia Saudita",
+  "Cape Verde": "Cabo Verde",
+  "New Zealand": "Nueva Zelanda",
+  // Equipos que NO clasificaron pero pueden estar en BD legacy
+  "Italia": "Italia",
+  "Chile": "Chile",
+  "Dinamarca": "Dinamarca",
+  "Nigeria": "Nigeria",
+  "Serbia": "Serbia",
+  "Perú": "Perú",
 };
 
 export function getTeamInfo(name: string): TeamInfo | undefined {
