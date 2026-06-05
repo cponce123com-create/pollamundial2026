@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { pdf } from "@react-pdf/renderer";
 import { api, MatchWithPrediction, User, PoolConfig } from "../lib/api";
 import { getEmoji } from "../lib/emojis";
+import { FlagImage } from "../lib/flags";
 import PdfBoleto from "../components/PdfBoleto";
 
 type Tab = "groups" | "elimination";
@@ -238,13 +239,13 @@ export default function Dashboard() {
 
                     <div className="match-teams">
                       <div className="match-team">
-                        <span className="match-flag">{m.home_flag}</span>
+                        <FlagImage teamName={m.home_team} size={36} className="match-flag" />
                         <span className="match-name">{m.home_team}</span>
                       </div>
                       <span className="match-vs">vs</span>
                       <div className="match-team">
                         <span className="match-name">{m.away_team}</span>
-                        <span className="match-flag">{m.away_flag}</span>
+                        <FlagImage teamName={m.away_team} size={36} className="match-flag" />
                       </div>
                     </div>
 

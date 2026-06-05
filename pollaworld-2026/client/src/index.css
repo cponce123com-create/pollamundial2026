@@ -540,6 +540,10 @@ a:hover {
 
 .match-flag {
   font-size: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
 }
 
 .match-name {
