@@ -19,7 +19,6 @@ export default function Dashboard() {
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
   const [generatingPdf, setGeneratingPdf] = useState(false);
-  const [popularPreds, setPopularPreds] = useState<Record<string, { home_score_pred: number; away_score_pred: number }> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
