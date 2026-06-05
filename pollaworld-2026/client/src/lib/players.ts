@@ -6,14 +6,14 @@ export interface PlayerOption {
 
 export const PLAYERS: PlayerOption[] = [
   // Legends (70s-80s)
-  { id: "pele", name: "Pelé", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Pele_con_brasil_%28cropped%29.jpg/120px-Pele_con_brasil_%28cropped%29.jpg" },
+  { id: "pele", name: "Pelé", image: "/players/pele.jpg" },
   { id: "maradona", name: "Diego Maradona", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Maradona-Mundial_%28cropped%29.jpg/120px-Maradona-Mundial_%28cropped%29.jpg" },
   { id: "cruyff", name: "Johan Cruyff", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Johan_Cruijff_%281974%29.jpg/120px-Johan_Cruijff_%281974%29.jpg" },
   { id: "beckenbauer", name: "Franz Beckenbauer", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Beckenbauer_%28cropped%29.jpg/120px-Beckenbauer_%28cropped%29.jpg" },
   { id: "platini", name: "Michel Platini", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Michel_Platini_%28June_2015%29.jpg/120px-Michel_Platini_%28June_2015%29.jpg" },
   { id: "zico", name: "Zico", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Zico_2018.jpg/120px-Zico_2018.jpg" },
   { id: "gerdmuller", name: "Gerd Müller", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Gerd_Mueller_%282012%29.jpg/120px-Gerd_Mueller_%282012%29.jpg" },
-  { id: "vanbasten", name: "Marco van Basten", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Marco_van_Basten_%288589861591%29.jpg/120px-Marco_van_Basten_%288589861591%29.jpg" },
+  { id: "vanbasten", name: "Marco van Basten", image: "/players/vanbasten.jpg" },
   // 90s stars
   { id: "ronaldo", name: "Ronaldo Nazário", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Ronaldo_2018.jpg/120px-Ronaldo_2018.jpg" },
   { id: "romario", name: "Romário", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Romario_2017.jpg/120px-Romario_2017.jpg" },
@@ -34,7 +34,7 @@ export const PLAYERS: PlayerOption[] = [
   { id: "nedved", name: "Pavel Nedvěd", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Pavel_Nedved_2009.jpg/120px-Pavel_Nedved_2009.jpg" },
   // 2010s greats
   { id: "messi", name: "Lionel Messi", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Lionel_Messi_2018.jpg/120px-Lionel_Messi_2018.jpg" },
-  { id: "cristianoronaldo", name: "Cristiano Ronaldo", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cristiano_Ronaldo_2018.jpg/120px-Cristiano_Ronaldo_2018.jpg" },
+  { id: "cristianoronaldo", name: "Cristiano Ronaldo", image: "/players/cristianoronaldo.jpg" },
   { id: "iniesta", name: "Andrés Iniesta", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Andres_Iniesta_2015.jpg/120px-Andres_Iniesta_2015.jpg" },
   { id: "xavi", name: "Xavi Hernández", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Xavi_2011.jpg/120px-Xavi_2011.jpg" },
   { id: "buffon", name: "Gianluigi Buffon", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Gianluigi_Buffon_2016.jpg/120px-Gianluigi_Buffon_2016.jpg" },
