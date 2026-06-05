@@ -161,6 +161,7 @@ interface PrecomputedMatch {
   phase: string;
   homeReal: number | null;
   awayReal: number | null;
+  isLocked: boolean;
 }
 
 function precomputeMatches(allMatches: Match[]): PrecomputedMatch[] {
@@ -173,6 +174,7 @@ function precomputeMatches(allMatches: Match[]): PrecomputedMatch[] {
     phase: m.phase,
     homeReal: m.home_score_real,
     awayReal: m.away_score_real,
+    isLocked: m.is_locked,
   }));
 }
 
@@ -280,7 +282,7 @@ function ParticipantPage({
               ) : " - "}
             </Text>
             <Text style={S.matchResult}>
-              {m.homeReal !== null ? `${m.homeReal}-${m.awayReal}` : ""}
+              {m.homeReal !== null && m.awayReal !== null && m.isLocked ? `${m.homeReal}-${m.awayReal}` : ""}
             </Text>
           </View>
         ))
@@ -304,7 +306,7 @@ function ParticipantPage({
               ) : " - "}
             </Text>
             <Text style={S.matchResult}>
-              {m.homeReal !== null ? `${m.homeReal}-${m.awayReal}` : ""}
+              {m.homeReal !== null && m.awayReal !== null && m.isLocked ? `${m.homeReal}-${m.awayReal}` : ""}
             </Text>
           </View>
         ))
