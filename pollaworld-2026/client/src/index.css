@@ -854,6 +854,54 @@ a:hover {
   background: rgba(26, 110, 60, 0.15);
 }
 
+/* ===== AUTOFILL BUTTONS ===== */
+.autofill-row {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.btn-autofill {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+  border: 1.5px solid;
+  line-height: 1.2;
+}
+
+.btn-autofill-luck {
+  background: rgba(191, 97, 255, 0.08);
+  border-color: #bf61ff;
+  color: #bf61ff;
+}
+
+.btn-autofill-luck:hover {
+  background: rgba(191, 97, 255, 0.18);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(191, 97, 255, 0.25);
+}
+
+.btn-autofill-smart {
+  background: rgba(58, 160, 255, 0.08);
+  border-color: #3aa0ff;
+  color: #3aa0ff;
+}
+
+.btn-autofill-smart:hover {
+  background: rgba(58, 160, 255, 0.18);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(58, 160, 255, 0.25);
+}
+
+.btn-autofill:active {
+  transform: translateY(0);
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 800px) {
   .dashboard {

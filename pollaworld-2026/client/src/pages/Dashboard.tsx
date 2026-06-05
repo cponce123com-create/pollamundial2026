@@ -5,6 +5,7 @@ import { api, MatchWithPrediction, User, PoolConfig } from "../lib/api";
 import { getEmoji } from "../lib/emojis";
 import { FlagImage } from "../lib/flags";
 import PdfBoleto from "../components/PdfBoleto";
+import { autofillModerate, autofillSmart } from "../lib/predictionsLogic";
 
 type Tab = "groups" | "elimination";
 
@@ -218,6 +219,26 @@ export default function Dashboard() {
               />
             </div>
           </div>
+
+          {/* Autofill Buttons */}
+          {!tournamentStarted && filteredMatches.length > 0 && (
+            <div className="autofill-row">
+              <button
+                className="btn btn-autofill btn-autofill-luck"
+                onClick={() => setPredictions(autofillModerate(filteredMatches))}
+                title="Llena todos los partidos con resultados 0-1"
+              >
+                🎲 Llenar con suerte
+              </button>
+              <button
+                className="btn btn-autofill btn-autofill-smart"
+                onClick={() => setPredictions(autofillSmart(filteredMatches))}
+                title="Llena todos los partidos según la fuerza de cada selección"
+              >
+                🧠 Llenar con lógica
+              </button>
+            </div>
+          )}
 
           {/* Matches Grid */}
           {filteredMatches.length === 0 ? (
