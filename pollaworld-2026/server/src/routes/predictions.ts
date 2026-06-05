@@ -315,8 +315,19 @@ router.get("/ranking", async (_req: Request, res: Response) => {
 router.post("/admin/matches/:id/result", requireAdmin, async (req: Request, res: Response) => {
   try {
     const { home_score_real, away_score_real } = req.body;
-    if (home_score_real == null || away_score_real == null) {
-      res.status(400).json({ error: "Se requieren home_score_real y away_score_real." });
+
+    // Validate: must be non-null numbers, reject empty strings (Number("") = 0)
+    if (home_score_real === "" || home_score_real === undefined || home_score_real === null ||
+        away_score_real === "" || away_score_real === undefined || away_score_real === null) {
+      res.status(400).json({ error: "Debes ingresar el marcador real del partido." });
+      return;
+    }
+
+    const homeScore = Number(home_score_real);
+    const awayScore = Number(away_score_real);
+
+    if (isNaN(homeScore) || isNaN(awayScore) || homeScore < 0 || awayScore < 0) {
+      res.status(400).json({ error: "Los marcadores deben ser números válidos (0 o más)." });
       return;
     }
 
@@ -334,7 +345,7 @@ router.post("/admin/matches/:id/result", requireAdmin, async (req: Request, res:
     // Actualizar resultado real
     await db
       .update(matches)
-      .set({ home_score_real, away_score_real, is_locked: true })
+      .set({ home_score_real: homeScore, away_score_real: awayScore, is_locked: true })
       .where(eq(matches.id, match.id));
 
     // Calcular puntos para todas las predicciones de este partido
@@ -344,7 +355,7 @@ router.post("/admin/matches/:id/result", requireAdmin, async (req: Request, res:
       .where(eq(predictions.match_id, match.id));
 
     for (const pred of allPredictions) {
-      const points = calculatePoints(pred.home_score_pred, pred.away_score_pred, home_score_real, away_score_real);
+      const points = calculatePoints(pred.home_score_pred, pred.away_score_pred, homeScore, awayScore);
       await db.update(predictions).set({ points_earned: points }).where(eq(predictions.id, pred.id));
     }
 
