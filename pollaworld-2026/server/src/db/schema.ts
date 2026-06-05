@@ -2,7 +2,7 @@ import { pgTable, uuid, text, varchar, integer, boolean, timestamp, uniqueIndex,
 
 export const roleEnum = pgEnum("role", ["participant", "admin"]);
 export const paymentStatusEnum = pgEnum("payment_status", ["pending", "approved", "rejected"]);
-export const phaseEnum = pgEnum("phase", ["groups", "round_of_16", "quarterfinals", "semifinals", "final"]);
+export const phaseEnum = pgEnum("phase", ["groups", "round_of_32", "round_of_16", "quarterfinals", "semifinals", "final_3rd", "final"]);
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),

@@ -9,43 +9,59 @@
  * 1 = Underdog
  */
 const TEAM_STRENGTH: Record<string, number> = {
-  // Elite
+  // Elite (5)
   Argentina: 5,
   Brasil: 5,
   Francia: 5,
   Inglaterra: 5,
-  // Strong
+  // Strong (4)
   Alemania: 4,
   España: 4,
   "Países Bajos": 4,
   Portugal: 4,
-  Italia: 4,
   Bélgica: 4,
-  // Competitive
+  // Competitive (3)
   Croacia: 3,
   Uruguay: 3,
   Colombia: 3,
-  Dinamarca: 3,
-  Serbia: 3,
   Marruecos: 3,
   Suiza: 3,
   Japón: 3,
-  EEUU: 3,
+  "Estados Unidos": 3,
   México: 3,
   Senegal: 3,
-  // Lower
-  Ecuador: 2,
-  Nigeria: 2,
-  Chile: 2,
-  Perú: 2,
-  "Corea Sur": 2,
+  "Corea del Sur": 3,
+  Ecuador: 3,
+  Noruega: 3,
+  Suecia: 3,
+  // Lower (2)
   Canadá: 2,
   Australia: 2,
-  // Underdog
-  "Arabia S.": 1,
-  Egipto: 1,
+  "Costa de Marfil": 2,
+  Egipto: 2,
+  Ghana: 2,
+  Turquía: 2,
+  "República Checa": 2,
+  Austria: 2,
+  "Arabia Saudita": 2,
+  Paraguay: 2,
+  // Underdog (1)
+  "Cabo Verde": 1,
   Catar: 1,
   Irán: 1,
+  Túnez: 1,
+  Irak: 1,
+  Jordania: 1,
+  "Bosnia y Herzegovina": 1,
+  "República Democrática del Congo": 1,
+  Uzbekistán: 1,
+  Panamá: 1,
+  Haití: 1,
+  Escocia: 1,
+  Sudáfrica: 1,
+  "Nueva Zelanda": 1,
+  Argelia: 1,
+  Curazao: 1,
 };
 
 const DEFAULT_STRENGTH = 2;

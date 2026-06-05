@@ -447,9 +447,11 @@ export default function Dashboard() {
 
 function formatPhase(phase: string): string {
   const map: Record<string, string> = {
+    round_of_32: "Ronda de 32",
     round_of_16: "Octavos",
     quarterfinals: "Cuartos",
     semifinals: "Semifinal",
+    final_3rd: "Tercer Puesto",
     final: "Final",
   };
   return map[phase] || phase;

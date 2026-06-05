@@ -13,7 +13,7 @@ export interface User {
 
 export interface Match {
   id: string;
-  phase: "groups" | "round_of_16" | "quarterfinals" | "semifinals" | "final";
+  phase: "groups" | "round_of_32" | "round_of_16" | "quarterfinals" | "semifinals" | "final_3rd" | "final";
   group_name: string | null;
   home_team: string;
   away_team: string;

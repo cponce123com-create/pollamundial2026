@@ -103,9 +103,11 @@ export default function Participants() {
   };
 
   const PHASE_LABELS: Record<string, string> = {
+    round_of_32: "Ronda de 32",
     round_of_16: "Octavos",
     quarterfinals: "Cuartos",
     semifinals: "Semis",
+    final_3rd: "Tercer Puesto",
     final: "Final",
   };
 

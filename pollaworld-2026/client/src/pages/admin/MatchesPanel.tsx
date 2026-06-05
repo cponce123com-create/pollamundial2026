@@ -4,17 +4,21 @@ import { FlagImage } from "../../lib/flags";
 
 const PHASE_OPTIONS = [
   { value: "groups", label: "Grupos" },
+  { value: "round_of_32", label: "Ronda de 32" },
   { value: "round_of_16", label: "Octavos" },
   { value: "quarterfinals", label: "Cuartos" },
   { value: "semifinals", label: "Semis" },
+  { value: "final_3rd", label: "Tercer Puesto" },
   { value: "final", label: "Final" },
 ];
 
 const PHASE_LABELS: Record<string, string> = {
   groups: "Grupos",
+  round_of_32: "Ronda de 32",
   round_of_16: "Octavos",
   quarterfinals: "Cuartos",
   semifinals: "Semis",
+  final_3rd: "Tercer Puesto",
   final: "Final",
 };
 
