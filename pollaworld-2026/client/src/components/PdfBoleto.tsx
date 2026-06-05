@@ -102,7 +102,9 @@ const S = StyleSheet.create({
   },
   matchNum: { width: "5%" },
   matchGroup: { width: "8%", fontSize: 6, color: "#666" },
-  matchTeams: { width: "57%", fontSize: 6.5 },
+  matchHome: { width: "26%", textAlign: "right" as const, fontSize: 6.5 },
+  matchVs: { width: "5%", textAlign: "center" as const, fontSize: 6.5 },
+  matchAway: { width: "26%", fontSize: 6.5 },
   matchPred: { width: "14%", textAlign: "right" as const },
   matchResult: { width: "18%", textAlign: "right" as const, color: "#333" },
   // ── Summary ──
@@ -246,9 +248,9 @@ function ParticipantPage({
           <View key={m.id} style={S.matchRow} wrap={false}>
             <Text style={S.matchNum}>{String(i + 1).padStart(2)}</Text>
             <Text style={S.matchGroup}>{m.group}</Text>
-            <Text style={S.matchTeams}>
-              {m.home} vs {m.away}
-            </Text>
+            <Text style={S.matchHome}>{m.home}</Text>
+            <Text style={S.matchVs}>vs</Text>
+            <Text style={S.matchAway}>{m.away}</Text>
             <Text style={S.matchPred}>
               {predMap.has(m.id) ? (
                 `${predMap.get(m.id)!.home_score_pred}-${predMap.get(m.id)!.away_score_pred}`
@@ -270,9 +272,9 @@ function ParticipantPage({
           <View key={m.id} style={S.matchRow} wrap={false}>
             <Text style={S.matchNum}>{String(groups.length + i + 1).padStart(2)}</Text>
             <Text style={S.matchGroup}>{m.group}</Text>
-            <Text style={S.matchTeams}>
-              {m.home} vs {m.away}
-            </Text>
+            <Text style={S.matchHome}>{m.home}</Text>
+            <Text style={S.matchVs}>vs</Text>
+            <Text style={S.matchAway}>{m.away}</Text>
             <Text style={S.matchPred}>
               {predMap.has(m.id) ? (
                 `${predMap.get(m.id)!.home_score_pred}-${predMap.get(m.id)!.away_score_pred}`
