@@ -39,27 +39,17 @@ const SECTIONS = [
               Marcador exacto
             </span>
             <span className="home-points-desc">
-              Aciertas el resultado exacto del partido
+              Aciertas el resultado exacto del partido (incluyendo empates)
             </span>
           </div>
           <div className="home-points-card">
             <span className="home-points-icon">✅</span>
             <span className="home-points-value">+3 pts</span>
             <span className="home-points-label">
-              Ganador correcto
+              Ganador o empate
             </span>
             <span className="home-points-desc">
-              Aciertas qué equipo gana pero no el marcador exacto
-            </span>
-          </div>
-          <div className="home-points-card">
-            <span className="home-points-icon">🤝</span>
-            <span className="home-points-value">+2 pts</span>
-            <span className="home-points-label">
-              Empate correcto
-            </span>
-            <span className="home-points-desc">
-              Predices empate y el partido termina en empate
+              Aciertas quién gana o el empate, pero sin el marcador exacto
             </span>
           </div>
           <div className="home-points-card">
@@ -69,7 +59,7 @@ const SECTIONS = [
               Sin acierto
             </span>
             <span className="home-points-desc">
-              No aciertas ni ganador ni empate
+              No aciertas ni ganador, ni empate, ni marcador
             </span>
           </div>
         </div>
@@ -303,22 +293,28 @@ export default function Home() {
               </div>
               <div className="home-hero-stat">
                 <span className="home-hero-stat-value">
-                  S/. {stats.totalPool.toFixed(2)}
+                  70%
                 </span>
                 <span className="home-hero-stat-label">
-                  Poza total
+                  1.er puesto
                 </span>
               </div>
-              {stats.prizes && (
-                <div className="home-hero-stat">
-                  <span className="home-hero-stat-value">
-                    S/. {stats.prizes.first.toFixed(2)}
-                  </span>
-                  <span className="home-hero-stat-label">
-                    1.er premio
-                  </span>
-                </div>
-              )}
+              <div className="home-hero-stat">
+                <span className="home-hero-stat-value">
+                  20%
+                </span>
+                <span className="home-hero-stat-label">
+                  2.do puesto
+                </span>
+              </div>
+              <div className="home-hero-stat">
+                <span className="home-hero-stat-value">
+                  10%
+                </span>
+                <span className="home-hero-stat-label">
+                  3.er puesto
+                </span>
+              </div>
             </div>
           )}
 
