@@ -184,6 +184,40 @@ router.get("/user/:userId", async (req: Request, res: Response) => {
   }
 });
 
+// GET /api/predictions/popular — returns the most common prediction per match (público)
+router.get("/popular", async (_req: Request, res: Response) => {
+  try {
+    const popular = await db
+      .select({
+        match_id: predictions.match_id,
+        home_score_pred: predictions.home_score_pred,
+        away_score_pred: predictions.away_score_pred,
+        count: sql<number>`COUNT(*)`.mapWith(Number),
+      })
+      .from(predictions)
+      .groupBy(predictions.match_id, predictions.home_score_pred, predictions.away_score_pred)
+      .orderBy(predictions.match_id, sql`COUNT(*) DESC`);
+
+    // Take only the top result per match
+    const topPerMatch = new Map<string, { home_score_pred: number; away_score_pred: number }>();
+    for (const p of popular) {
+      if (!topPerMatch.has(p.match_id)) {
+        topPerMatch.set(p.match_id, { home_score_pred: p.home_score_pred, away_score_pred: p.away_score_pred });
+      }
+    }
+
+    const result: Record<string, { home_score_pred: number; away_score_pred: number }> = {};
+    topPerMatch.forEach((value, key) => {
+      result[key] = value;
+    });
+
+    res.json(result);
+  } catch (err) {
+    console.error("Popular predictions error:", err);
+    res.status(500).json({ error: "Error al obtener predicciones populares." });
+  }
+});
+
 // GET /api/predictions/ranking — tabla de posiciones (público)
 router.get("/ranking", async (_req: Request, res: Response) => {
   try {

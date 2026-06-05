@@ -836,22 +836,22 @@ a:hover {
   transform: translateY(-1px);
 }
 
-.quick-bet-home:hover {
-  border-color: var(--green);
-  color: var(--green);
-  background: rgba(26, 110, 60, 0.1);
-}
-
-.quick-bet-draw:hover {
+.quick-bet-min:hover {
   border-color: var(--gold);
   color: var(--gold);
   background: rgba(240, 165, 0, 0.1);
 }
 
-.quick-bet-away:hover {
-  border-color: #f85149;
-  color: #f85149;
-  background: rgba(248, 81, 73, 0.1);
+.quick-bet-stats:hover {
+  border-color: #58a6ff;
+  color: #58a6ff;
+  background: rgba(88, 166, 255, 0.1);
+}
+
+.quick-bet-popular:hover:not(:disabled) {
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(26, 110, 60, 0.15);
 }
 
 /* ===== RESPONSIVE ===== */

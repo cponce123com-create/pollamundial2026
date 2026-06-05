@@ -108,6 +108,9 @@ export const api = {
   saveBulkPredictions: (body: { predictions: { match_id: string; home_score_pred: number; away_score_pred: number }[] }) =>
     request<{ saved: number; predictions: Prediction[] }>("/predictions/bulk", { method: "POST", body: JSON.stringify(body) }),
 
+  getPopularPredictions: () =>
+    request<Record<string, { home_score_pred: number; away_score_pred: number }>>("/predictions/popular"),
+
   // Payments
   uploadPaymentProof: (file: File) => {
     const formData = new FormData();
