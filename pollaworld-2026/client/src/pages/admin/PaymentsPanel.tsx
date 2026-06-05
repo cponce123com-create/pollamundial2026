@@ -66,7 +66,7 @@ export default function PaymentsPanel({
       </div>
 
       <h3 className="admin-section-title">
-        Pendientes de revisi\u00f3n ({pendingWithProof.length})
+        Pendientes de revisión ({pendingWithProof.length})
       </h3>
 
       {pendingWithProof.length === 0 ? (
@@ -77,7 +77,7 @@ export default function PaymentsPanel({
             <thead>
               <tr>
                 <th>Participante</th>
-                <th>Tel\u00e9fono</th>
+                <th>Teléfono</th>
                 <th>Comprobante</th>
                 <th>Acciones</th>
               </tr>
@@ -154,14 +154,14 @@ export default function PaymentsPanel({
       </h3>
 
       {approvedPayments.length === 0 ? (
-        <p className="placeholder-text">No hay pagos aprobados a\u00fan.</p>
+        <p className="placeholder-text">No hay pagos aprobados aún.</p>
       ) : (
         <div className="admin-table-wrapper">
           <table className="admin-table">
             <thead>
               <tr>
                 <th>Participante</th>
-                <th>Tel\u00e9fono</th>
+                <th>Teléfono</th>
                 <th>Estado</th>
               </tr>
             </thead>
@@ -177,7 +177,7 @@ export default function PaymentsPanel({
                     <td>{user.phone}</td>
                     <td>
                       <span className="badge badge-approved">
-                        {"\u2713"} Aprobado
+                        ✓ Aprobado
                       </span>
                     </td>
                   </tr>

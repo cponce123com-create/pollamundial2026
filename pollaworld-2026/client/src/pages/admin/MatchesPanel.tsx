@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Match, PoolConfig, api } from "../../lib/api";
+import { FlagImage } from "../../lib/flags";
 
 const PHASE_OPTIONS = [
   { value: "groups", label: "Grupos" },
@@ -68,7 +69,7 @@ export default function MatchesPanel({
   return (
     <div>
       <div className="admin-toolbar">
-        <h3 className="admin-section-title">Gesti\u00f3n de Partidos</h3>
+        <h3 className="admin-section-title">Gestión de Partidos</h3>
         <div className="admin-action-group">
           <button
             className="btn btn-outline"
@@ -78,7 +79,7 @@ export default function MatchesPanel({
           </button>
           {!config?.tournament_started && (
             <button className="btn btn-gold" onClick={onStartTournament}>
-              {"\ud83d\ude80"} Iniciar torneo
+              {"🚀"} Iniciar torneo
             </button>
           )}
         </div>
@@ -133,7 +134,7 @@ export default function MatchesPanel({
                 onChange={(e) =>
                   setAddForm({ ...addForm, home_flag: e.target.value })
                 }
-                placeholder="\ud83c\udde7\ud83c\uddf7"
+                placeholder="🇧🇷"
               />
             </div>
             <div className="form-group">
@@ -155,7 +156,7 @@ export default function MatchesPanel({
                 onChange={(e) =>
                   setAddForm({ ...addForm, away_flag: e.target.value })
                 }
-                placeholder="\ud83c\udde6\ud83c\uddf7"
+                placeholder="🇦🇷"
               />
             </div>
             <div className="form-group admin-full-width">
@@ -194,8 +195,12 @@ export default function MatchesPanel({
               <tr key={m.id}>
                 <td>{PHASE_LABELS[m.phase] || m.phase}</td>
                 <td>{m.group_name || "-"}</td>
-                <td>
-                  {m.home_flag} {m.home_team} vs {m.away_team} {m.away_flag}
+                <td className="admin-match-teams">
+                  <FlagImage teamName={m.home_team} size={20} />
+                  <span className="admin-match-name">{m.home_team}</span>
+                  <span className="admin-match-vs">vs</span>
+                  <FlagImage teamName={m.away_team} size={20} />
+                  <span className="admin-match-name">{m.away_team}</span>
                 </td>
                 <td className="admin-date-cell">
                   {new Date(m.match_date).toLocaleDateString("es-PE", {
@@ -213,8 +218,8 @@ export default function MatchesPanel({
                     }
                   >
                     {m.is_locked
-                      ? "\ud83d\udd12 Bloqueado"
-                      : "\ud83d\udd13 Abierto"}
+                      ? "🔒 Bloqueado"
+                      : "🔓 Abierto"}
                   </span>
                 </td>
                 <td>

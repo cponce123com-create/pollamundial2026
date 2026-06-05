@@ -8,10 +8,10 @@ interface AdminTabsProps {
 
 export default function AdminTabs({ activeTab, onTabChange, pendingCount }: AdminTabsProps) {
   const tabs: { key: AdminTab; label: string; icon: string }[] = [
-    { key: "matches", label: "Partidos", icon: "\u26bd" },
-    { key: "payments", label: "Pagos", icon: "\ud83d\udcb3" },
-    { key: "config", label: "Configuraci\u00f3n", icon: "\u2699\ufe0f" },
-    { key: "export", label: "Exportar", icon: "\ud83d\udcc4" },
+    { key: "matches", label: "Partidos", icon: "⚽" },
+    { key: "payments", label: "Pagos", icon: "💳" },
+    { key: "config", label: "Configuración", icon: "⚙️" },
+    { key: "export", label: "Exportar", icon: "📄" },
   ];
 
   return (

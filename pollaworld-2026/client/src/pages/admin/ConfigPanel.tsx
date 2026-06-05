@@ -41,11 +41,11 @@ export default function ConfigPanel({
 
   return (
     <div>
-      <h3 className="admin-section-title">Configuraci\u00f3n de la polla</h3>
+      <h3 className="admin-section-title">Configuración de la Polla</h3>
 
       <div className="admin-form-grid">
         <div className="form-group">
-          <label className="form-label">C\u00f3digo QR Yape</label>
+          <label className="form-label">Código QR Yape</label>
           {config?.yape_qr_url && (
             <div className="admin-qr-preview">
               <img
@@ -71,7 +71,7 @@ export default function ConfigPanel({
         </div>
 
         <div className="form-group">
-          <label className="form-label">Tel\u00e9fono Yape</label>
+          <label className="form-label">Teléfono Yape</label>
           <input
             className="form-input"
             value={yapePhone}
@@ -82,7 +82,7 @@ export default function ConfigPanel({
 
         <div className="form-group">
           <label className="form-label">
-            Monto de inscripci\u00f3n (S/.)
+            Monto de inscripción (S/.)
           </label>
           <input
             className="form-input"
@@ -94,11 +94,11 @@ export default function ConfigPanel({
 
         <div className="form-group admin-full-width">
           <label className="form-label">
-            Distribuci\u00f3n de premios (%)
+            Distribución de premios (%)
           </label>
           <div className="admin-prize-row">
             <div className="admin-prize-field">
-              <label className="admin-prize-label">1\u00b0 lugar</label>
+              <label className="admin-prize-label">1er lugar</label>
               <input
                 className="form-input"
                 type="number"
@@ -107,7 +107,7 @@ export default function ConfigPanel({
               />
             </div>
             <div className="admin-prize-field">
-              <label className="admin-prize-label">2\u00b0 lugar</label>
+              <label className="admin-prize-label">2do lugar</label>
               <input
                 className="form-input"
                 type="number"
@@ -116,7 +116,7 @@ export default function ConfigPanel({
               />
             </div>
             <div className="admin-prize-field">
-              <label className="admin-prize-label">3\u00b0 lugar</label>
+              <label className="admin-prize-label">3er lugar</label>
               <input
                 className="form-input"
                 type="number"
@@ -138,19 +138,19 @@ export default function ConfigPanel({
         onClick={onSaveConfig}
         disabled={totalPct !== 100}
       >
-        Guardar configuraci\u00f3n
+        Guardar configuración
       </button>
 
       {approvedCount > 0 && entryFee > 0 && (
         <div className="admin-preview-box">
           <h4 className="admin-preview-title">Vista previa de premios</h4>
           <p className="admin-preview-total">
-            {approvedCount} participantes \u00d7 S/. {entryFee} ={" "}
+            {approvedCount} participantes x S/. {entryFee} ={" "}
             <strong>S/. {(approvedCount * entryFee).toFixed(2)}</strong>
           </p>
           <div className="admin-preview-prizes">
             <div className="admin-preview-prize">
-              {"\ud83e\udd47"} 1\u00b0:{" "}
+              🥇 1ro:{" "}
               <strong>
                 S/.{" "}
                 {((approvedCount * entryFee * prize1) / 100).toFixed(2)}
@@ -158,7 +158,7 @@ export default function ConfigPanel({
               ({prize1}%)
             </div>
             <div className="admin-preview-prize">
-              {"\ud83e\udd48"} 2\u00b0:{" "}
+              🥈 2do:{" "}
               <strong>
                 S/.{" "}
                 {((approvedCount * entryFee * prize2) / 100).toFixed(2)}
@@ -166,7 +166,7 @@ export default function ConfigPanel({
               ({prize2}%)
             </div>
             <div className="admin-preview-prize">
-              {"\ud83e\udd49"} 3\u00b0:{" "}
+              🥉 3ro:{" "}
               <strong>
                 S/.{" "}
                 {((approvedCount * entryFee * prize3) / 100).toFixed(2)}

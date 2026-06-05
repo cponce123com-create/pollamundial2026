@@ -14,11 +14,11 @@ export default function ExportPanel({
   return (
     <div>
       <h3 className="admin-section-title">
-        Exportaci\u00f3n masiva de predicciones
+        Exportación masiva de predicciones
       </h3>
       <p className="placeholder-text">
         Genera un PDF con todas las predicciones de los usuarios con pago
-        aprobado. Cada participante aparecer\u00e1 en una p\u00e1gina separada.
+        aprobado. Cada participante aparecerá en una página separada.
       </p>
       <div className="admin-export-actions">
         <button
@@ -28,7 +28,7 @@ export default function ExportPanel({
         >
           {exporting
             ? "Generando PDF..."
-            : "\ud83d\udce5 Exportar todas las predicciones (PDF masivo)"}
+            : "📥 Exportar todas las predicciones (PDF masivo)"}
         </button>
         <button
           className="btn btn-outline"
@@ -37,7 +37,7 @@ export default function ExportPanel({
         >
           {exportingCsv
             ? "Generando CSV..."
-            : "\ud83d\udcca Descargar CSV de participantes"}
+            : "📊 Descargar CSV de participantes"}
         </button>
       </div>
     </div>
