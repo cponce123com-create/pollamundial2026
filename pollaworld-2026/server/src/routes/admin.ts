@@ -10,8 +10,19 @@ const router = Router();
 // GET /api/admin/users — listar todos los usuarios
 router.get("/users", requireAdmin, async (_req: Request, res: Response) => {
   try {
-    const allUsers = await db.select().from(users).orderBy(users.created_at);
-    res.json(allUsers);
+    try {
+      const result = await db.execute<{ id: string; name: string; phone: string; player_slug: string | null; role: "participant" | "admin"; avatar_url: string | null; created_at: string }>(
+        sql`SELECT id, name, phone, player_slug, role, avatar_url, created_at FROM users ORDER BY created_at`
+      );
+      res.json(result.rows || []);
+      return;
+    } catch {
+      // Fallback without avatar_url
+      const result = await db.execute<{ id: string; name: string; phone: string; player_slug: string | null; role: "participant" | "admin"; created_at: string }>(
+        sql`SELECT id, name, phone, player_slug, role, created_at FROM users ORDER BY created_at`
+      );
+      res.json(result.rows || []);
+    }
   } catch (err) {
     console.error("Admin users error:", err);
     res.status(500).json({ error: "Error al obtener usuarios." });
