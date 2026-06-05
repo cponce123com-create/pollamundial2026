@@ -65,8 +65,24 @@ export const TEAMS: TeamInfo[] = [
   { name: "Panamá", name_en: "Panama", fifa: "PAN", iso2: "pa", group: "L", flag: "🇵🇦", continent: "North America", confed: "CONCACAF" },
 ];
 
+// Aliases for backwards compatibility with legacy seed data
+const ALIASES: Record<string, string> = {
+  "EEUU": "Estados Unidos",
+  "Corea Sur": "Corea del Sur",
+  "Arabia S.": "Arabia Saudita",
+};
+
 export function getTeamInfo(name: string): TeamInfo | undefined {
-  return TEAMS.find(t => t.name === name || t.name_en === name || t.fifa === name);
+  // Direct lookup
+  const direct = TEAMS.find(t => t.name === name || t.name_en === name || t.fifa === name);
+  if (direct) return direct;
+
+  // Alias lookup (legacy seed names)
+  const resolved = ALIASES[name];
+  if (resolved) return TEAMS.find(t => t.name === resolved);
+
+  // Check if name matches English name
+  return TEAMS.find(t => t.name_en === name);
 }
 
 export function getTeamFlag(name: string): string {
