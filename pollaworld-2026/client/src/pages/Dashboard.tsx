@@ -6,6 +6,7 @@ import { getEmoji } from "../lib/emojis";
 import { FlagImage } from "../lib/flags";
 import PdfBoleto from "../components/PdfBoleto";
 import { autofillModerate, autofillSmart } from "../lib/predictionsLogic";
+import { getTeamDisplayName } from "../lib/teams";
 import { useAuth } from "../lib/AuthContext";
 
 type Tab = "groups" | "elimination";
@@ -285,11 +286,11 @@ export default function Dashboard() {
                     <div className="match-teams">
                       <div className="match-team">
                         <FlagImage teamName={m.home_team} size={36} className="match-flag" />
-                        <span className="match-name">{m.home_team}</span>
+                        <span className="match-name">{getTeamDisplayName(m.home_team)}</span>
                       </div>
                       <span className="match-vs">vs</span>
                       <div className="match-team">
-                        <span className="match-name">{m.away_team}</span>
+                        <span className="match-name">{getTeamDisplayName(m.away_team)}</span>
                         <FlagImage teamName={m.away_team} size={36} className="match-flag" />
                       </div>
                     </div>

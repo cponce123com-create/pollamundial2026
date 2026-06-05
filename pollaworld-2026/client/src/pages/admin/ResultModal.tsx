@@ -1,5 +1,6 @@
 import { Match } from "../../lib/api";
 import { FlagImage } from "../../lib/flags";
+import { getTeamDisplayName } from "../../lib/teams";
 
 interface ResultModalProps {
   match: Match;
@@ -29,10 +30,10 @@ export default function ResultModal({
         <h3 className="admin-section-title">Ingresar resultado</h3>
         <div className="result-modal-teams">
           <FlagImage teamName={match.home_team} size={28} />
-          <span className="result-modal-team-name">{match.home_team}</span>
+          <span className="result-modal-team-name">{getTeamDisplayName(match.home_team)}</span>
           <span className="result-modal-vs">vs</span>
           <FlagImage teamName={match.away_team} size={28} />
-          <span className="result-modal-team-name">{match.away_team}</span>
+          <span className="result-modal-team-name">{getTeamDisplayName(match.away_team)}</span>
         </div>
         <div className="result-modal-inputs">
           <input

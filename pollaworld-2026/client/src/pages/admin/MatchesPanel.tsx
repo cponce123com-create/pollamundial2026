@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Match, PoolConfig, api } from "../../lib/api";
 import { FlagImage } from "../../lib/flags";
+import { getTeamDisplayName } from "../../lib/teams";
 
 const PHASE_OPTIONS = [
   { value: "groups", label: "Grupos" },
@@ -201,10 +202,10 @@ export default function MatchesPanel({
                 <td>{m.group_name || "-"}</td>
                 <td className="admin-match-teams">
                   <FlagImage teamName={m.home_team} size={20} />
-                  <span className="admin-match-name">{m.home_team}</span>
+                  <span className="admin-match-name">{getTeamDisplayName(m.home_team)}</span>
                   <span className="admin-match-vs">vs</span>
                   <FlagImage teamName={m.away_team} size={20} />
-                  <span className="admin-match-name">{m.away_team}</span>
+                  <span className="admin-match-name">{getTeamDisplayName(m.away_team)}</span>
                 </td>
                 <td className="admin-date-cell">
                   {new Date(m.match_date).toLocaleDateString("es-PE", {

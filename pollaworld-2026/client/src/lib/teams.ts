@@ -125,3 +125,8 @@ export function getTeamFlag(name: string): string {
 export function getTeamIso2(name: string): string | undefined {
   return getTeamInfo(name)?.iso2;
 }
+
+/** Retorna el nombre canónico en español (ej: "Chequia" → "República Checa") */
+export function getTeamDisplayName(name: string): string {
+  return getTeamInfo(name)?.name || name;
+}
