@@ -9,10 +9,11 @@ import MatchesPanel from "./admin/MatchesPanel";
 import PaymentsPanel from "./admin/PaymentsPanel";
 import ConfigPanel from "./admin/ConfigPanel";
 import ExportPanel from "./admin/ExportPanel";
+import TestingPanel from "./admin/TestingPanel";
 import ResultModal from "./admin/ResultModal";
 import { PLAYERS } from "../lib/players";
 
-type AdminTab = "matches" | "payments" | "config" | "export" | "players";
+type AdminTab = "matches" | "payments" | "config" | "export" | "players" | "testing";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -336,6 +337,10 @@ export default function Admin() {
             onMassExport={handleMassExport}
             onCsvExport={handleCsvExport}
           />
+        )}
+
+        {activeTab === "testing" && (
+          <TestingPanel onReload={loadAll} />
         )}
 
         {activeTab === "players" && (

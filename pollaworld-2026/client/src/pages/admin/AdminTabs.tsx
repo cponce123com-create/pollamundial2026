@@ -1,4 +1,4 @@
-type AdminTab = "matches" | "payments" | "config" | "export" | "players";
+type AdminTab = "matches" | "payments" | "config" | "export" | "players" | "testing";
 
 interface AdminTabsProps {
   activeTab: AdminTab;
@@ -7,26 +7,25 @@ interface AdminTabsProps {
 }
 
 export default function AdminTabs({ activeTab, onTabChange, pendingCount }: AdminTabsProps) {
-  const tabs: { key: AdminTab; label: string; icon: string }[] = [
-    { key: "matches", label: "Partidos", icon: "⚽" },
-    { key: "payments", label: "Pagos", icon: "💳" },
-    { key: "players", label: "Jugadores", icon: "🏷️" },
-    { key: "config", label: "Configuración", icon: "⚙️" },
-    { key: "export", label: "Exportar", icon: "📄" },
+  const tabs = [
+    { id: "payments" as AdminTab, label: "Pagos", icon: "💳", badge: pendingCount },
+    { id: "matches" as AdminTab, label: "Partidos", icon: "⚽" },
+    { id: "config" as AdminTab, label: "Config", icon: "⚙️" },
+    { id: "export" as AdminTab, label: "Exportar", icon: "📤" },
+    { id: "players" as AdminTab, label: "Jugadores", icon: "🏷️" },
+    { id: "testing" as AdminTab, label: "Testing", icon: "🧪" },
   ];
 
   return (
-    <div className="tabs">
-      {tabs.map((t) => (
+    <div className="admin-tabs">
+      {tabs.map((tab) => (
         <button
-          key={t.key}
-          className={"tab" + (activeTab === t.key ? " tab-active" : "")}
-          onClick={() => onTabChange(t.key)}
+          key={tab.id}
+          className={`admin-tab ${activeTab === tab.id ? "active" : ""} ${tab.id === "testing" ? "admin-tab-testing" : ""}`}
+          onClick={() => onTabChange(tab.id)}
         >
-          {t.icon} {t.label}
-          {t.key === "payments" && pendingCount > 0 && (
-            <span className="tab-badge">{pendingCount}</span>
-          )}
+          {tab.icon} {tab.label}
+          {tab.badge ? <span className="admin-tab-badge">{tab.badge}</span> : null}
         </button>
       ))}
     </div>

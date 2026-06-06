@@ -404,4 +404,97 @@ router.patch("/matches/:id/lock", requireAdmin, async (req: Request, res: Respon
   }
 });
 
+// ─── Testing / DevOps endpoints ───
+
+// POST /api/admin/testing/reset-tournament
+router.post("/testing/reset-tournament", requireAdmin, async (_req: Request, res: Response) => {
+  try {
+    const configs = await db.select().from(poolConfig).limit(1);
+    if (configs.length > 0) {
+      await db
+        .update(poolConfig)
+        .set({ tournament_started: false })
+        .where(eq(poolConfig.id, configs[0].id));
+    }
+    await db
+      .update(matches)
+      .set({ is_locked: false });
+    res.json({ message: "Torneo reiniciado: tournament_started=false, todos los partidos desbloqueados." });
+  } catch (err) {
+    logger.error(err, "Reset tournament error:");
+    res.status(500).json({ error: "Error al reiniciar torneo." });
+  }
+});
+
+// POST /api/admin/testing/activate-demo
+router.post("/testing/activate-demo", requireAdmin, async (_req: Request, res: Response) => {
+  try {
+    const pending = await db
+      .select()
+      .from(entries)
+      .where(eq(entries.payment_status, "pending"));
+    if (pending.length === 0) {
+      res.json({ message: "No hay entradas pendientes.", approved: 0 });
+      return;
+    }
+    const ids = pending.map((e) => e.id);
+    await db
+      .update(entries)
+      .set({ payment_status: "approved" })
+      .where(inArray(entries.id, ids));
+    res.json({ message: `${ids.length} entrada(s) aprobadas automáticamente (modo demo).`, approved: ids.length });
+  } catch (err) {
+    logger.error(err, "Activate demo error:");
+    res.status(500).json({ error: "Error al activar demo." });
+  }
+});
+
+// GET /api/admin/testing/verify
+router.get("/testing/verify", requireAdmin, async (_req: Request, res: Response) => {
+  try {
+    const [configs, allMatches, allEntries, allPredictions] = await Promise.all([
+      db.select().from(poolConfig).limit(1),
+      db.select().from(matches),
+      db.select().from(entries),
+      db.select().from(predictions),
+    ]);
+
+    const cfg = configs[0] ?? null;
+    const approvedEntries = allEntries.filter((e) => e.payment_status === "approved");
+    const pendingEntries = allEntries.filter((e) => e.payment_status === "pending");
+    const lockedMatches = allMatches.filter((m) => m.is_locked);
+    const matchesWithResult = allMatches.filter(
+      (m) => m.home_score_real !== null && m.away_score_real !== null
+    );
+
+    res.json({
+      config: {
+        ok: cfg !== null,
+        tournament_started: cfg?.tournament_started ?? false,
+        entry_fee: cfg?.entry_fee ?? null,
+        yape_configured: !!(cfg?.yape_phone || cfg?.yape_qr_url),
+      },
+      matches: {
+        total: allMatches.length,
+        locked: lockedMatches.length,
+        with_result: matchesWithResult.length,
+        ok: allMatches.length > 0,
+      },
+      entries: {
+        total: allEntries.length,
+        approved: approvedEntries.length,
+        pending: pendingEntries.length,
+        ok: approvedEntries.length > 0,
+      },
+      predictions: {
+        total: allPredictions.length,
+        ok: allPredictions.length > 0,
+      },
+    });
+  } catch (err) {
+    logger.error(err, "Verify system error:");
+    res.status(500).json({ error: "Error al verificar sistema." });
+  }
+});
+
 export default router;

@@ -282,6 +282,21 @@ export const api = {
       return data as { url: string; message: string };
     });
   },
+
+  // ── Testing / Admin tools ──
+  resetTournament: () =>
+    request<{ message: string }>("/admin/testing/reset-tournament", { method: "POST" }),
+
+  activateDemo: () =>
+    request<{ message: string; approved: number }>("/admin/testing/activate-demo", { method: "POST" }),
+
+  verifySystem: () =>
+    request<{
+      config: { ok: boolean; tournament_started: boolean; entry_fee: number | null; yape_configured: boolean };
+      matches: { total: number; locked: number; with_result: number; ok: boolean };
+      entries: { total: number; approved: number; pending: number; ok: boolean };
+      predictions: { total: number; ok: boolean };
+    }>("/admin/testing/verify"),
 };
 
 export interface PoolStats {
