@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { api, PoolStats } from "../lib/api";
+import { api, PoolStats, PoolConfig } from "../lib/api";
 import { useAuth } from "../lib/AuthContext";
 
 const SECTIONS = [
@@ -279,11 +279,16 @@ const SECTIONS = [
 export default function Home() {
   const { user } = useAuth();
   const [stats, setStats] = useState<PoolStats | null>(null);
+  const [config, setConfig] = useState<PoolConfig | null>(null);
 
   useEffect(() => {
-    api.getPoolStats()
-      .then(setStats)
-      .catch(() => {});
+    Promise.all([
+      api.getPoolStats(),
+      api.getPoolConfig().catch(() => null),
+    ]).then(([s, c]) => {
+      setStats(s);
+      setConfig(c);
+    }).catch(() => {});
   }, []);
 
   return (
@@ -291,9 +296,13 @@ export default function Home() {
       {/* HERO */}
       <section className="home-hero">
         <div className="home-hero-content">
-          <h1 className="home-hero-title">
-            ⚽ <span className="home-hero-highlight">La Polla del Ponce</span> 2026
-          </h1>
+          {config?.logo_url ? (
+            <img src={config.logo_url} alt="La Polla del Ponce" className="home-hero-logo" />
+          ) : (
+            <h1 className="home-hero-title">
+              <span className="home-hero-highlight">La Polla del Ponce</span> 2026
+            </h1>
+          )}
           <p className="home-hero-subtitle">
             El mundial de fútbol se vive con pronósticos. Registra tus
             predicciones, compite con tus amigos y gana grandes premios.
