@@ -147,6 +147,10 @@ async function syncScores(): Promise<{ updated: number; live: number }> {
         dbMatch.home_score_real !== homeScore ||
         dbMatch.away_score_real !== awayScore;
 
+      // Solo procesar partidos que realmente han comenzado o terminado
+      const hasStarted = game.time_elapsed !== "notstarted";
+      if (!hasStarted) continue;
+
       if (scoresChanged || (isFinished && !dbMatch.is_locked)) {
         matchesToUpdate.push({ id: dbMatch.id, homeScore, awayScore, isFinished });
         if (isFinished) finishedMatchIds.push(dbMatch.id);
