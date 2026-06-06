@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { api, PoolStats } from "../lib/api";
+import { useAuth } from "../lib/AuthContext";
 
 const SECTIONS = [
   {
@@ -276,6 +277,7 @@ const SECTIONS = [
 ];
 
 export default function Home() {
+  const { user } = useAuth();
   const [stats, setStats] = useState<PoolStats | null>(null);
 
   useEffect(() => {
@@ -336,12 +338,20 @@ export default function Home() {
           )}
 
           <div className="home-hero-actions">
-            <Link to="/register" className="btn btn-gold btn-lg">
-              🚀 Registrarme ahora
-            </Link>
-            <Link to="/login" className="btn btn-outline btn-lg">
-              Ingresar
-            </Link>
+            {user ? (
+              <Link to="/dashboard" className="btn btn-gold btn-lg">
+                🔮 Ir a mis predicciones
+              </Link>
+            ) : (
+              <>
+                <Link to="/register" className="btn btn-gold btn-lg">
+                  🚀 Registrarme ahora
+                </Link>
+                <Link to="/login" className="btn btn-outline btn-lg">
+                  Ingresar
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -368,12 +378,20 @@ export default function Home() {
           el pozo acumulado.
         </p>
         <div className="home-hero-actions" style={{ justifyContent: "center" }}>
-          <Link to="/register" className="btn btn-gold btn-lg">
-            🚀 Registrarme ahora
-          </Link>
-          <Link to="/participants" className="btn btn-outline btn-lg">
-            👥 Ver participantes
-          </Link>
+          {user ? (
+            <Link to="/dashboard" className="btn btn-gold btn-lg">
+              🔮 Ir a mis predicciones
+            </Link>
+          ) : (
+            <>
+              <Link to="/register" className="btn btn-gold btn-lg">
+                🚀 Registrarme ahora
+              </Link>
+              <Link to="/participants" className="btn btn-outline btn-lg">
+                👥 Ver participantes
+              </Link>
+            </>
+          )}
         </div>
       </section>
     </div>
