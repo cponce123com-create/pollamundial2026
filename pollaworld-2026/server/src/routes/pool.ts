@@ -156,7 +156,8 @@ router.get("/ranking", async (_req: Request, res: Response) => {
       .orderBy(
         desc(sql`COALESCE(SUM(${predictions.points_earned}), 0)`),
         desc(sql`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 5 THEN 1 ELSE 0 END), 0)`),
-        desc(sql`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 3 THEN 1 ELSE 0 END), 0)`)
+        desc(sql`COALESCE(SUM(CASE WHEN ${predictions.points_earned} >= 2 THEN 1 ELSE 0 END), 0)`),
+        desc(sql`COUNT(${predictions.id})`)
       );
 
     res.json(ranking);

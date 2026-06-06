@@ -235,9 +235,10 @@ export default function RankingPage() {
             <button
               className="btn btn-outline"
               onClick={() => {
-                const userEntry = ranking.find((e) => e.userId === currentUserId);
-                const pos = userEntry ? ranking.indexOf(userEntry) + 1 : 0;
-                const text = getShareText(stats, pos, userEntry?.name || "Participante");
+                const userEntries = ranking.filter((e) => e.userId === currentUserId);
+                const bestEntry = userEntries[0];
+                const pos = bestEntry ? ranking.indexOf(bestEntry) + 1 : 0;
+                const text = getShareText(stats, pos, bestEntry?.name || "Participante");
                 const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
                 window.open(url, "_blank", "noopener,noreferrer");
               }}

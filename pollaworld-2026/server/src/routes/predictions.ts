@@ -4,8 +4,9 @@ import rateLimit from "express-rate-limit";
 import { db } from "../db";
 import { predictions, matches, users, entries, poolConfig } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
-import { eq, and, asc, desc, sql, inArray } from "drizzle-orm";
+import { eq, and, asc, desc, sql, inArray, isNotNull } from "drizzle-orm";
 import logger from "../lib/logger";
+import { calculatePoints } from "../lib/scoring";
 
 const router = Router();
 
@@ -128,15 +129,29 @@ router.post("/bulk", requireAuth, async (req: Request, res: Response) => {
     // Get existing predictions for this entry
     const existingPreds = await db.select().from(predictions).where(and(eq(predictions.entry_id, data.entry_id), inArray(predictions.match_id, matchIds)));
     const existingMap = new Map(existingPreds.map(p => [p.match_id, p]));
-    // Batch upsert
-    const batch = data.predictions.filter(p => validMatchIds.has(p.match_id)).map(p => ({
-      user_id: req.user!.userId,
-      entry_id: data.entry_id,
-      match_id: p.match_id,
-      home_score_pred: p.home_score_pred,
-      away_score_pred: p.away_score_pred,
-      points_earned: 0,
-    }));
+
+    // Obtener partidos que ya tienen resultado (livescore/admin los cerró)
+    const finishedMatches = await db
+      .select({ id: matches.id, home_score_real: matches.home_score_real, away_score_real: matches.away_score_real })
+      .from(matches)
+      .where(and(inArray(matches.id, matchIds), isNotNull(matches.home_score_real)));
+    const resultMap = new Map(finishedMatches.map(m => [m.id, m]));
+
+    // Batch upsert con points_earned calculado si el partido ya terminó
+    const batch = data.predictions.filter(p => validMatchIds.has(p.match_id)).map(p => {
+      const result = resultMap.get(p.match_id);
+      const pts = result
+        ? calculatePoints(p.home_score_pred, p.away_score_pred, result.home_score_real!, result.away_score_real!)
+        : 0;
+      return {
+        user_id: req.user!.userId,
+        entry_id: data.entry_id,
+        match_id: p.match_id,
+        home_score_pred: p.home_score_pred,
+        away_score_pred: p.away_score_pred,
+        points_earned: pts,
+      };
+    });
     if (batch.length > 0) {
       const inserted = await db.insert(predictions).values(batch).onConflictDoUpdate({
         target: [predictions.entry_id, predictions.match_id],

@@ -151,6 +151,9 @@ async function syncScores(): Promise<{ updated: number; live: number }> {
       const hasStarted = game.time_elapsed !== "notstarted";
       if (!hasStarted) continue;
 
+      // No tocar partidos bloqueados manualmente por el admin
+      if (dbMatch.is_locked && !isFinished) continue;
+
       if (scoresChanged || (isFinished && !dbMatch.is_locked)) {
         matchesToUpdate.push({ id: dbMatch.id, homeScore, awayScore, isFinished });
         if (isFinished) finishedMatchIds.push(dbMatch.id);
