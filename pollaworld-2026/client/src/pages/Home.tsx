@@ -343,6 +343,16 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SECTIONS NAV */}
+      <nav className="home-sections-nav">
+        {SECTIONS.map((s) => (
+          <a key={s.id} href={`#${s.id}`}>
+            <span>{s.icon}</span>
+            {s.title}
+          </a>
+        ))}
+      </nav>
+
       {/* SECTIONS */}
       <div className="home-sections">
         {SECTIONS.map((section) => (
