@@ -302,37 +302,24 @@ export default function Home() {
           {/* Stats bar */}
           {stats && (
             <div className="home-hero-stats">
-              <div className="home-hero-stat">
-                <span className="home-hero-stat-value">
-                  {stats.approvedCount}
-                </span>
-                <span className="home-hero-stat-label">
-                  Participantes
-                </span>
+              <div className="home-hero-stat home-hero-stat-featured">
+                <span className="home-hero-stat-value">{stats.approvedCount}</span>
+                <span className="home-hero-stat-label">Participantes</span>
               </div>
+              <div className="home-hero-stat-divider" />
               <div className="home-hero-stat">
-                <span className="home-hero-stat-value">
-                  70%
-                </span>
-                <span className="home-hero-stat-label">
-                  1.er puesto
-                </span>
+                <span className="home-hero-stat-value">S/. {stats.entryFee}</span>
+                <span className="home-hero-stat-label">Inscripción</span>
               </div>
+              <div className="home-hero-stat-divider" />
               <div className="home-hero-stat">
-                <span className="home-hero-stat-value">
-                  20%
-                </span>
-                <span className="home-hero-stat-label">
-                  2.do puesto
-                </span>
+                <span className="home-hero-stat-value">S/. {stats.totalPool}</span>
+                <span className="home-hero-stat-label">Pozo total</span>
               </div>
+              <div className="home-hero-stat-divider" />
               <div className="home-hero-stat">
-                <span className="home-hero-stat-value">
-                  10%
-                </span>
-                <span className="home-hero-stat-label">
-                  3.er puesto
-                </span>
+                <span className="home-hero-stat-value">S/. {stats.prizes.first}</span>
+                <span className="home-hero-stat-label">1.er puesto</span>
               </div>
             </div>
           )}

@@ -1675,12 +1675,13 @@ h3.admin-section-title {
 .home-page {
   max-width: 800px;
   margin: 0 auto;
+  padding: 0 16px;
 }
 
 /* Hero */
 .home-hero {
   text-align: center;
-  padding: 48px 16px 32px;
+  padding: 40px 0 24px;
 }
 
 .home-hero-content {
@@ -1689,11 +1690,11 @@ h3.admin-section-title {
 }
 
 .home-hero-title {
-  font-size: 2.8rem;
+  font-size: 2.6rem;
   font-weight: 800;
   color: var(--white);
-  margin-bottom: 12px;
-  line-height: 1.1;
+  margin-bottom: 10px;
+  line-height: 1.15;
 }
 
 .home-hero-highlight {
@@ -1704,18 +1705,26 @@ h3.admin-section-title {
 }
 
 .home-hero-subtitle {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--text-secondary);
-  margin-bottom: 24px;
-  line-height: 1.5;
+  margin-bottom: 28px;
+  line-height: 1.6;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .home-hero-stats {
   display: flex;
   justify-content: center;
-  gap: 24px;
+  align-items: center;
+  gap: 0;
   margin-bottom: 28px;
   flex-wrap: wrap;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 8px;
 }
 
 .home-hero-stat {
@@ -1723,20 +1732,36 @@ h3.admin-section-title {
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  padding: 4px 16px;
+  min-width: 90px;
+}
+
+.home-hero-stat-featured .home-hero-stat-value {
+  color: var(--gold);
+  font-size: 1.8rem;
 }
 
 .home-hero-stat-value {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  color: var(--gold);
+  color: var(--white);
+  line-height: 1.2;
 }
 
 .home-hero-stat-label {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+.home-hero-stat-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+  flex-shrink: 0;
 }
 
 .home-hero-actions {
@@ -1977,16 +2002,44 @@ h3.admin-section-title {
 }
 
 @media (max-width: 600px) {
+  .home-hero {
+    padding: 24px 0 16px;
+  }
+
   .home-hero-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .home-hero-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
   }
 
   .home-hero-stats {
-    gap: 16px;
+    padding: 12px 4px;
+    gap: 0;
+  }
+
+  .home-hero-stat {
+    padding: 4px 10px;
+    min-width: 60px;
+  }
+
+  .home-hero-stat-featured .home-hero-stat-value {
+    font-size: 1.4rem;
+  }
+
+  .home-hero-stat-value {
+    font-size: 0.95rem;
+  }
+
+  .home-hero-stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.5px;
+  }
+
+  .home-hero-stat-divider {
+    height: 28px;
   }
 
   .home-points-grid {
@@ -2001,9 +2054,17 @@ h3.admin-section-title {
     font-size: 1.1rem;
   }
 
+  .home-cta {
+    padding: 24px 16px;
+  }
+
+  .home-cta-title {
+    font-size: 1.2rem;
+  }
+
   .btn-lg {
     padding: 12px 20px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 }
 
