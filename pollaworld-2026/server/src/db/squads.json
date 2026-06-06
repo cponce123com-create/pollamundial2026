@@ -2,7 +2,7 @@
   {
     "team": "República Checa",
     "coach": "Ivan Hasek",
-    "formation": "3-4-3",
+    "formation": "4-3-3",
     "players": [
       {
         "name": "L. Horníček",
@@ -668,7 +668,7 @@
   {
     "team": "Corea del Sur",
     "coach": "Hong Myung-bo",
-    "formation": "4-4-2",
+    "formation": "4-3-3",
     "players": [
       {
         "name": "S. Kim",
@@ -1334,7 +1334,7 @@
   {
     "team": "Catar",
     "coach": "Tintín Márquez",
-    "formation": "4-3-3",
+    "formation": "4-2-3-1",
     "players": [
       {
         "name": "M. Abunada",
@@ -1556,7 +1556,7 @@
   {
     "team": "Suiza",
     "coach": "Murat Yakin",
-    "formation": "4-3-3",
+    "formation": "4-3-3 / 4-2-3-1",
     "players": [
       {
         "name": "M. Keller",
@@ -1778,7 +1778,7 @@
   {
     "team": "Brasil",
     "coach": "Dorival Júnior",
-    "formation": "4-3-3",
+    "formation": "4-2-4",
     "players": [
       {
         "name": "Alisson",
@@ -2222,7 +2222,7 @@
   {
     "team": "Marruecos",
     "coach": "Walid Regragui",
-    "formation": "4-3-3",
+    "formation": "4-2-3-1 / 4-2-2-2",
     "players": [
       {
         "name": "Y. Bounou",
@@ -2444,7 +2444,7 @@
   {
     "team": "Escocia",
     "coach": "Steve Clarke",
-    "formation": "4-3-3",
+    "formation": "Variable (3/4 defensas)",
     "players": [
       {
         "name": "C. Gordon",
@@ -3332,7 +3332,7 @@
   {
     "team": "Estados Unidos",
     "coach": "Mauricio Pochettino",
-    "formation": "4-3-3",
+    "formation": "4-2-3-1",
     "players": [
       {
         "name": "M. Turner",
@@ -4442,7 +4442,7 @@
   {
     "team": "Japón",
     "coach": "Hajime Moriyasu",
-    "formation": "4-3-3",
+    "formation": "3-4-2-1",
     "players": [
       {
         "name": "T. Hayakawa",
@@ -4886,7 +4886,7 @@
   {
     "team": "Suecia",
     "coach": "Jon Dahl Tomasson",
-    "formation": "4-3-3",
+    "formation": "4-4-2 / 4-2-3-1",
     "players": [
       {
         "name": "K. Nordfeldt",
@@ -5330,7 +5330,7 @@
   {
     "team": "Bélgica",
     "coach": "Rudi Garcia",
-    "formation": "4-3-3",
+    "formation": "4-3-3 / 4-2-3-1",
     "players": [
       {
         "name": "T. Courtois",
@@ -6210,7 +6210,7 @@
   {
     "team": "Cabo Verde",
     "coach": "Bubista",
-    "formation": "4-3-3",
+    "formation": "4-2-3-1",
     "players": [
       {
         "name": "Vozinha",
@@ -6654,7 +6654,7 @@
   {
     "team": "España",
     "coach": "Luis de la Fuente",
-    "formation": "4-3-3",
+    "formation": "4-3-3 / 4-2-3-1",
     "players": [
       {
         "name": "U. Simón",
@@ -8200,7 +8200,7 @@
   {
     "team": "Argentina",
     "coach": "Lionel Scaloni",
-    "formation": "4-3-3",
+    "formation": "4-3-3 / 4-2-3-1",
     "players": [
       {
         "name": "E. Martínez",
@@ -10000,7 +10000,7 @@
   {
     "team": "Inglaterra",
     "coach": "Thomas Tuchel",
-    "formation": "4-3-3",
+    "formation": "3-2-5 / 3-4-3 (ataque)",
     "players": [
       {
         "name": "D. Henderson",
