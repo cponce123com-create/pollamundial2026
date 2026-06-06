@@ -25,6 +25,7 @@ import { sanitizeBody } from "./middleware/sanitize";
 import { csrfProtection } from "./middleware/csrf";
 import { startLiveScoreSync, stopLiveScoreSync } from "./lib/livescore";
 import { sseHandler, broadcastEvent } from "./lib/sse";
+import { runStartupMigrations } from "./db/migrate-entries";
 
 // Validar variables de entorno requeridas
 const REQUIRED_VARS = ["DATABASE_URL", "JWT_SECRET", "CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"];
@@ -36,6 +37,7 @@ if (missing.length > 0) {
 }
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3001;
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 
@@ -145,8 +147,10 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   logger.info(`Server running on http://localhost:${PORT}`);
+  // Run startup migrations (ALTER TABLE ADD COLUMN IF NOT EXISTS, etc.)
+  await runStartupMigrations();
 });
 
 // Iniciar sincronización de live scores

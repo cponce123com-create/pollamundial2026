@@ -633,7 +633,7 @@ export default function Dashboard() {
                 color: "#fff",
               }}
             >
-              💬 Unirse al grupo de WhatsApp
+              💬 Unirse
             </a>
           </div>
         )}
