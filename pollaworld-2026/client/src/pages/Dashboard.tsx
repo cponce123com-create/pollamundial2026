@@ -382,6 +382,7 @@ export default function Dashboard() {
                   🧠 Llenar con lógica
                 </button>
               </div>
+              </>
             )}
 
             {/* Matches Grid */}
