@@ -239,7 +239,7 @@ async function seed() {
       name: "Admin",
       phone: "999000001",
       password_hash: hash,
-      player_slug: "pele",
+      player_slug: "personaje1",
       role: "admin",
     });
     console.log("✓ Admin user created (999000001 / admin2026)");

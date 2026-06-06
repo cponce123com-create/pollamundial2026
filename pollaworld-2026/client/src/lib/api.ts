@@ -90,10 +90,26 @@ export interface ExportData {
   matches: Match[];
 }
 
+async function getCSRFToken(): Promise<string | null> {
+  // CSRF token is stored in a non-httpOnly cookie, accessible from JS
+  const match = document.cookie.match(/(?:^|;\s*)csrf_token=([^;]*)/);
+  return match ? match[1] : null;
+}
+
+const MUTATION_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
+  const headers: Record<string, string> = { "Content-Type": "application/json", ...options?.headers as Record<string, string> };
+
+  // Add CSRF token for mutation requests
+  if (options?.method && MUTATION_METHODS.has(options.method)) {
+    const token = await getCSRFToken();
+    if (token) headers["x-csrf-token"] = token;
+  }
+
   const res = await fetch(`${API_BASE}${url}`, {
     credentials: "include",
-    headers: { "Content-Type": "application/json", ...options?.headers },
+    headers,
     ...options,
   });
   const data = await res.json();
@@ -127,12 +143,16 @@ export const api = {
       body: JSON.stringify({ name }),
     }),
 
-  uploadAvatar: (file: File) => {
+  uploadAvatar: async (file: File) => {
     const fd = new FormData();
     fd.append("avatar", file);
+    const token = await getCSRFToken();
+    const headers: Record<string, string> = {};
+    if (token) headers["x-csrf-token"] = token;
     return fetch(`${API_BASE}/profile/avatar`, {
       method: "POST",
       credentials: "include",
+      headers,
       body: fd,
     }).then(async (res) => {
       const data = await res.json();
@@ -166,13 +186,17 @@ export const api = {
     request<Record<string, { home_score_pred: number; away_score_pred: number }>>("/predictions/popular"),
 
   // Payments (per entry)
-  uploadPaymentProof: (entryId: string, file: File) => {
+  uploadPaymentProof: async (entryId: string, file: File) => {
     const formData = new FormData();
     formData.append("entry_id", entryId);
     formData.append("proof", file);
+    const token = await getCSRFToken();
+    const headers: Record<string, string> = {};
+    if (token) headers["x-csrf-token"] = token;
     return fetch(`${API_BASE}/payments/upload`, {
       method: "POST",
       credentials: "include",
+      headers,
       body: formData,
     }).then(async (res) => {
       const data = await res.json();
