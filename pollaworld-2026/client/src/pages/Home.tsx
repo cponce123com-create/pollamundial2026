@@ -300,29 +300,26 @@ export default function Home() {
           </p>
 
           {/* Stats bar */}
-          {stats && (
-            <div className="home-hero-stats">
-              <div className="home-hero-stat home-hero-stat-featured">
-                <span className="home-hero-stat-value">{stats.approvedCount}</span>
-                <span className="home-hero-stat-label">Participantes</span>
-              </div>
-              <div className="home-hero-stat-divider" />
-              <div className="home-hero-stat">
-                <span className="home-hero-stat-value">S/. {stats.entryFee}</span>
-                <span className="home-hero-stat-label">Inscripción</span>
-              </div>
-              <div className="home-hero-stat-divider" />
-              <div className="home-hero-stat">
-                <span className="home-hero-stat-value">S/. {stats.totalPool}</span>
-                <span className="home-hero-stat-label">Pozo total</span>
-              </div>
-              <div className="home-hero-stat-divider" />
-              <div className="home-hero-stat">
-                <span className="home-hero-stat-value">S/. {stats.prizes.first}</span>
-                <span className="home-hero-stat-label">1.er puesto</span>
-              </div>
-            </div>
-          )}
+          <div className="home-hero-stats">
+            {[
+              { value: stats ? String(stats.approvedCount) : null, label: "Participantes", featured: true },
+              { value: stats ? `S/. ${stats.entryFee}` : null, label: "Inscripción", featured: false },
+              { value: stats ? `S/. ${stats.totalPool}` : null, label: "Pozo total", featured: false },
+              { value: stats ? `S/. ${stats.prizes.first}` : null, label: "1.er puesto", featured: false },
+            ].map((item, i) => (
+              <span key={item.label} style={{ display: "contents" }}>
+                {i > 0 && <div className="home-hero-stat-divider" />}
+                <div className={`home-hero-stat${item.featured ? " home-hero-stat-featured" : ""}`}>
+                  {item.value !== null ? (
+                    <span className="home-hero-stat-value">{item.value}</span>
+                  ) : (
+                    <span className="home-hero-stat-skeleton" />
+                  )}
+                  <span className="home-hero-stat-label">{item.label}</span>
+                </div>
+              </span>
+            ))}
+          </div>
 
           <div className="home-hero-actions">
             {user ? (
