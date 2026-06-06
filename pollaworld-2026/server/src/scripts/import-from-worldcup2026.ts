@@ -137,6 +137,35 @@ const FLAG_MAP: Record<string, string> = {
   "Panamá": "\u{1F1F5}\u{1F1E6}",
 };
 
+
+
+// Offset UTC por sede (horario de verano, Junio 2026)
+// local = hora en la sede, UTC = local - offset
+const TZ_OFFSETS: Record<string, number> = {
+  // Mexico - CST
+  'Mexico City': -6,
+  'Guadalajara (Zapopan)': -6,
+  'Monterrey (Guadalupe)': -6,
+  // US Central - CDT
+  'Dallas (Arlington, Texas)': -5,
+  'Houston': -5,
+  'Kansas City': -5,
+  // US Eastern - EDT
+  'Atlanta': -4,
+  'Miami (Miami Gardens)': -4,
+  'Boston (Foxborough)': -4,
+  'Philadelphia': -4,
+  'New York/New Jersey (East Rutherford)': -4,
+  // US Pacific - PDT
+  'Seattle': -7,
+  'San Francisco Bay Area (Santa Clara)': -7,
+  'Los Angeles (Inglewood)': -7,
+  // Canada Eastern - EDT
+  'Toronto': -4,
+  // Canada Pacific - PDT
+  'Vancouver': -7,
+};
+
 const PHASE_MAP: Record<string, string> = {
   group: "groups",
   r32: "round_of_32",
@@ -160,16 +189,18 @@ async function main() {
   console.log();
 
   console.log("Descargando datos...");
-  const [teamsData, matchesData] = await Promise.all([
+  const [teamsData, matchesData, stadiumsData] = await Promise.all([
     fetchJSON("https://raw.githubusercontent.com/rezarahiminia/worldcup2026/main/football.teams.json"),
     fetchJSON("https://raw.githubusercontent.com/rezarahiminia/worldcup2026/main/football.matches.json"),
+    fetchJSON("https://raw.githubusercontent.com/rezarahiminia/worldcup2026/main/football.stadiums.json"),
   ]);
 
-  const msg = "Descargados: " + teamsData.length + " equipos, " + matchesData.length + " partidos";
+  const msg = "Descargados: " + teamsData.length + " equipos, " + matchesData.length + " partidos, " + stadiumsData.length + " estadios";
   console.log(msg);
   console.log();
 
   const teamsById = new Map(teamsData.map((t: ExternalTeam) => [t.id, t]));
+  const stadiumsById = new Map(stadiumsData.map((s: any) => [s.id, s]));
 
   console.log("Consultando partidos existentes en BD...");
   const existingRows = await db
@@ -218,20 +249,30 @@ async function main() {
     const homeFlag = FLAG_MAP[homeName] || "\u{1F3F3}";
     const awayFlag = FLAG_MAP[awayName] || "\u{1F3F3}";
 
-    // Parse "06/11/2026 13:00" (MM/DD/YYYY HH:MM)
+    // Parse "06/11/2026 13:00" (MM/DD/YYYY HH:MM) como hora local de la sede
     const dateParts = match.local_date.split(/[/ :]/);
     if (dateParts.length < 5) {
       console.warn("Partido #" + match.id + ": fecha invalida: " + match.local_date);
       skipped++;
       continue;
     }
-    const matchDate = new Date(
+    const stadium = stadiumsById.get(match.stadium_id);
+    const cityKey = stadium?.city_en || "";
+    const tzOffset = TZ_OFFSETS[cityKey];
+    if (tzOffset === undefined) {
+      console.warn("Partido #" + match.id + ": timezone no encontrado para " + cityKey);
+      skipped++;
+      continue;
+    }
+    // Convertir hora local de la sede a UTC: UTC = local - offset
+    const localMs = Date.UTC(
       parseInt(dateParts[2]),     // year
       parseInt(dateParts[0]) - 1, // month (0-based)
       parseInt(dateParts[1]),     // day
       parseInt(dateParts[3]),     // hour
       parseInt(dateParts[4])      // minute
     );
+    const matchDate = new Date(localMs - (tzOffset * 3600000));
 
     const phase = PHASE_MAP[match.type] || "groups";
     const groupName = phase === "groups" ? (match.group || null) : null;
