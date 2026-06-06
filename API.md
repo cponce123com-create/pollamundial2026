@@ -1,4 +1,4 @@
-# API — PollaWorld 2026
+# API — La Polla del Ponce
 
 Base URL: `/api`
 

@@ -217,7 +217,7 @@ function ParticipantPage({
     <Page size={{ width: THERMAL_WIDTH, height: "400mm" }} style={S.page}>
       {/* ══ HEADER ══ */}
       <View style={S.header}>
-        <Text style={S.logo}>POLLA WORLD 2026</Text>
+        <Text style={S.logo}>LA POLLA DEL PONCE</Text>
         <Text style={S.headerSub}>
           {isMassExport ? "EXPORTACION MASIVA - BOLETO OFICIAL" : "BOLETO DE PREDICCIONES"}
         </Text>
@@ -296,7 +296,7 @@ function ParticipantPage({
 
       {/* ══ FOOTER ══ */}
       <View style={S.footer}>
-        <Text>Documento oficial - PollaWorld 2026</Text>
+        <Text>Documento oficial - La Polla del Ponce</Text>
         <Text>Las predicciones se cierran al iniciar el torneo.</Text>
         <Text style={S.footerHash}>#{hash}</Text>
       </View>

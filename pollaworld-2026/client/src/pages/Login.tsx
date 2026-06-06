@@ -29,7 +29,7 @@ export default function Login() {
     <div className="auth-page">
       <div className="auth-card card">
         <h1 className="auth-title">⚽ Bienvenido</h1>
-        <p className="auth-subtitle">Ingresa a PollaWorld 2026</p>
+        <p className="auth-subtitle">Ingresa a La Polla del Ponce</p>
 
         {error && <div className="auth-error">{error}</div>}
 

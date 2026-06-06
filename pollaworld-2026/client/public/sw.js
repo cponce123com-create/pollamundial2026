@@ -1,4 +1,4 @@
-// PollaWorld 2026 — Service Worker
+// La Polla del Ponce — Service Worker
 // Cache strategy: Cache First for static assets, Network First for API calls
 
 const CACHE_NAME = "pollaworld-v1";

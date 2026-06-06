@@ -5,7 +5,7 @@ import { getPlayer } from "../lib/players";
 function getShareText(stats: PoolStats | null, position: number, name: string): string {
   const prizeStr = position === 1 ? `S/.${stats?.prizes.first}` : position === 2 ? `S/.${stats?.prizes.second}` : position === 3 ? `S/.${stats?.prizes.third}` : "";
   const posText = position <= 3 ? `🥇🥈🥉`.charAt(position - 1) : `#${position}°`;
-  return `🏆 *PollaWorld 2026*\n${posText} — ${name}${prizeStr ? ` (Premio: ${prizeStr})` : ""}\n\n⬇️ Ve el ranking completo en:\n${window.location.href}`;
+  return `🏆 *La Polla del Ponce*\n${posText} — ${name}${prizeStr ? ` (Premio: ${prizeStr})` : ""}\n\n⬇️ Ve el ranking completo en:\n${window.location.href}`;
 }
 
 export default function RankingPage() {

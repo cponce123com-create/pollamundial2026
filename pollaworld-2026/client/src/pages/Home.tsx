@@ -11,7 +11,7 @@ const SECTIONS = [
     content: (
       <>
         <p>
-          <strong>PollaWorld 2026</strong> es una competencia de pronósticos para el
+          <strong>La Polla del Ponce</strong> es una competencia de pronósticos para el
           Mundial de Fútbol 2026. Cada participante registra sus predicciones para
           todos los partidos del torneo <strong>antes del inicio del primer partido</strong>.
         </p>
@@ -292,7 +292,7 @@ export default function Home() {
       <section className="home-hero">
         <div className="home-hero-content">
           <h1 className="home-hero-title">
-            ⚽ <span className="home-hero-highlight">PollaWorld</span> 2026
+            ⚽ <span className="home-hero-highlight">La Polla del Ponce</span> 2026
           </h1>
           <p className="home-hero-subtitle">
             El mundial de fútbol se vive con pronósticos. Registra tus

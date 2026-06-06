@@ -4,7 +4,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-brand">
-          ⚽ PollaMundial 2026
+          ⚽ La Polla del Ponce
         </div>
         <div className="footer-links">
           <a href="/" className="footer-link">Inicio</a>

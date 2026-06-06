@@ -41,7 +41,7 @@ export default function ConfigPanel({
 
   return (
     <div>
-      <h3 className="admin-section-title">Configuración de la Polla</h3>
+      <h3 className="admin-section-title">Configuración de La Polla</h3>
 
       <div className="admin-form-grid">
         <div className="form-group">

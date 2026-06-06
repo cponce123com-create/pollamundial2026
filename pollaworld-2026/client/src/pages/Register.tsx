@@ -48,7 +48,7 @@ export default function Register() {
     <div className="auth-page">
       <div className="auth-card card">
         <h1 className="auth-title">⚽ Registro</h1>
-        <p className="auth-subtitle">Únete a PollaWorld 2026</p>
+        <p className="auth-subtitle">Únete a La Polla del Ponce</p>
 
         {error && <div className="auth-error">{error}</div>}
 

@@ -58,7 +58,7 @@ export default function Header() {
 
           <Link to="/" className="header-logo" onClick={() => setMenuOpen(false)}>
             <span className="header-logo-icon">⚽</span>
-            <span className="header-logo-text">PollaWorld 2026</span>
+            <span className="header-logo-text">La Polla del Ponce</span>
           </Link>
 
           <nav className="header-nav-desktop">

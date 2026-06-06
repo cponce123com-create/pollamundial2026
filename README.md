@@ -1,4 +1,4 @@
-# ⚽ PollaMundial 2026
+# ⚽ La Polla del Ponce
 
 Aplicación web para la gestión de una **polla mundialista** — predicciones de partidos del Mundial 2026 entre un grupo de amigos. Los participantes registran sus pronósticos, acumulan puntos según sus aciertos, y compiten en un ranking para ver quién es el mejor predictor.
 
@@ -181,10 +181,10 @@ Este proyecto incluye un archivo `render.yaml` para desplegar en [Render](https:
 
 ## 👥 Créditos
 
-Desarrollado por el equipo de PollaMundial 2026.
+Desarrollado por @scamander90
 
 ---
 
 ## 📄 Licencia
 
-Uso privado — proyecto de grupo para la Polla Mundialista 2026.
+Uso privado — proyecto de grupo para La Polla del Ponce.
