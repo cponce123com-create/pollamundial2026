@@ -171,19 +171,6 @@ export default function Header() {
         </div>
       )}
 
-      {/* Bottom Navigation (mobile only) */}
-      <nav className="bottom-nav">
-        {(user ? NAV_ITEMS_AUTH : NAV_ITEMS_GUEST).map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={`bottom-nav-item ${isActive(item.path) ? "active" : ""}`}
-          >
-            <span className="bottom-nav-icon">{item.icon}</span>
-            <span className="bottom-nav-label">{item.label}</span>
-          </Link>
-        ))}
-      </nav>
     </>
   );
 }
