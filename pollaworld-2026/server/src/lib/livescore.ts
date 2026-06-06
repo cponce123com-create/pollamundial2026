@@ -138,14 +138,17 @@ async function syncScores(): Promise<{ updated: number; live: number }> {
 
       const homeScore = parseInt(game.home_score, 10);
       const awayScore = parseInt(game.away_score, 10);
+      // Si el parseo falla (NaN), tratar como null (sin marcador)
+      const safeHome = isNaN(homeScore) ? null : homeScore;
+      const safeAway = isNaN(awayScore) ? null : awayScore;
       const isFinished = game.finished === "TRUE";
 
       if (game.time_elapsed !== "notstarted" && !isFinished) live++;
 
       // Only update if scores changed or match just finished
       const scoresChanged =
-        dbMatch.home_score_real !== homeScore ||
-        dbMatch.away_score_real !== awayScore;
+        dbMatch.home_score_real !== safeHome ||
+        dbMatch.away_score_real !== safeAway;
 
       // Solo procesar partidos que realmente han comenzado o terminado
       const hasStarted = game.time_elapsed !== "notstarted";
@@ -155,7 +158,7 @@ async function syncScores(): Promise<{ updated: number; live: number }> {
       if (dbMatch.is_locked && !isFinished) continue;
 
       if (scoresChanged || (isFinished && !dbMatch.is_locked)) {
-        matchesToUpdate.push({ id: dbMatch.id, homeScore, awayScore, isFinished });
+        matchesToUpdate.push({ id: dbMatch.id, homeScore: safeHome!, awayScore: safeAway!, isFinished });
         if (isFinished) finishedMatchIds.push(dbMatch.id);
         updated++;
       }

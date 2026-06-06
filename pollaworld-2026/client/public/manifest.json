@@ -1,6 +1,6 @@
 {
-  "name": "La Polla del Ponce",
-  "short_name": "La Polla del Ponce",
+  "name": "La Polla del Ponce 2026",
+  "short_name": "La Polla 2026",
   "description": "La quiniela del Mundial 2026 — Predice los resultados y compite con amigos",
   "start_url": "/",
   "display": "standalone",
@@ -10,22 +10,16 @@
   "categories": ["sports", "games"],
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "/logo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/pwa-192.png",
-      "sizes": "192x192",
+      "src": "/logo-og.png",
+      "sizes": "400x400",
       "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/pwa-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }

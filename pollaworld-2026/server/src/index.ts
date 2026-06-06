@@ -6,6 +6,7 @@ import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import path from "path";
+import rateLimit from "express-rate-limit";
 
 import authRoutes from "./routes/auth";
 import entryRoutes from "./routes/entries";
@@ -59,6 +60,16 @@ app.use(csrfProtection);
 
 // HTTP request logging
 app.use(pinoHttp({ logger }));
+
+// Global rate limiter (fallback for routes without specific limiter)
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 200, // 200 requests por ventana
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Demasiadas solicitudes. Intenta de nuevo en 15 minutos." },
+});
+app.use("/api", globalLimiter);
 
 // API Routes
 app.use("/api/auth", authRoutes);

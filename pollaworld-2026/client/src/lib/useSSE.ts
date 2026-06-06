@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { toast } from "sonner";
 
 export type SSEEventType =
@@ -39,7 +39,9 @@ export function onSSEEvent(type: SSEEventType, handler: EventHandler): () => voi
  */
 export function useSSE(clientId?: string): { connected: boolean } {
   const eventSourceRef = useRef<EventSource | null>(null);
-  const connectedRef = useRef(false);
+  const retryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const retryCountRef = useRef(0);
+  const [connected, setConnected] = useState(false);
 
   const getClientId = useCallback((): string => {
     let id = clientId;
@@ -53,15 +55,19 @@ export function useSSE(clientId?: string): { connected: boolean } {
     return id;
   }, [clientId]);
 
-  useEffect(() => {
+  const connect = useCallback(() => {
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+    }
+
     const es = new EventSource(`/api/events?clientId=${getClientId()}`);
     eventSourceRef.current = es;
 
     es.addEventListener("connected", () => {
-      connectedRef.current = true;
+      setConnected(true);
+      retryCountRef.current = 0;
     });
 
-    // Generic event handler
     const handleEvent = (eventType: SSEEventType) => (event: MessageEvent) => {
       try {
         const data: SSEEvent = JSON.parse(event.data);
@@ -70,7 +76,6 @@ export function useSSE(clientId?: string): { connected: boolean } {
           handlers.forEach((handler) => handler(data));
         }
 
-        // Default toast notifications
         switch (eventType) {
           case "payment_approved":
             toast.success(`✅ Pago aprobado — Ticket #${data.payload.ticketNumber}`);
@@ -93,7 +98,6 @@ export function useSSE(clientId?: string): { connected: boolean } {
       }
     };
 
-    // Register listeners for each event type
     const eventTypes: SSEEventType[] = [
       "payment_approved", "payment_rejected", "tournament_started",
       "match_result", "match_unlocked", "admin_action",
@@ -102,21 +106,28 @@ export function useSSE(clientId?: string): { connected: boolean } {
       es.addEventListener(type, handleEvent(type) as EventListener);
     });
 
-    // Error handling — reconnect
     es.onerror = () => {
-      connectedRef.current = false;
+      setConnected(false);
       es.close();
-      // Reconnect after 5s
-      setTimeout(() => {
-        // The effect cleanup will handle this
-      }, 5000);
-    };
+      eventSourceRef.current = null;
 
-    return () => {
-      es.close();
-      connectedRef.current = false;
+      // Exponential backoff: 2s, 4s, 8s, 16s... max 60s
+      const delay = Math.min(2000 * Math.pow(2, retryCountRef.current), 60000);
+      retryCountRef.current++;
+      console.log(`[SSE] Reconnecting in ${delay}ms (attempt ${retryCountRef.current})`);
+      retryTimeoutRef.current = setTimeout(connect, delay);
     };
   }, [getClientId]);
 
-  return { connected: connectedRef.current };
+  useEffect(() => {
+    connect();
+
+    return () => {
+      if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
+      if (eventSourceRef.current) eventSourceRef.current.close();
+      setConnected(false);
+    };
+  }, [connect]);
+
+  return { connected };
 }

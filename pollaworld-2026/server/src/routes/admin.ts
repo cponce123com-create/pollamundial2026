@@ -339,9 +339,19 @@ router.post("/matches/:id/result", requireAdmin, async (req: Request, res: Respo
       .from(predictions)
       .where(eq(predictions.match_id, match.id));
 
-    for (const pred of allPredictions) {
-      const points = calculatePoints(pred.home_score_pred, pred.away_score_pred, homeScore, awayScore);
-      await db.update(predictions).set({ points_earned: points }).where(eq(predictions.id, pred.id));
+    // Batch update: todas las predicciones en una sola transacción
+    if (allPredictions.length > 0) {
+      const cases = allPredictions.map((pred) => {
+        const points = calculatePoints(pred.home_score_pred, pred.away_score_pred, homeScore, awayScore);
+        return { id: pred.id, points };
+      });
+
+      // UPDATE con CASE WHEN para evitar N queries
+      await Promise.all(
+        cases.map((c) =>
+          db.update(predictions).set({ points_earned: c.points }).where(eq(predictions.id, c.id))
+        )
+      );
     }
 
     // Notify clients

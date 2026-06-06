@@ -62,6 +62,7 @@ export default function Dashboard() {
       const [configData, matchData] = await Promise.all([
         api.getPoolConfig(),
         api.getMatchesWithPredictions(entryId),
+        import("../components/PdfBoleto"), // preload PDF component
       ]);
       setConfig(configData);
       setMatches(matchData);
