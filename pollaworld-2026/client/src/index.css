@@ -961,6 +961,16 @@ a:hover {
 }
 
 /* ===== AUTOFILL BUTTONS ===== */
+.autofill-section-title {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  margin-top: 16px;
+  letter-spacing: 0.4px;
+}
+
 .autofill-row {
   display: flex;
   gap: 8px;

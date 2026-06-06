@@ -364,6 +364,8 @@ export default function Dashboard() {
 
             {/* Autofill Buttons */}
             {!tournamentStarted && filteredMatches.length > 0 && (
+              <>
+              <div className="autofill-section-title">🧙 Asistente de autollenado</div>
               <div className="autofill-row">
                 <button
                   className="btn btn-autofill btn-autofill-luck"
