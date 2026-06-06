@@ -2569,6 +2569,133 @@ h3.admin-section-title {
   .participant-grid-responsive {
     grid-template-columns: 1fr !important;
   }
+
+  /* Admin form grid apila en mobile */
+  .admin-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .admin-action-group {
+    flex-wrap: wrap;
+  }
+
+  /* Teams page mobile */
+  .pitch-field {
+    height: 280px;
+  }
+
+  .pitch-player {
+    width: 36px;
+    height: 36px;
+    font-size: 0.65rem;
+  }
+
+  .pitch-player-name {
+    font-size: 0.6rem;
+  }
+
+  .team-info-cards {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+  }
+
+  .team-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .team-card-btn {
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .team-card-name {
+    font-size: 0.8rem;
+  }
+
+  /* Home sections responsive */
+  .home-section-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Admin tabs responsive */
+  .admin-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+
+  .admin-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 10px 14px;
+    font-size: 0.8rem;
+  }
+
+  /* Ranking table responsive */
+  .ranking-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ranking-table th,
+  .ranking-table td {
+    padding: 8px 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .ranking-pos {
+    font-size: 0.9rem;
+    min-width: 28px;
+  }
+
+  /* Auth pages mobile */
+  .auth-page {
+    padding: 20px 12px;
+  }
+
+  .auth-card {
+    padding: 20px 16px;
+  }
+
+  .form-group label {
+    font-size: 0.85rem;
+  }
+
+  .form-input {
+    font-size: 16px; /* previene zoom en iOS */
+    padding: 10px 12px;
+  }
+
+  /* General touch improvements */
+  .btn, button, .tab, .team-card-btn, .entry-tab {
+    cursor: default;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Card padding reducido */
+  .card {
+    padding: 14px;
+  }
+
+  /* Home stats en fila */
+  .home-hero-stats {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .home-hero-stat-value {
+    font-size: 1.2rem;
+  }
 }
 
 @media (max-width: 480px) {
