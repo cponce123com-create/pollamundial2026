@@ -184,7 +184,7 @@ export default function Admin() {
     setExporting(true);
     try {
       const data = await api.getExportData();
-      const blob = await pdf(<PdfMassExport data={data} />).toBlob();
+      const blob = await pdf(<PdfMassExport data={data} logoUrl={config?.logo_url} />).toBlob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

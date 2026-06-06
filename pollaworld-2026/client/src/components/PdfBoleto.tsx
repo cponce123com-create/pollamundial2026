@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Document, Page, Text, View, Image, StyleSheet } from "@react-pdf/renderer";
 import { Match, Prediction } from "../lib/api";
 import { getPlayer } from "../lib/players";
 import { TEAMS } from "../lib/teams";
@@ -59,6 +59,13 @@ const S = StyleSheet.create({
     fontSize: 11,
     fontWeight: "bold",
     fontFamily: "Helvetica",
+  },
+  logoImg: {
+    width: 160,
+    height: 50,
+    alignSelf: "center",
+    marginBottom: 2,
+    objectFit: "contain",
   },
   headerSub: {
     fontSize: 6,
@@ -152,6 +159,7 @@ interface PdfBoletoProps {
   playerSlug: string;
   predictions: UserPrediction[];
   allMatches: Match[];
+  logoUrl?: string | null;
 }
 
 interface PrecomputedMatch {
@@ -190,6 +198,7 @@ function ParticipantPage({
   playerSlug,
   predictions,
   allMatches,
+  logoUrl,
   isMassExport,
   exportTime,
 }: PdfBoletoProps & { isMassExport?: boolean; exportTime?: string }) {
@@ -217,7 +226,11 @@ function ParticipantPage({
     <Page size={{ width: THERMAL_WIDTH, height: "400mm" }} style={S.page}>
       {/* ══ HEADER ══ */}
       <View style={S.header}>
-        <Text style={S.logo}>LA POLLA DEL PONCE</Text>
+        {logoUrl ? (
+          <Image src={logoUrl} style={S.logoImg} />
+        ) : (
+          <Text style={S.logo}>LA POLLA DEL PONCE</Text>
+        )}
         <Text style={S.headerSub}>
           {isMassExport ? "EXPORTACION MASIVA - BOLETO OFICIAL" : "BOLETO DE PREDICCIONES"}
         </Text>
@@ -323,9 +336,10 @@ interface MassExportProps {
     }[];
     matches: Match[];
   };
+  logoUrl?: string | null;
 }
 
-export function PdfMassExport({ data }: MassExportProps) {
+export function PdfMassExport({ data, logoUrl }: MassExportProps) {
   return (
     <Document>
       {data.users.map((u) => (
@@ -336,6 +350,7 @@ export function PdfMassExport({ data }: MassExportProps) {
           playerSlug={u.user.player_slug}
           predictions={u.predictions}
           allMatches={data.matches}
+          logoUrl={logoUrl}
           isMassExport
           exportTime={data.exported_at}
         />

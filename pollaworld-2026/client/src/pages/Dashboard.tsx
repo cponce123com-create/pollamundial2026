@@ -208,6 +208,7 @@ export default function Dashboard() {
           playerSlug={user!.player_slug}
           predictions={predictionsData}
           allMatches={allMatches}
+          logoUrl={config?.logo_url}
         />
       ).toBlob();
 

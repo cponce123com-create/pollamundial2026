@@ -19,15 +19,18 @@ export default function Participants() {
   const [modalLoading, setModalLoading] = useState(false);
   const [modalTab, setModalTab] = useState<"groups" | "elim">("groups");
   const [exporting, setExporting] = useState(false);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
       api.getPoolStats(),
       api.getParticipants(),
+      api.getPoolConfig().catch(() => null),
     ])
-      .then(([s, p]) => {
+      .then(([s, p, cfg]) => {
         setStats(s);
         setParticipants(p);
+        setLogoUrl(cfg?.logo_url || null);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -72,6 +75,7 @@ export default function Participants() {
           playerSlug={modalData.playerSlug}
           predictions={modalData.predictions}
           allMatches={modalData.allMatches}
+          logoUrl={logoUrl}
         />
       ).toBlob();
       const url = URL.createObjectURL(blob);
