@@ -125,6 +125,12 @@ a:hover {
   color: var(--gold);
 }
 
+.header-logo-img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
 .header-nav {
   display: flex;
   gap: 8px;

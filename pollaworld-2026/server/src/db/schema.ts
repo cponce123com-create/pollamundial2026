@@ -73,5 +73,7 @@ export const poolConfig = pgTable("pool_config", {
   yape_qr_url: text("yape_qr_url"),
   yape_phone: text("yape_phone"),
   whatsapp_group_link: text("whatsapp_group_link"),
+  logo_url: text("logo_url"),
+  favicon_url: text("favicon_url"),
   player_custom_names: jsonb("player_custom_names"),
 });

@@ -1,7 +1,8 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getPlayer } from "../lib/players";
 import { useAuth } from "../lib/AuthContext";
+import { api, PoolConfig } from "../lib/api";
 
 const NAV_ITEMS_AUTH = [
   { path: "/", label: "Inicio", icon: "🏠" },
@@ -35,6 +36,23 @@ export default function Header() {
   const player = user ? getPlayer(user.player_slug) : null;
   const isActive = (path: string) => location.pathname === path;
 
+  const [poolConfigData, setPoolConfigData] = useState<PoolConfig | null>(null);
+
+  useEffect(() => {
+    api.getPoolConfig().then((cfg) => {
+      setPoolConfigData(cfg);
+      if (cfg?.favicon_url) {
+        let link = document.querySelector<HTMLLinkElement>("link[rel*='icon']");
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+        }
+        link.href = cfg.favicon_url;
+      }
+    }).catch(() => {});
+  }, []);
+
   const navItems = user
     ? user.role === "admin"
       ? [...NAV_ITEMS_AUTH, { path: "/admin", label: "Admin", icon: "⚙️" }]
@@ -57,7 +75,11 @@ export default function Header() {
           </button>
 
           <Link to="/" className="header-logo" onClick={() => setMenuOpen(false)}>
-            <span className="header-logo-icon">⚽</span>
+            {poolConfigData?.logo_url ? (
+              <img src={poolConfigData.logo_url} alt="" className="header-logo-img" />
+            ) : (
+              <span className="header-logo-icon">⚽</span>
+            )}
             <span className="header-logo-text">La Polla del Ponce</span>
           </Link>
 

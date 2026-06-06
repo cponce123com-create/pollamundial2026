@@ -49,6 +49,8 @@ export default function Admin() {
   const [prize2, setPrize2] = useState(30);
   const [prize3, setPrize3] = useState(20);
   const [qrFile, setQrFile] = useState<File | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [faviconFile, setFaviconFile] = useState<File | null>(null);
   const [whatsappLink, setWhatsappLink] = useState("");
 
   // Export state
@@ -82,6 +84,8 @@ export default function Admin() {
         setPrize2(cfg.prize_2nd_pct);
         setPrize3(cfg.prize_3rd_pct);
         setWhatsappLink(cfg.whatsapp_group_link || "");
+        setLogoFile(null);
+        setFaviconFile(null);
       }
     } catch {
       navigate("/login");
@@ -128,6 +132,30 @@ export default function Admin() {
       const data = await api.uploadYapeQr(qrFile);
       toast.success(data.message || "QR subido");
       setQrFile(null);
+      await loadAll();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error");
+    }
+  };
+
+  const handleUploadLogo = async () => {
+    if (!logoFile) return;
+    try {
+      const data = await api.uploadLogo(logoFile);
+      toast.success(data.message || "Logo subido");
+      setLogoFile(null);
+      await loadAll();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error");
+    }
+  };
+
+  const handleUploadFavicon = async () => {
+    if (!faviconFile) return;
+    try {
+      const data = await api.uploadFavicon(faviconFile);
+      toast.success(data.message || "Favicon subido");
+      setFaviconFile(null);
       await loadAll();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Error");
@@ -332,6 +360,14 @@ export default function Admin() {
             onUploadQr={handleUploadQr}
             whatsappLink={whatsappLink}
             onWhatsappLinkChange={setWhatsappLink}
+            logoUrl={config?.logo_url || ""}
+            faviconUrl={config?.favicon_url || ""}
+            logoFile={logoFile}
+            faviconFile={faviconFile}
+            onLogoFileChange={setLogoFile}
+            onFaviconFileChange={setFaviconFile}
+            onUploadLogo={handleUploadLogo}
+            onUploadFavicon={handleUploadFavicon}
           />
         )}
 

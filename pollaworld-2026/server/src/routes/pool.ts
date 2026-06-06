@@ -223,4 +223,118 @@ router.post("/upload-yape-qr", requireAdmin, (req: Request, res: Response, next)
   }
 });
 
+// POST /api/pool/upload-logo — subir logo de la polla (admin)
+router.post("/upload-logo", requireAdmin, (req: Request, res: Response, next) => {
+  upload.single("logo")(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({ error: "La imagen no debe superar los 5MB." });
+      }
+      return res.status(400).json({ error: `Error al subir: ${err.message}` });
+    }
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    next();
+  });
+}, async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: "Debes enviar una imagen del logo." });
+      return;
+    }
+
+    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: "pollaworld/logo",
+          allowed_formats: ["jpg", "jpeg", "png", "gif", "webp", "svg"],
+          max_file_size: 5 * 1024 * 1024,
+        },
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result as { secure_url: string });
+        }
+      );
+      stream.end(req.file!.buffer);
+    });
+
+    const configs = await db.select().from(poolConfig).limit(1);
+    if (configs.length === 0) {
+      await db.insert(poolConfig).values({ logo_url: result.secure_url });
+    } else {
+      await db
+        .update(poolConfig)
+        .set({ logo_url: result.secure_url })
+        .where(eq(poolConfig.id, configs[0].id));
+    }
+
+    res.json({ url: result.secure_url, message: "Logo actualizado." });
+  } catch (err: unknown) {
+    logger.error(err, "Upload logo error:");
+    const errObj = err as Record<string, unknown>;
+    if (errObj?.http_code === 401 || (typeof errObj?.message === "string" && (errObj.message as string).includes("Invalid"))) {
+      return res.status(500).json({ error: "Error de configuración de Cloudinary. Contacta al administrador." });
+    }
+    res.status(500).json({ error: "Error al subir logo." });
+  }
+});
+
+// POST /api/pool/upload-favicon — subir favicon de la polla (admin)
+router.post("/upload-favicon", requireAdmin, (req: Request, res: Response, next) => {
+  upload.single("favicon")(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({ error: "La imagen no debe superar los 5MB." });
+      }
+      return res.status(400).json({ error: `Error al subir: ${err.message}` });
+    }
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    next();
+  });
+}, async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: "Debes enviar una imagen del favicon." });
+      return;
+    }
+
+    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: "pollaworld/favicon",
+          allowed_formats: ["jpg", "jpeg", "png", "gif", "webp", "svg", "ico"],
+          max_file_size: 5 * 1024 * 1024,
+        },
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result as { secure_url: string });
+        }
+      );
+      stream.end(req.file!.buffer);
+    });
+
+    const configs = await db.select().from(poolConfig).limit(1);
+    if (configs.length === 0) {
+      await db.insert(poolConfig).values({ favicon_url: result.secure_url });
+    } else {
+      await db
+        .update(poolConfig)
+        .set({ favicon_url: result.secure_url })
+        .where(eq(poolConfig.id, configs[0].id));
+    }
+
+    res.json({ url: result.secure_url, message: "Favicon actualizado." });
+  } catch (err: unknown) {
+    logger.error(err, "Upload favicon error:");
+    const errObj = err as Record<string, unknown>;
+    if (errObj?.http_code === 401 || (typeof errObj?.message === "string" && (errObj.message as string).includes("Invalid"))) {
+      return res.status(500).json({ error: "Error de configuración de Cloudinary. Contacta al administrador." });
+    }
+    res.status(500).json({ error: "Error al subir favicon." });
+  }
+});
+
 export default router;

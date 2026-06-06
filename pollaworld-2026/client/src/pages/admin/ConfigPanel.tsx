@@ -19,6 +19,14 @@ interface ConfigPanelProps {
   onUploadQr: () => void;
   whatsappLink?: string;
   onWhatsappLinkChange?: (v: string) => void;
+  logoUrl?: string;
+  faviconUrl?: string;
+  logoFile?: File | null;
+  faviconFile?: File | null;
+  onLogoFileChange?: (f: File | null) => void;
+  onFaviconFileChange?: (f: File | null) => void;
+  onUploadLogo?: () => void;
+  onUploadFavicon?: () => void;
 }
 
 export default function ConfigPanel({
@@ -40,6 +48,14 @@ export default function ConfigPanel({
   onUploadQr,
   whatsappLink,
   onWhatsappLinkChange,
+  logoUrl,
+  faviconUrl,
+  logoFile,
+  faviconFile,
+  onLogoFileChange,
+  onFaviconFileChange,
+  onUploadLogo,
+  onUploadFavicon,
 }: ConfigPanelProps) {
   const totalPct = prize1 + prize2 + prize3;
 
@@ -107,6 +123,58 @@ export default function ConfigPanel({
           <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 4 }}>
             Se mostrará en el Dashboard como botón "Unirse al grupo"
           </p>
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Logo de la Polla</label>
+          {logoUrl && (
+            <div className="admin-qr-preview">
+              <img
+                src={logoUrl}
+                alt="Logo"
+                className="admin-qr-img"
+              />
+            </div>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => onLogoFileChange?.(e.target.files?.[0] || null)}
+            className="admin-file-input"
+          />
+          <button
+            className="btn btn-outline"
+            onClick={onUploadLogo}
+            disabled={!logoFile}
+          >
+            Subir Logo
+          </button>
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Favicon (icono de pestaña)</label>
+          {faviconUrl && (
+            <div className="admin-qr-preview">
+              <img
+                src={faviconUrl}
+                alt="Favicon"
+                className="admin-qr-img"
+              />
+            </div>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => onFaviconFileChange?.(e.target.files?.[0] || null)}
+            className="admin-file-input"
+          />
+          <button
+            className="btn btn-outline"
+            onClick={onUploadFavicon}
+            disabled={!faviconFile}
+          >
+            Subir Favicon
+          </button>
         </div>
 
         <div className="form-group admin-full-width">

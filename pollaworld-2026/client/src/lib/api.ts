@@ -276,6 +276,34 @@ export const api = {
   saveMatchResult: (matchId: string, home_score_real: number, away_score_real: number) =>
     request<{ message: string }>(`/admin/matches/${matchId}/result`, { method: "POST", body: JSON.stringify({ home_score_real, away_score_real }) }),
 
+  uploadLogo: (file: File) => {
+    const fd = new FormData();
+    fd.append("logo", file);
+    return fetch("/api/pool/upload-logo", {
+      method: "POST",
+      credentials: "include",
+      body: fd,
+    }).then(async (res) => {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error");
+      return data as { url: string; message: string };
+    });
+  },
+
+  uploadFavicon: (file: File) => {
+    const fd = new FormData();
+    fd.append("favicon", file);
+    return fetch("/api/pool/upload-favicon", {
+      method: "POST",
+      credentials: "include",
+      body: fd,
+    }).then(async (res) => {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error");
+      return data as { url: string; message: string };
+    });
+  },
+
   uploadYapeQr: (file: File) => {
     const fd = new FormData();
     fd.append("qr", file);
