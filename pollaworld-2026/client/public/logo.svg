@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700"/>
+      <stop offset="100%" style="stop-color:#ffaa00"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="200" cy="200" r="195" fill="url(#bg)" stroke="url(#gold)" stroke-width="4"/>
+  <!-- Trophy -->
+  <path d="M200 80 L200 120" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="200" cy="130" rx="30" ry="12" fill="url(#gold)"/>
+  <rect x="185" y="130" width="30" height="40" rx="4" fill="url(#gold)"/>
+  <path d="M155 140 Q140 130 140 110 Q140 95 155 90" stroke="#ffd700" stroke-width="3" fill="none"/>
+  <path d="M245 140 Q260 130 260 110 Q260 95 245 90" stroke="#ffd700" stroke-width="3" fill="none"/>
+  <!-- Handles -->
+  <ellipse cx="200" cy="170" rx="20" ry="6" fill="#e6b800"/>
+  <rect x="180" y="170" width="40" height="25" rx="3" fill="url(#gold)"/>
+  <!-- Base -->
+  <rect x="140" y="195" width="120" height="8" rx="4" fill="url(#gold)"/>
+  <!-- Soccer ball -->
+  <circle cx="200" cy="280" r="35" fill="white" stroke="#ccc" stroke-width="1"/>
+  <path d="M200 245 Q215 265 200 290 Q185 315 200 315 Q215 315 200 290 Q185 265 200 245Z" fill="#333"/>
+  <path d="M175 260 Q190 270 200 260 Q210 250 225 260" stroke="#333" stroke-width="2" fill="none"/>
+  <path d="M175 300 Q190 290 200 300 Q210 310 225 300" stroke="#333" stroke-width="2" fill="none"/>
+  <circle cx="200" cy="280" r="5" fill="#333"/>
+  <!-- Text -->
+  <text x="200" y="350" text-anchor="middle" font-family="Outfit, sans-serif" font-size="28" font-weight="800" fill="url(#gold)" letter-spacing="1">LA POLLA</text>
+  <text x="200" y="375" text-anchor="middle" font-family="Outfit, sans-serif" font-size="22" font-weight="700" fill="white" letter-spacing="2">DEL PONCE</text>
+</svg>
