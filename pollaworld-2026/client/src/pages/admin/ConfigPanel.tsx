@@ -17,6 +17,8 @@ interface ConfigPanelProps {
   onQrFileChange: (f: File | null) => void;
   onSaveConfig: () => void;
   onUploadQr: () => void;
+  whatsappLink?: string;
+  onWhatsappLinkChange?: (v: string) => void;
 }
 
 export default function ConfigPanel({
@@ -36,6 +38,8 @@ export default function ConfigPanel({
   onQrFileChange,
   onSaveConfig,
   onUploadQr,
+  whatsappLink,
+  onWhatsappLinkChange,
 }: ConfigPanelProps) {
   const totalPct = prize1 + prize2 + prize3;
 
@@ -90,6 +94,19 @@ export default function ConfigPanel({
             value={entryFee}
             onChange={(e) => onEntryFeeChange(Number(e.target.value))}
           />
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">📱 Link del grupo de WhatsApp</label>
+          <input
+            className="form-input"
+            value={whatsappLink || ""}
+            onChange={(e) => onWhatsappLinkChange?.(e.target.value)}
+            placeholder="https://chat.whatsapp.com/..."
+          />
+          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 4 }}>
+            Se mostrará en el Dashboard como botón "Unirse al grupo"
+          </p>
         </div>
 
         <div className="form-group admin-full-width">

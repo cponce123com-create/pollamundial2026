@@ -49,6 +49,7 @@ export default function Admin() {
   const [prize2, setPrize2] = useState(30);
   const [prize3, setPrize3] = useState(20);
   const [qrFile, setQrFile] = useState<File | null>(null);
+  const [whatsappLink, setWhatsappLink] = useState("");
 
   // Export state
   const [exporting, setExporting] = useState(false);
@@ -80,6 +81,7 @@ export default function Admin() {
         setPrize1(cfg.prize_1st_pct);
         setPrize2(cfg.prize_2nd_pct);
         setPrize3(cfg.prize_3rd_pct);
+        setWhatsappLink(cfg.whatsapp_group_link || "");
       }
     } catch {
       navigate("/login");
@@ -140,6 +142,7 @@ export default function Admin() {
         prize_1st_pct: prize1,
         prize_2nd_pct: prize2,
         prize_3rd_pct: prize3,
+        whatsapp_group_link: whatsappLink || null,
       });
       toast.success("Configuración guardada");
       await loadAll();
@@ -327,6 +330,8 @@ export default function Admin() {
             onQrFileChange={setQrFile}
             onSaveConfig={saveConfig}
             onUploadQr={handleUploadQr}
+            whatsappLink={whatsappLink}
+            onWhatsappLinkChange={setWhatsappLink}
           />
         )}
 

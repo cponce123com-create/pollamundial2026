@@ -25,6 +25,7 @@ const poolConfigSchema = z.object({
   tournament_started: z.boolean().optional(),
   yape_qr_url: z.string().nullable().optional(),
   yape_phone: z.string().nullable().optional(),
+  whatsapp_group_link: z.string().nullable().optional(),
   player_custom_names: z.record(z.string()).nullable().optional(),
 });
 

@@ -602,6 +602,41 @@ export default function Dashboard() {
             {generatingPdf ? "Generando..." : "⬇️ Descargar mis predicciones (PDF)"}
           </button>
         </div>
+
+        {/* WhatsApp Group Card */}
+        {config?.whatsapp_group_link && (
+          <div className="card" style={{ marginTop: 16 }}>
+            <h3 className="card-title">💬 Grupo de WhatsApp</h3>
+            <p className="placeholder-text" style={{ marginBottom: 12 }}>
+              Únete al grupo oficial para estar al tanto de las novedades y resultados del torneo.
+            </p>
+            <a
+              href={config.whatsapp_group_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-success btn-block"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                padding: "10px 20px",
+                borderRadius: "var(--radius-sm)",
+                fontFamily: "var(--font-heading)",
+                fontSize: "0.95rem",
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "all 0.2s",
+                textAlign: "center",
+                textDecoration: "none",
+                background: "#25D366",
+                color: "#fff",
+              }}
+            >
+              💬 Unirse al grupo de WhatsApp
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
