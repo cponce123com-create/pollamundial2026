@@ -2686,3 +2686,136 @@ h3.admin-section-title {
 .btn-danger:hover {
   background: rgba(248, 81, 73, 0.1);
 }
+
+/* ── Simulador de puntuación ── */
+.testing-card-sim {
+  border-color: rgba(63, 185, 80, 0.25);
+}
+
+.testing-sim-config {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.testing-sim-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.testing-sim-score {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.testing-sim-score-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.testing-sim-score-field label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.testing-score-input {
+  width: 64px !important;
+  text-align: center;
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  padding: 8px !important;
+}
+
+.testing-sim-vs {
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  padding-bottom: 10px;
+}
+
+.testing-sim-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.testing-sim-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.testing-sim-row {
+  display: grid;
+  grid-template-columns: 1.5fr 0.8fr 0.8fr 1.2fr;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  align-items: center;
+  border-left: 3px solid transparent;
+}
+
+.testing-sim-header {
+  background: var(--bg-dark);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-left: none;
+}
+
+.testing-sim-row.pts-5 { border-left-color: var(--gold); background: rgba(240,165,0,0.06); }
+.testing-sim-row.pts-3 { border-left-color: var(--success); background: rgba(63,185,80,0.05); }
+.testing-sim-row.pts-2 { border-left-color: #58a6ff; background: rgba(88,166,255,0.05); }
+.testing-sim-row.pts-0 { border-left-color: var(--error); background: rgba(248,81,73,0.05); }
+
+.testing-pred-badge {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--white);
+}
+
+.testing-pts-badge {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--gold);
+}
+
+.testing-reason {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.testing-sim-result {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: rgba(63,185,80,0.06);
+  border: 1px solid rgba(63,185,80,0.2);
+  border-radius: var(--radius-sm);
+}
+
+.testing-sim-result-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.88rem;
+  color: var(--success);
+}
+
+.testing-sim-match {
+  color: var(--text-secondary);
+  font-size: 0.83rem;
+}

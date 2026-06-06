@@ -297,6 +297,20 @@ export const api = {
       entries: { total: number; approved: number; pending: number; ok: boolean };
       predictions: { total: number; ok: boolean };
     }>("/admin/testing/verify"),
+
+  runSimulation: (home_real: number, away_real: number) =>
+    request<{
+      message: string;
+      match: { id: string; home_team: string; away_team: string; result: string };
+      scoring_rules: Record<string, string>;
+      results: { name: string; pred: string; points: number; expected: number; pass: boolean }[];
+    }>("/admin/testing/run-simulation", {
+      method: "POST",
+      body: JSON.stringify({ home_real, away_real }),
+    }),
+
+  cleanupDemo: () =>
+    request<{ message: string; deleted: number }>("/admin/testing/cleanup-demo", { method: "POST" }),
 };
 
 export interface PoolStats {

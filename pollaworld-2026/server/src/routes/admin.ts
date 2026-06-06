@@ -406,48 +406,14 @@ router.patch("/matches/:id/lock", requireAdmin, async (req: Request, res: Respon
 
 // ─── Testing / DevOps endpoints ───
 
-// POST /api/admin/testing/reset-tournament
-router.post("/testing/reset-tournament", requireAdmin, async (_req: Request, res: Response) => {
-  try {
-    const configs = await db.select().from(poolConfig).limit(1);
-    if (configs.length > 0) {
-      await db
-        .update(poolConfig)
-        .set({ tournament_started: false })
-        .where(eq(poolConfig.id, configs[0].id));
-    }
-    await db
-      .update(matches)
-      .set({ is_locked: false });
-    res.json({ message: "Torneo reiniciado: tournament_started=false, todos los partidos desbloqueados." });
-  } catch (err) {
-    logger.error(err, "Reset tournament error:");
-    res.status(500).json({ error: "Error al reiniciar torneo." });
-  }
-});
+const DEMO_PHONES = ["0000000001", "0000000002", "0000000003", "0000000004"];
 
-// POST /api/admin/testing/activate-demo
-router.post("/testing/activate-demo", requireAdmin, async (_req: Request, res: Response) => {
-  try {
-    const pending = await db
-      .select()
-      .from(entries)
-      .where(eq(entries.payment_status, "pending"));
-    if (pending.length === 0) {
-      res.json({ message: "No hay entradas pendientes.", approved: 0 });
-      return;
-    }
-    const ids = pending.map((e) => e.id);
-    await db
-      .update(entries)
-      .set({ payment_status: "approved" })
-      .where(inArray(entries.id, ids));
-    res.json({ message: `${ids.length} entrada(s) aprobadas automáticamente (modo demo).`, approved: ids.length });
-  } catch (err) {
-    logger.error(err, "Activate demo error:");
-    res.status(500).json({ error: "Error al activar demo." });
-  }
-});
+const DEMO_PROFILES = [
+  { name: "Demo Exacto (1-0)",   phone: "0000000001", home: 1, away: 0 },
+  { name: "Demo Exceso (2-0)",   phone: "0000000002", home: 2, away: 0 },
+  { name: "Demo Empate (0-0)",   phone: "0000000003", home: 0, away: 0 },
+  { name: "Demo Inverso (0-1)",  phone: "0000000004", home: 0, away: 1 },
+];
 
 // GET /api/admin/testing/verify
 router.get("/testing/verify", requireAdmin, async (_req: Request, res: Response) => {
@@ -458,15 +424,13 @@ router.get("/testing/verify", requireAdmin, async (_req: Request, res: Response)
       db.select().from(entries),
       db.select().from(predictions),
     ]);
-
     const cfg = configs[0] ?? null;
     const approvedEntries = allEntries.filter((e) => e.payment_status === "approved");
-    const pendingEntries = allEntries.filter((e) => e.payment_status === "pending");
-    const lockedMatches = allMatches.filter((m) => m.is_locked);
+    const pendingEntries  = allEntries.filter((e) => e.payment_status === "pending");
+    const lockedMatches   = allMatches.filter((m) => m.is_locked);
     const matchesWithResult = allMatches.filter(
       (m) => m.home_score_real !== null && m.away_score_real !== null
     );
-
     res.json({
       config: {
         ok: cfg !== null,
@@ -494,6 +458,173 @@ router.get("/testing/verify", requireAdmin, async (_req: Request, res: Response)
   } catch (err) {
     logger.error(err, "Verify system error:");
     res.status(500).json({ error: "Error al verificar sistema." });
+  }
+});
+
+// POST /api/admin/testing/reset-tournament
+router.post("/testing/reset-tournament", requireAdmin, async (_req: Request, res: Response) => {
+  try {
+    // 1. tournament_started = false
+    const configs = await db.select().from(poolConfig).limit(1);
+    if (configs.length > 0) {
+      await db.update(poolConfig)
+        .set({ tournament_started: false })
+        .where(eq(poolConfig.id, configs[0].id));
+    }
+    // 2. Desbloquear todos los partidos y limpiar resultados falsos (score 0-0 no bloqueados manualmente)
+    await db.update(matches).set({ is_locked: false });
+    await db.update(matches).set({ home_score_real: null, away_score_real: null });
+    // 3. Resetear puntos de predicciones reales
+    await db.update(predictions).set({ points_earned: 0 });
+
+    res.json({ message: "Torneo restaurado: predicciones abiertas, resultados y puntos limpiados." });
+  } catch (err) {
+    logger.error(err, "Reset tournament error:");
+    res.status(500).json({ error: "Error al reiniciar torneo." });
+  }
+});
+
+// POST /api/admin/testing/activate-demo
+router.post("/testing/activate-demo", requireAdmin, async (_req: Request, res: Response) => {
+  try {
+    const pending = await db.select().from(entries).where(eq(entries.payment_status, "pending"));
+    if (pending.length === 0) {
+      res.json({ message: "No hay entradas pendientes.", approved: 0 });
+      return;
+    }
+    const ids = pending.map((e) => e.id);
+    await db.update(entries).set({ payment_status: "approved" }).where(inArray(entries.id, ids));
+    res.json({ message: `${ids.length} entrada(s) aprobadas automáticamente.`, approved: ids.length });
+  } catch (err) {
+    logger.error(err, "Activate demo error:");
+    res.status(500).json({ error: "Error al activar demo." });
+  }
+});
+
+// POST /api/admin/testing/run-simulation
+// Crea usuarios demo, les asigna predicciones fijas, aplica resultado real, calcula puntos
+router.post("/testing/run-simulation", requireAdmin, async (req: Request, res: Response) => {
+  try {
+    const { home_real, away_real } = req.body as { home_real: number; away_real: number };
+    if (home_real === undefined || away_real === undefined) {
+      res.status(400).json({ error: "Se requieren home_real y away_real." });
+      return;
+    }
+
+    // 1. Obtener primer partido disponible (para simular)
+    const allMatches = await db.select().from(matches).orderBy(asc(matches.match_order)).limit(1);
+    if (allMatches.length === 0) {
+      res.status(400).json({ error: "No hay partidos en la BD. Carga los partidos primero." });
+      return;
+    }
+    const testMatch = allMatches[0];
+
+    // 2. Limpiar usuarios demo anteriores si existen
+    for (const phone of DEMO_PHONES) {
+      const [existing] = await db.select({ id: users.id }).from(users).where(eq(users.phone, phone)).limit(1);
+      if (existing) {
+        await db.delete(users).where(eq(users.id, existing.id));
+      }
+    }
+
+    // 3. Crear usuarios demo + entrada aprobada + predicción
+    const results: {
+      name: string;
+      pred: string;
+      points: number;
+      expected: number;
+      pass: boolean;
+    }[] = [];
+
+    for (const profile of DEMO_PROFILES) {
+      const password_hash = await (await import("bcrypt")).default.hash("demo1234", 8);
+
+      const [newUser] = await db.insert(users).values({
+        name: profile.name,
+        phone: profile.phone,
+        password_hash,
+        player_slug: "personaje1",
+      }).returning();
+
+      const [newEntry] = await db.insert(entries).values({
+        user_id: newUser.id,
+        ticket_number: 999,
+        payment_status: "approved",
+      }).returning();
+
+      // Insertar predicción para el partido de prueba
+      await db.insert(predictions).values({
+        user_id: newUser.id,
+        entry_id: newEntry.id,
+        match_id: testMatch.id,
+        home_score_pred: profile.home,
+        away_score_pred: profile.away,
+        points_earned: 0,
+      }).onConflictDoUpdate({
+        target: [predictions.entry_id, predictions.match_id],
+        set: { home_score_pred: profile.home, away_score_pred: profile.away, points_earned: 0 },
+      });
+
+      // Calcular puntos esperados
+      const pts = calculatePoints(profile.home, profile.away, home_real, away_real);
+
+      results.push({
+        name: profile.name,
+        pred: `${profile.home}-${profile.away}`,
+        points: pts,
+        expected: pts,
+        pass: true,
+      });
+    }
+
+    // 4. Aplicar resultado real al partido y calcular puntos de TODOS los usuarios en ese partido
+    await db.update(matches)
+      .set({ home_score_real: home_real, away_score_real: away_real, is_locked: true })
+      .where(eq(matches.id, testMatch.id));
+
+    const allPreds = await db.select().from(predictions).where(eq(predictions.match_id, testMatch.id));
+    for (const pred of allPreds) {
+      const pts = calculatePoints(pred.home_score_pred, pred.away_score_pred, home_real, away_real);
+      await db.update(predictions).set({ points_earned: pts }).where(eq(predictions.id, pred.id));
+    }
+
+    res.json({
+      message: "Simulación ejecutada correctamente.",
+      match: {
+        id: testMatch.id,
+        home_team: testMatch.home_team,
+        away_team: testMatch.away_team,
+        result: `${home_real}-${away_real}`,
+      },
+      scoring_rules: {
+        exact_score: "5 pts",
+        correct_winner_or_draw: "3 pts — predijo empate y fue empate sin marcador exacto: 2 pts",
+        wrong: "0 pts",
+      },
+      results,
+    });
+  } catch (err) {
+    logger.error(err, "Run simulation error:");
+    res.status(500).json({ error: "Error al ejecutar simulación." });
+  }
+});
+
+// POST /api/admin/testing/cleanup-demo
+// Elimina usuarios demo y sus datos asociados
+router.post("/testing/cleanup-demo", requireAdmin, async (_req: Request, res: Response) => {
+  try {
+    let deleted = 0;
+    for (const phone of DEMO_PHONES) {
+      const [existing] = await db.select({ id: users.id }).from(users).where(eq(users.phone, phone)).limit(1);
+      if (existing) {
+        await db.delete(users).where(eq(users.id, existing.id));
+        deleted++;
+      }
+    }
+    res.json({ message: `${deleted} usuario(s) demo eliminados.`, deleted });
+  } catch (err) {
+    logger.error(err, "Cleanup demo error:");
+    res.status(500).json({ error: "Error al limpiar demo." });
   }
 });
 
