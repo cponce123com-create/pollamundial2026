@@ -76,11 +76,10 @@ export default function Header() {
 
           <Link to="/" className="header-logo" onClick={() => setMenuOpen(false)}>
             {poolConfigData?.logo_url ? (
-              <img src={poolConfigData.logo_url} alt="" className="header-logo-img" />
+              <img src={poolConfigData.logo_url} alt="La Polla del Ponce" className="header-logo-img" />
             ) : (
               <span className="header-logo-icon">⚽</span>
             )}
-            <span className="header-logo-text">La Polla del Ponce</span>
           </Link>
 
           <nav className="header-nav-desktop">
