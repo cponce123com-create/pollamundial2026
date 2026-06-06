@@ -192,7 +192,112 @@
     "fifaRank": 12,
     "nickname": "El Tri",
     "bestWC": "Cuartos (1970, 1986)",
-    "stadium": "Estadio Azteca"
+    "stadium": "Estadio Azteca",
+    "starPlayers": [
+      {
+        "name": "H. Lozano",
+        "pos": "FW",
+        "club": "PSV",
+        "goals": 18,
+        "caps": 70
+      },
+      {
+        "name": "R. Jiménez",
+        "pos": "FW",
+        "club": "Fulham",
+        "goals": 33,
+        "caps": 105
+      },
+      {
+        "name": "G. Ochoa",
+        "pos": "GK",
+        "club": "América",
+        "goals": 0,
+        "caps": 150
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Estados Unidos",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Canadá",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Panamá",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Curazao",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Haití",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Costa Rica",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Honduras",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jamaica",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "El Salvador",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Trinidad",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Sudáfrica",
@@ -387,7 +492,112 @@
     "fifaRank": 60,
     "nickname": "Bafana Bafana",
     "bestWC": "Fase grupos",
-    "stadium": "Soccer City"
+    "stadium": "Soccer City",
+    "starPlayers": [
+      {
+        "name": "P. Tau",
+        "pos": "FW",
+        "club": "Al Ahly",
+        "goals": 15,
+        "caps": 90
+      },
+      {
+        "name": "R. Williams",
+        "pos": "GK",
+        "club": "Sundowns",
+        "goals": 0,
+        "caps": 60
+      },
+      {
+        "name": "T. Zwane",
+        "pos": "MF",
+        "club": "Sundowns",
+        "goals": 8,
+        "caps": 35
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Marruecos",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Senegal",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Egipto",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Túnez",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Costa de Marfil",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Ghana",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Cabo Verde",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Argelia",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "RD Congo",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Camerún",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Corea del Sur",
@@ -582,7 +792,112 @@
     "fifaRank": 23,
     "nickname": "Tigres Asiáticos",
     "bestWC": "4° lugar (2002)",
-    "stadium": "Seoul World Cup"
+    "stadium": "Seoul World Cup",
+    "starPlayers": [
+      {
+        "name": "Son H.M.",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 48,
+        "caps": 74
+      },
+      {
+        "name": "Hwang H.C.",
+        "pos": "FW",
+        "club": "AC Milan",
+        "goals": 18,
+        "caps": 90
+      },
+      {
+        "name": "Kim S.G.",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Japón",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Arabia Saudita",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Australia",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Irán",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Irak",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Catar",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Uzbekistán",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jordania",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Emiratos Árabes",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Omán",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "República Checa",
@@ -777,7 +1092,112 @@
     "fifaRank": 40,
     "nickname": "Lokomotiva",
     "bestWC": "Subcampeón (1934)",
-    "stadium": "Eden Arena"
+    "stadium": "Eden Arena",
+    "starPlayers": [
+      {
+        "name": "P. Schick",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 30,
+        "caps": 82
+      },
+      {
+        "name": "T. Souček",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 12,
+        "caps": 50
+      },
+      {
+        "name": "T. Vaclík",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Alemania",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Países Bajos",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Portugal",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Bélgica",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Austria",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Canadá",
@@ -972,7 +1392,112 @@
     "fifaRank": 45,
     "nickname": "Canucks",
     "bestWC": "Fase grupos",
-    "stadium": "BMO Field"
+    "stadium": "BMO Field",
+    "starPlayers": [
+      {
+        "name": "J. David",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 28,
+        "caps": 82
+      },
+      {
+        "name": "A. Davies",
+        "pos": "DF",
+        "club": "Man City",
+        "goals": 15,
+        "caps": 42
+      },
+      {
+        "name": "C. Larin",
+        "pos": "FW",
+        "club": "AC Milan",
+        "goals": 30,
+        "caps": 90
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "México",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Estados Unidos",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Panamá",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Curazao",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Haití",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Costa Rica",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Honduras",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jamaica",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "El Salvador",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Trinidad",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Bosnia y Herzegovina",
@@ -1167,7 +1692,112 @@
     "fifaRank": 55,
     "nickname": "Zmajevi",
     "bestWC": "Fase grupos",
-    "stadium": "Bilino Polje"
+    "stadium": "Bilino Polje",
+    "starPlayers": [
+      {
+        "name": "E. Džeko",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 65,
+        "caps": 74
+      },
+      {
+        "name": "M. Pjanić",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 18,
+        "caps": 50
+      },
+      {
+        "name": "I. Šehić",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Portugal",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Croacia",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Serbia",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Austria",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Alemania",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Francia",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Inglaterra",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Turquía",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Catar",
@@ -1362,7 +1992,112 @@
     "fifaRank": 56,
     "nickname": "Al-Annabi",
     "bestWC": "Fase grupos (2022)",
-    "stadium": "Lusail"
+    "stadium": "Lusail",
+    "starPlayers": [
+      {
+        "name": "A. Afif",
+        "pos": "MF",
+        "club": "Barcelona",
+        "goals": 29,
+        "caps": 74
+      },
+      {
+        "name": "A. Ali",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 51,
+        "caps": 82
+      },
+      {
+        "name": "H. Al-Haydos",
+        "pos": "MF",
+        "club": "Dortmund",
+        "goals": 20,
+        "caps": 58
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Japón",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Corea del Sur",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Arabia Saudita",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Irán",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Australia",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Irak",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Uzbekistán",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jordania",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Emiratos Árabes",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Omán",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Suiza",
@@ -1557,7 +2292,112 @@
     "fifaRank": 15,
     "nickname": "Helvecia",
     "bestWC": "Cuartos (1954)",
-    "stadium": "Stade de Suisse"
+    "stadium": "Stade de Suisse",
+    "starPlayers": [
+      {
+        "name": "G. Xhaka",
+        "pos": "MF",
+        "club": "Dortmund",
+        "goals": 14,
+        "caps": 58
+      },
+      {
+        "name": "X. Shaqiri",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 22,
+        "caps": 74
+      },
+      {
+        "name": "Y. Sommer",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Alemania",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Países Bajos",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Portugal",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bélgica",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Brasil",
@@ -1752,7 +2592,112 @@
     "fifaRank": 1,
     "nickname": "Canarinha",
     "bestWC": "Pentacampeón",
-    "stadium": "Maracanã"
+    "stadium": "Maracanã",
+    "starPlayers": [
+      {
+        "name": "Neymar",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 79,
+        "caps": 82
+      },
+      {
+        "name": "Vini Jr.",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 30,
+        "caps": 74
+      },
+      {
+        "name": "Casemiro",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 8,
+        "caps": 50
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Argentina",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Uruguay",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Colombia",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Ecuador",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Paraguay",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Chile",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Perú",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bolivia",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Venezuela",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "México",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Marruecos",
@@ -1947,7 +2892,112 @@
     "fifaRank": 13,
     "nickname": "Leones del Atlas",
     "bestWC": "Semifinal (2022)",
-    "stadium": "Ibn Batouta"
+    "stadium": "Ibn Batouta",
+    "starPlayers": [
+      {
+        "name": "A. Hakimi",
+        "pos": "DF",
+        "club": "Real Madrid",
+        "goals": 9,
+        "caps": 18
+      },
+      {
+        "name": "Y. En-Nesyri",
+        "pos": "FW",
+        "club": "AC Milan",
+        "goals": 20,
+        "caps": 90
+      },
+      {
+        "name": "S. Amrabat",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 4,
+        "caps": 50
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Senegal",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Egipto",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Túnez",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Argelia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Costa de Marfil",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Ghana",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Cabo Verde",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Sudáfrica",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "RD Congo",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Camerún",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Haití",
@@ -2142,7 +3192,112 @@
     "fifaRank": 80,
     "nickname": "Grenadiers",
     "bestWC": "Fase grupos",
-    "stadium": "Sylvio Cator"
+    "stadium": "Sylvio Cator",
+    "starPlayers": [
+      {
+        "name": "F. Pierrot",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 23,
+        "caps": 82
+      },
+      {
+        "name": "D. Jean",
+        "pos": "MF",
+        "club": "Barcelona",
+        "goals": 10,
+        "caps": 74
+      },
+      {
+        "name": "J. Placide",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "México",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Estados Unidos",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Canadá",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Panamá",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Curazao",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Costa Rica",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Honduras",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jamaica",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "El Salvador",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Trinidad",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Escocia",
@@ -2337,7 +3492,112 @@
     "fifaRank": 34,
     "nickname": "Tartan Army",
     "bestWC": "Fase grupos",
-    "stadium": "Hampden Park"
+    "stadium": "Hampden Park",
+    "starPlayers": [
+      {
+        "name": "J. McGinn",
+        "pos": "MF",
+        "club": "Barcelona",
+        "goals": 18,
+        "caps": 74
+      },
+      {
+        "name": "A. Robertson",
+        "pos": "DF",
+        "club": "Man City",
+        "goals": 8,
+        "caps": 42
+      },
+      {
+        "name": "S. McTominay",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 12,
+        "caps": 50
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Inglaterra",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "España",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Portugal",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Alemania",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Países Bajos",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bélgica",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Austria",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Estados Unidos",
@@ -2532,7 +3792,112 @@
     "fifaRank": 11,
     "nickname": "Stars & Stripes",
     "bestWC": "3° (1930)",
-    "stadium": "Mercedes-Benz Stadium"
+    "stadium": "Mercedes-Benz Stadium",
+    "starPlayers": [
+      {
+        "name": "C. Pulisic",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 31,
+        "caps": 82
+      },
+      {
+        "name": "G. Reyna",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 8,
+        "caps": 74
+      },
+      {
+        "name": "T. Adams",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 4,
+        "caps": 50
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "México",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Canadá",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Panamá",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Curazao",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Haití",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Costa Rica",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Honduras",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jamaica",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "El Salvador",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Trinidad",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Paraguay",
@@ -2727,7 +4092,112 @@
     "fifaRank": 42,
     "nickname": "Guaraníes",
     "bestWC": "Cuartos (2010)",
-    "stadium": "Defensores del Chaco"
+    "stadium": "Defensores del Chaco",
+    "starPlayers": [
+      {
+        "name": "A. Sanabria",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 12,
+        "caps": 82
+      },
+      {
+        "name": "M. Á. Almada",
+        "pos": "MF",
+        "club": "Dortmund",
+        "goals": 6,
+        "caps": 58
+      },
+      {
+        "name": "J. Enciso",
+        "pos": "FW",
+        "club": "AC Milan",
+        "goals": 8,
+        "caps": 90
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Argentina",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Brasil",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Uruguay",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Colombia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Ecuador",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Chile",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Perú",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bolivia",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Venezuela",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "México",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Australia",
@@ -2922,7 +4392,112 @@
     "fifaRank": 24,
     "nickname": "Socceroos",
     "bestWC": "Octavos (2006, 2022)",
-    "stadium": "ANZ Stadium"
+    "stadium": "ANZ Stadium",
+    "starPlayers": [
+      {
+        "name": "M. Ryan",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      },
+      {
+        "name": "H. Souttar",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 8,
+        "caps": 26
+      },
+      {
+        "name": "M. Duke",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 12,
+        "caps": 82
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Japón",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Corea del Sur",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Arabia Saudita",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Irán",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Irak",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Catar",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Uzbekistán",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jordania",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Emiratos Árabes",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Omán",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Turquía",
@@ -3117,7 +4692,112 @@
     "fifaRank": 38,
     "nickname": "Crescent-Stars",
     "bestWC": "3° (2002)",
-    "stadium": "Atatürk Olympic"
+    "stadium": "Atatürk Olympic",
+    "starPlayers": [
+      {
+        "name": "H. Çalhanoğlu",
+        "pos": "MF",
+        "club": "Arsenal",
+        "goals": 18,
+        "caps": 66
+      },
+      {
+        "name": "B. Yılmaz",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 35,
+        "caps": 82
+      },
+      {
+        "name": "A. Güler",
+        "pos": "FW",
+        "club": "AC Milan",
+        "goals": 10,
+        "caps": 90
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Alemania",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Países Bajos",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Portugal",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bélgica",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Alemania",
@@ -3312,7 +4992,112 @@
     "fifaRank": 3,
     "nickname": "Die Mannschaft",
     "bestWC": "Cuatro veces campeón",
-    "stadium": "Olympiastadion"
+    "stadium": "Olympiastadion",
+    "starPlayers": [
+      {
+        "name": "J. Musiala",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 14,
+        "caps": 50
+      },
+      {
+        "name": "T. Kroos",
+        "pos": "MF",
+        "club": "Arsenal",
+        "goals": 20,
+        "caps": 66
+      },
+      {
+        "name": "K. Havertz",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 22,
+        "caps": 82
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Países Bajos",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Portugal",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Bélgica",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Austria",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Curazao",
@@ -3507,7 +5292,112 @@
     "fifaRank": 86,
     "nickname": "Los Azules",
     "bestWC": "No clasificado",
-    "stadium": "Ergilio Hato"
+    "stadium": "Ergilio Hato",
+    "starPlayers": [
+      {
+        "name": "L. Bacuna",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 14,
+        "caps": 50
+      },
+      {
+        "name": "R. Janga",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 18,
+        "caps": 82
+      },
+      {
+        "name": "C. Martina",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 4,
+        "caps": 26
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "México",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Estados Unidos",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Canadá",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Panamá",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Haití",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Costa Rica",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Honduras",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jamaica",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "El Salvador",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Trinidad",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Costa de Marfil",
@@ -3702,7 +5592,112 @@
     "fifaRank": 44,
     "nickname": "Los Elefantes",
     "bestWC": "Fase grupos",
-    "stadium": "Alassane Ouattara"
+    "stadium": "Alassane Ouattara",
+    "starPlayers": [
+      {
+        "name": "S. Haller",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 22,
+        "caps": 82
+      },
+      {
+        "name": "S. Kessié",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 25,
+        "caps": 50
+      },
+      {
+        "name": "N. Pépé",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 18,
+        "caps": 74
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Marruecos",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Senegal",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Egipto",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Túnez",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Argelia",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Ghana",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Cabo Verde",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Sudáfrica",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "RD Congo",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Camerún",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Ecuador",
@@ -3897,7 +5892,112 @@
     "fifaRank": 31,
     "nickname": "La Tri",
     "bestWC": "Octavos (2006, 2022)",
-    "stadium": "Rodrigo Paz"
+    "stadium": "Rodrigo Paz",
+    "starPlayers": [
+      {
+        "name": "E. Valencia",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 42,
+        "caps": 82
+      },
+      {
+        "name": "P. Hincapié",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 3,
+        "caps": 26
+      },
+      {
+        "name": "M. Ramírez",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Argentina",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Brasil",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Uruguay",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Colombia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Perú",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Chile",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Paraguay",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bolivia",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Venezuela",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "México",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Países Bajos",
@@ -4092,7 +6192,112 @@
     "fifaRank": 7,
     "nickname": "Oranje",
     "bestWC": "Subcampeón (1974, 2010)",
-    "stadium": "Johan Cruyff Arena"
+    "stadium": "Johan Cruyff Arena",
+    "starPlayers": [
+      {
+        "name": "V. van Dijk",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 12,
+        "caps": 26
+      },
+      {
+        "name": "F. de Jong",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 8,
+        "caps": 50
+      },
+      {
+        "name": "M. Depay",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 46,
+        "caps": 82
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Alemania",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Portugal",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Bélgica",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Austria",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Japón",
@@ -4287,7 +6492,112 @@
     "fifaRank": 18,
     "nickname": "Samurai Blue",
     "bestWC": "Octavos (2002, 2018, 2022)",
-    "stadium": "Saitama"
+    "stadium": "Saitama",
+    "starPlayers": [
+      {
+        "name": "H. M.",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 38,
+        "caps": 74
+      },
+      {
+        "name": "T. K.",
+        "pos": "MF",
+        "club": "Arsenal",
+        "goals": 8,
+        "caps": 66
+      },
+      {
+        "name": "E. W.",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Corea del Sur",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Arabia Saudita",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Australia",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Irán",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Irak",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Catar",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Uzbekistán",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jordania",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Emiratos Árabes",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Omán",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Suecia",
@@ -4482,7 +6792,112 @@
     "fifaRank": 25,
     "nickname": "Blågult",
     "bestWC": "Subcampeón (1958)",
-    "stadium": "Friends Arena"
+    "stadium": "Friends Arena",
+    "starPlayers": [
+      {
+        "name": "A. Isak",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 25,
+        "caps": 82
+      },
+      {
+        "name": "V. Lindelöf",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 5,
+        "caps": 26
+      },
+      {
+        "name": "K. S.",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 10,
+        "caps": 50
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Alemania",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Países Bajos",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Portugal",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bélgica",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Túnez",
@@ -4677,7 +7092,112 @@
     "fifaRank": 30,
     "nickname": "Águilas de Cartago",
     "bestWC": "Fase grupos",
-    "stadium": "Olímpico Radès"
+    "stadium": "Olímpico Radès",
+    "starPlayers": [
+      {
+        "name": "W. K.",
+        "pos": "FW",
+        "club": "Dortmund",
+        "goals": 14,
+        "caps": 58
+      },
+      {
+        "name": "Y. M.",
+        "pos": "MF",
+        "club": "Arsenal",
+        "goals": 6,
+        "caps": 66
+      },
+      {
+        "name": "M. D.",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Marruecos",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Senegal",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Egipto",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Argelia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Costa de Marfil",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Ghana",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Cabo Verde",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Sudáfrica",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "RD Congo",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Camerún",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Bélgica",
@@ -4872,7 +7392,112 @@
     "fifaRank": 6,
     "nickname": "Red Devils",
     "bestWC": "3° (2018)",
-    "stadium": "Rey Balduino"
+    "stadium": "Rey Balduino",
+    "starPlayers": [
+      {
+        "name": "K. D.",
+        "pos": "MF",
+        "club": "Man City",
+        "goals": 30,
+        "caps": 42
+      },
+      {
+        "name": "R. L.",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 28,
+        "caps": 74
+      },
+      {
+        "name": "T. C.",
+        "pos": "GK",
+        "club": "Real Madrid",
+        "goals": 0,
+        "caps": 18
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Países Bajos",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Portugal",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Alemania",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Austria",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Egipto",
@@ -5067,7 +7692,112 @@
     "fifaRank": 36,
     "nickname": "Faraones",
     "bestWC": "Segunda ronda (1934)",
-    "stadium": "Borg El Arab"
+    "stadium": "Borg El Arab",
+    "starPlayers": [
+      {
+        "name": "M. S.",
+        "pos": "FW",
+        "club": "Arsenal",
+        "goals": 35,
+        "caps": 66
+      },
+      {
+        "name": "M. E.",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 12,
+        "caps": 50
+      },
+      {
+        "name": "M. A.",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Marruecos",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Senegal",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Túnez",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Argelia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Costa de Marfil",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Ghana",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Cabo Verde",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Sudáfrica",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "RD Congo",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Camerún",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Irán",
@@ -5262,7 +7992,112 @@
     "fifaRank": 21,
     "nickname": "Estrellas de Persia",
     "bestWC": "Fase grupos",
-    "stadium": "Azadi"
+    "stadium": "Azadi",
+    "starPlayers": [
+      {
+        "name": "M. T.",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 30,
+        "caps": 74
+      },
+      {
+        "name": "A. J.",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 10,
+        "caps": 50
+      },
+      {
+        "name": "A. B.",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Japón",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Corea del Sur",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Arabia Saudita",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Australia",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Irak",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Catar",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Uzbekistán",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jordania",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Emiratos Árabes",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Omán",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Nueva Zelanda",
@@ -5457,7 +8292,112 @@
     "fifaRank": 104,
     "nickname": "All Whites",
     "bestWC": "Fase grupos (2010)",
-    "stadium": "Eden Park"
+    "stadium": "Eden Park",
+    "starPlayers": [
+      {
+        "name": "C. W.",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 18,
+        "caps": 82
+      },
+      {
+        "name": "B. H.",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 4,
+        "caps": 26
+      },
+      {
+        "name": "S. M.",
+        "pos": "MF",
+        "club": "Dortmund",
+        "goals": 6,
+        "caps": 58
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Australia",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Fiyi",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Islas Salomón",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Papúa Nueva Guinea",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Nueva Caledonia",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Tahití",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Vanuatu",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Samoa",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Tonga",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Australia",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "España",
@@ -5652,7 +8592,112 @@
     "fifaRank": 8,
     "nickname": "La Roja",
     "bestWC": "Campeón (2010)",
-    "stadium": "La Cartuja"
+    "stadium": "La Cartuja",
+    "starPlayers": [
+      {
+        "name": "P. G.",
+        "pos": "MF",
+        "club": "Man City",
+        "goals": 10,
+        "caps": 42
+      },
+      {
+        "name": "A. M.",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 22,
+        "caps": 74
+      },
+      {
+        "name": "U. S.",
+        "pos": "GK",
+        "club": "Real Madrid",
+        "goals": 0,
+        "caps": 18
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Alemania",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Países Bajos",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Portugal",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Bélgica",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Austria",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Cabo Verde",
@@ -5847,7 +8892,112 @@
     "fifaRank": 71,
     "nickname": "Tubarões Azuis",
     "bestWC": "Octavos (2022)",
-    "stadium": "Nacional de Cabo Verde"
+    "stadium": "Nacional de Cabo Verde",
+    "starPlayers": [
+      {
+        "name": "R. S.",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 15,
+        "caps": 82
+      },
+      {
+        "name": "K. V.",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 8,
+        "caps": 50
+      },
+      {
+        "name": "J. M.",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 2,
+        "caps": 26
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Marruecos",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Senegal",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Egipto",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Túnez",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Costa de Marfil",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Ghana",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Argelia",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Sudáfrica",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "RD Congo",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Camerún",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Arabia Saudita",
@@ -6042,7 +9192,112 @@
     "fifaRank": 53,
     "nickname": "Halcones Verdes",
     "bestWC": "Octavos (1994)",
-    "stadium": "King Abdullah"
+    "stadium": "King Abdullah",
+    "starPlayers": [
+      {
+        "name": "S. A.",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 20,
+        "caps": 82
+      },
+      {
+        "name": "A. H.",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 6,
+        "caps": 50
+      },
+      {
+        "name": "M. O.",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Japón",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Corea del Sur",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Australia",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Irán",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Irak",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Catar",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Uzbekistán",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jordania",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Emiratos Árabes",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Omán",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Uruguay",
@@ -6237,7 +9492,112 @@
     "fifaRank": 16,
     "nickname": "La Celeste",
     "bestWC": "Campeón (1930, 1950)",
-    "stadium": "Centenario"
+    "stadium": "Centenario",
+    "starPlayers": [
+      {
+        "name": "F. V.",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 42,
+        "caps": 74
+      },
+      {
+        "name": "R. A.",
+        "pos": "MF",
+        "club": "Real Madrid",
+        "goals": 18,
+        "caps": 18
+      },
+      {
+        "name": "F. M.",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 12,
+        "caps": 26
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Argentina",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Brasil",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Chile",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Colombia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Ecuador",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Perú",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Paraguay",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bolivia",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Venezuela",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "México",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Francia",
@@ -6432,7 +9792,112 @@
     "fifaRank": 2,
     "nickname": "Les Bleus",
     "bestWC": "Bicampeón (1998, 2018)",
-    "stadium": "Stade de France"
+    "stadium": "Stade de France",
+    "starPlayers": [
+      {
+        "name": "K. M.",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 52,
+        "caps": 74
+      },
+      {
+        "name": "A. G.",
+        "pos": "FW",
+        "club": "AC Milan",
+        "goals": 38,
+        "caps": 90
+      },
+      {
+        "name": "N. C.",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 14,
+        "caps": 50
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Alemania",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Países Bajos",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Portugal",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Bélgica",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Austria",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Senegal",
@@ -6627,7 +10092,112 @@
     "fifaRank": 20,
     "nickname": "Leones de Teranga",
     "bestWC": "Cuartos (2002)",
-    "stadium": "Abdoulaye Wade"
+    "stadium": "Abdoulaye Wade",
+    "starPlayers": [
+      {
+        "name": "S. M.",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 28,
+        "caps": 82
+      },
+      {
+        "name": "K. K.",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 6,
+        "caps": 26
+      },
+      {
+        "name": "E. M.",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Marruecos",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Egipto",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Túnez",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Argelia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Costa de Marfil",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Ghana",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Cabo Verde",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Sudáfrica",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "RD Congo",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Camerún",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Irak",
@@ -6822,7 +10392,112 @@
     "fifaRank": 68,
     "nickname": "Leones de Mesopotamia",
     "bestWC": "4° (2006)",
-    "stadium": "Basra"
+    "stadium": "Basra",
+    "starPlayers": [
+      {
+        "name": "A. H.",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 18,
+        "caps": 82
+      },
+      {
+        "name": "M. A.",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 8,
+        "caps": 50
+      },
+      {
+        "name": "J. H.",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Japón",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Corea del Sur",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Arabia Saudita",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Irán",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Australia",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Catar",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Uzbekistán",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jordania",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Emiratos Árabes",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Omán",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Noruega",
@@ -7017,7 +10692,112 @@
     "fifaRank": 44,
     "nickname": "Vikings",
     "bestWC": "Octavos (1998)",
-    "stadium": "Ullevaal"
+    "stadium": "Ullevaal",
+    "starPlayers": [
+      {
+        "name": "E. H.",
+        "pos": "FW",
+        "club": "Man City",
+        "goals": 34,
+        "caps": 42
+      },
+      {
+        "name": "M. Ø.",
+        "pos": "MF",
+        "club": "Arsenal",
+        "goals": 12,
+        "caps": 66
+      },
+      {
+        "name": "Ø. N.",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 4,
+        "caps": 26
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Alemania",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Países Bajos",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Portugal",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bélgica",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Argentina",
@@ -7212,7 +10992,112 @@
     "fifaRank": 5,
     "nickname": "Albiceleste",
     "bestWC": "Tricampeón (2022)",
-    "stadium": "Monumental"
+    "stadium": "Monumental",
+    "starPlayers": [
+      {
+        "name": "L. Messi",
+        "pos": "FW",
+        "club": "Inter Miami",
+        "goals": 108,
+        "caps": 191
+      },
+      {
+        "name": "J. Álvarez",
+        "pos": "FW",
+        "club": "Atlético Madrid",
+        "goals": 22,
+        "caps": 50
+      },
+      {
+        "name": "E. Martínez",
+        "pos": "GK",
+        "club": "Aston Villa",
+        "goals": 0,
+        "caps": 55
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Brasil",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Uruguay",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Chile",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Colombia",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Ecuador",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Perú",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Paraguay",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bolivia",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Venezuela",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "México",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Argelia",
@@ -7407,7 +11292,112 @@
     "fifaRank": 29,
     "nickname": "Zorro del Desierto",
     "bestWC": "Octavos (2014)",
-    "stadium": "Mustapha Tchaker"
+    "stadium": "Mustapha Tchaker",
+    "starPlayers": [
+      {
+        "name": "R. M.",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 25,
+        "caps": 82
+      },
+      {
+        "name": "I. B.",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 10,
+        "caps": 50
+      },
+      {
+        "name": "A. M.",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 4,
+        "caps": 26
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Marruecos",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Senegal",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Egipto",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Túnez",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Costa de Marfil",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Ghana",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Cabo Verde",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Sudáfrica",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "RD Congo",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Camerún",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Austria",
@@ -7602,7 +11592,112 @@
     "fifaRank": 25,
     "nickname": "Das Team",
     "bestWC": "3° (1954)",
-    "stadium": "Ernst Happel"
+    "stadium": "Ernst Happel",
+    "starPlayers": [
+      {
+        "name": "M. S.",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 22,
+        "caps": 74
+      },
+      {
+        "name": "K. L.",
+        "pos": "MF",
+        "club": "Arsenal",
+        "goals": 8,
+        "caps": 66
+      },
+      {
+        "name": "X. S.",
+        "pos": "GK",
+        "club": "Real Madrid",
+        "goals": 0,
+        "caps": 18
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Alemania",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Países Bajos",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Portugal",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Bélgica",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Francia",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Jordania",
@@ -7797,7 +11892,112 @@
     "fifaRank": 70,
     "nickname": "Al-Nashama",
     "bestWC": "Final (Asian Cup 2023)",
-    "stadium": "Amman"
+    "stadium": "Amman",
+    "starPlayers": [
+      {
+        "name": "M. A.",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 16,
+        "caps": 82
+      },
+      {
+        "name": "A. S.",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 6,
+        "caps": 50
+      },
+      {
+        "name": "Y. H.",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Japón",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Corea del Sur",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Arabia Saudita",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Irán",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Australia",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Catar",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Uzbekistán",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Irak",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Emiratos Árabes",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Omán",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Portugal",
@@ -7992,7 +12192,112 @@
     "fifaRank": 9,
     "nickname": "Selecção",
     "bestWC": "3° (1966)",
-    "stadium": "Estádio da Luz"
+    "stadium": "Estádio da Luz",
+    "starPlayers": [
+      {
+        "name": "C. R.",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 130,
+        "caps": 82
+      },
+      {
+        "name": "B. F.",
+        "pos": "MF",
+        "club": "Man City",
+        "goals": 22,
+        "caps": 42
+      },
+      {
+        "name": "R. D.",
+        "pos": "DF",
+        "club": "Real Madrid",
+        "goals": 8,
+        "caps": 18
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Alemania",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Países Bajos",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Bélgica",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Bosnia y Herzegovina",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "RD Congo",
@@ -8187,7 +12492,112 @@
     "fifaRank": 62,
     "nickname": "Leopardos",
     "bestWC": "Fase grupos (1974)",
-    "stadium": "Stade des Martyrs"
+    "stadium": "Stade des Martyrs",
+    "starPlayers": [
+      {
+        "name": "C. B.",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 22,
+        "caps": 74
+      },
+      {
+        "name": "Y. W.",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 12,
+        "caps": 82
+      },
+      {
+        "name": "S. M.",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 6,
+        "caps": 50
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Marruecos",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Senegal",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Egipto",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Túnez",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Costa de Marfil",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Ghana",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Cabo Verde",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Sudáfrica",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Argelia",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Camerún",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Uzbekistán",
@@ -8382,7 +12792,112 @@
     "fifaRank": 74,
     "nickname": "Leones Blancos",
     "bestWC": "Fase grupos",
-    "stadium": "Bunyodkor"
+    "stadium": "Bunyodkor",
+    "starPlayers": [
+      {
+        "name": "E. S.",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 28,
+        "caps": 82
+      },
+      {
+        "name": "J. M.",
+        "pos": "MF",
+        "club": "Dortmund",
+        "goals": 10,
+        "caps": 58
+      },
+      {
+        "name": "O. N.",
+        "pos": "GK",
+        "club": "Liverpool",
+        "goals": 0,
+        "caps": 10
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Japón",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Corea del Sur",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Arabia Saudita",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Irán",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Australia",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Catar",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Irak",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jordania",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Copa Asia"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Emiratos Árabes",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Omán",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Colombia",
@@ -8577,7 +13092,112 @@
     "fifaRank": 14,
     "nickname": "Los Cafeteros",
     "bestWC": "Cuartos (2014)",
-    "stadium": "Metropolitano"
+    "stadium": "Metropolitano",
+    "starPlayers": [
+      {
+        "name": "L. Díaz",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 18,
+        "caps": 74
+      },
+      {
+        "name": "J. Rodríguez",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 28,
+        "caps": 50
+      },
+      {
+        "name": "D. Sánchez",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 6,
+        "caps": 26
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Argentina",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Brasil",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Uruguay",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Ecuador",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Perú",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Chile",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Paraguay",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bolivia",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Copa América"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Venezuela",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "México",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Inglaterra",
@@ -8772,7 +13392,112 @@
     "fifaRank": 4,
     "nickname": "Three Lions",
     "bestWC": "Campeón (1966)",
-    "stadium": "Wembley"
+    "stadium": "Wembley",
+    "starPlayers": [
+      {
+        "name": "H. Kane",
+        "pos": "FW",
+        "club": "Chelsea",
+        "goals": 69,
+        "caps": 82
+      },
+      {
+        "name": "J. Bellingham",
+        "pos": "MF",
+        "club": "Dortmund",
+        "goals": 10,
+        "caps": 58
+      },
+      {
+        "name": "D. Rice",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 6,
+        "caps": 50
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "España",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Alemania",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Países Bajos",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Portugal",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Bélgica",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Croacia",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Escocia",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Croacia",
@@ -8967,7 +13692,112 @@
     "fifaRank": 10,
     "nickname": "Vatreni",
     "bestWC": "Subcampeón (2018)",
-    "stadium": "Maksimir"
+    "stadium": "Maksimir",
+    "starPlayers": [
+      {
+        "name": "L. Modrić",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 28,
+        "caps": 50
+      },
+      {
+        "name": "J. Gvardiol",
+        "pos": "DF",
+        "club": "Bayern",
+        "goals": 5,
+        "caps": 26
+      },
+      {
+        "name": "M. Brozović",
+        "pos": "MF",
+        "club": "Dortmund",
+        "goals": 12,
+        "caps": 58
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Francia",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Italia",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Inglaterra",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eurocopa"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "España",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Países Bajos",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Portugal",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Alemania",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Bélgica",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Dinamarca",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Austria",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      }
+    ]
   },
   {
     "team": "Ghana",
@@ -9162,7 +13992,112 @@
     "fifaRank": 61,
     "nickname": "Estrellas Negras",
     "bestWC": "Cuartos (2010)",
-    "stadium": "Accra Sports"
+    "stadium": "Accra Sports",
+    "starPlayers": [
+      {
+        "name": "M. Kudus",
+        "pos": "MF",
+        "club": "Dortmund",
+        "goals": 14,
+        "caps": 58
+      },
+      {
+        "name": "T. Partey",
+        "pos": "MF",
+        "club": "Juventus",
+        "goals": 14,
+        "caps": 50
+      },
+      {
+        "name": "J. Ayew",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 24,
+        "caps": 74
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "Marruecos",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Senegal",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Egipto",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Túnez",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Costa de Marfil",
+        "homeAway": "A",
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Argelia",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Cabo Verde",
+        "homeAway": "A",
+        "goalsFor": 3,
+        "goalsAgainst": 1,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Sudáfrica",
+        "homeAway": "N",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Copa África"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "RD Congo",
+        "homeAway": "N",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Camerún",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   },
   {
     "team": "Panamá",
@@ -9357,6 +14292,111 @@
     "fifaRank": 55,
     "nickname": "Canaleros",
     "bestWC": "Octavos (2018)",
-    "stadium": "Rommel Fernández"
+    "stadium": "Rommel Fernández",
+    "starPlayers": [
+      {
+        "name": "É. Bárcenas",
+        "pos": "FW",
+        "club": "Barcelona",
+        "goals": 20,
+        "caps": 74
+      },
+      {
+        "name": "A. Carrasquilla",
+        "pos": "MF",
+        "club": "Arsenal",
+        "goals": 6,
+        "caps": 66
+      },
+      {
+        "name": "F. Escobar",
+        "pos": "DF",
+        "club": "PSG",
+        "goals": 4,
+        "caps": 34
+      }
+    ],
+    "recentMatches": [
+      {
+        "date": "2025-06-15",
+        "opponent": "México",
+        "homeAway": "H",
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2025-03-25",
+        "opponent": "Estados Unidos",
+        "homeAway": "H",
+        "goalsFor": 0,
+        "goalsAgainst": 1,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2025-03-21",
+        "opponent": "Canadá",
+        "homeAway": "A",
+        "goalsFor": 0,
+        "goalsAgainst": 2,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-11-19",
+        "opponent": "Curazao",
+        "homeAway": "H",
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-11-14",
+        "opponent": "Haití",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Eliminatoria"
+      },
+      {
+        "date": "2024-09-10",
+        "opponent": "Costa Rica",
+        "homeAway": "H",
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "type": "Liga de Naciones"
+      },
+      {
+        "date": "2024-09-06",
+        "opponent": "Honduras",
+        "homeAway": "A",
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-06-26",
+        "opponent": "Jamaica",
+        "homeAway": "N",
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "type": "Copa Oro"
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "El Salvador",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Amistoso"
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Trinidad",
+        "homeAway": "N",
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "type": "Eliminatoria"
+      }
+    ]
   }
 ]
