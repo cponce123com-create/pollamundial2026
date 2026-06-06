@@ -42,13 +42,25 @@ export default function Header() {
     api.getPoolConfig().then((cfg) => {
       setPoolConfigData(cfg);
       if (cfg?.favicon_url) {
-        let link = document.querySelector<HTMLLinkElement>("link[rel*='icon']");
+        // Cache busting para forzar recarga del favicon
+        const url = cfg.favicon_url + (cfg.favicon_url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+        // Icono principal
+        let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
         if (!link) {
           link = document.createElement('link');
           link.rel = 'icon';
           document.head.appendChild(link);
         }
-        link.href = cfg.favicon_url;
+        link.removeAttribute('type');
+        link.href = url;
+        // Apple touch icon
+        let appleLink = document.querySelector<HTMLLinkElement>("link[rel='apple-touch-icon']");
+        if (!appleLink) {
+          appleLink = document.createElement('link');
+          appleLink.rel = 'apple-touch-icon';
+          document.head.appendChild(appleLink);
+        }
+        appleLink.href = url;
       }
     }).catch(() => {});
   }, []);
