@@ -1,7 +1,7 @@
 import { Document, Page, Text, View, Image, StyleSheet } from "@react-pdf/renderer";
 import { Match, Prediction } from "../lib/api";
 import { getPlayer } from "../lib/players";
-import { TEAMS } from "../lib/teams";
+import { getTeamDisplayName, TEAMS } from "../lib/teams";
 
 // ── Text flags (reliable in PDF vs emoji) ──────────────────────────
 const TEXT_FLAGS: Record<string, string> = {};
@@ -178,8 +178,8 @@ function precomputeMatches(allMatches: Match[]): PrecomputedMatch[] {
   return allMatches.map((m) => ({
     id: m.id,
     flag: getTextFlag(m.home_team),
-    home: m.home_team,
-    away: m.away_team,
+    home: getTeamDisplayName(m.home_team),
+    away: getTeamDisplayName(m.away_team),
     group: m.group_name || PHASE_LABELS[m.phase] || m.phase,
     phase: m.phase,
     homeReal: m.home_score_real,
