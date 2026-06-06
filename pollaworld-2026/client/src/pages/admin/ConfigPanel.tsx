@@ -69,9 +69,11 @@ export default function ConfigPanel({
           {config?.yape_qr_url && (
             <div className="admin-qr-preview">
               <img
-                src={config.yape_qr_url}
+                src={config.yape_qr_url.replace('/upload/', '/upload/f_auto,q_auto/')}
                 alt="Yape QR"
                 className="admin-qr-img"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           )}
@@ -130,9 +132,11 @@ export default function ConfigPanel({
           {logoUrl && (
             <div className="admin-qr-preview">
               <img
-                src={logoUrl}
+                src={logoUrl.replace('/upload/', '/upload/f_auto,q_auto/')}
                 alt="Logo"
                 className="admin-qr-img"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           )}
@@ -156,9 +160,11 @@ export default function ConfigPanel({
           {faviconUrl && (
             <div className="admin-qr-preview">
               <img
-                src={faviconUrl}
+                src={faviconUrl.replace('/upload/', '/upload/f_auto,q_auto/')}
                 alt="Favicon"
                 className="admin-qr-img"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           )}

@@ -144,9 +144,11 @@ export default function PaymentsPanel({
                     <td>{user?.phone || "—"}</td>
                     <td>
                       <img
-                        src={entry.payment_proof_url!}
+                        src={entry.payment_proof_url!.replace('/upload/', '/upload/f_auto,q_auto/')}
                         alt="Comprobante"
                         className="proof-thumb"
+                        loading="lazy"
+                        decoding="async"
                         onClick={() => onOpenImage(entry.payment_proof_url!)}
                       />
                     </td>

@@ -321,6 +321,8 @@ export default function Dashboard() {
                       alt={player.name}
                     referrerPolicy="no-referrer"
                       className="player-header-img"
+                      loading="lazy"
+                      decoding="async"
                     />
                   )}
                   {user.name}
@@ -548,7 +550,7 @@ export default function Dashboard() {
             <>
               {config?.yape_qr_url && (
                 <div className="qr-container">
-                  <img src={config.yape_qr_url} alt="QR Yape" className="qr-image" />
+                  <img src={config.yape_qr_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="QR Yape" className="qr-image" loading="lazy" decoding="async" />
                 </div>
               )}
               <p className="payment-amount">Monto: S/. {config?.entry_fee ?? 20}.00</p>
@@ -575,9 +577,11 @@ export default function Dashboard() {
               {selectedEntry?.payment_proof_url && (
                 <div className="proof-preview" style={{ marginTop: 12 }}>
                   <img
-                    src={selectedEntry.payment_proof_url}
+                    src={selectedEntry.payment_proof_url.replace('/upload/', '/upload/f_auto,q_auto/')}
                     alt="Comprobante"
                     className="proof-thumb"
+                    loading="lazy"
+                    decoding="async"
                     onClick={() => window.open(selectedEntry.payment_proof_url!, "_blank")}
                   />
                   <span className={`badge ${selectedEntry.payment_status === "pending" ? "badge-pending" : "badge-rejected"}`}>

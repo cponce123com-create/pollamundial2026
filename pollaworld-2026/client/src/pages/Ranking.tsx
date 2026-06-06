@@ -114,6 +114,8 @@ export default function RankingPage() {
                     src={player.image}
                     alt={player.name}
                     referrerPolicy="no-referrer"
+                    loading="lazy"
+                    decoding="async"
                     style={{
                       width: 48,
                       height: 48,
@@ -183,6 +185,8 @@ export default function RankingPage() {
                           src={player.image}
                           alt={player.name}
                     referrerPolicy="no-referrer"
+                          loading="lazy"
+                          decoding="async"
                           style={{
                             width: 24,
                             height: 24,

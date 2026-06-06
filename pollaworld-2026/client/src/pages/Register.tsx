@@ -104,6 +104,7 @@ export default function Register() {
                     alt={player.name}
                     className="player-card-img"
                     loading="lazy"
+                    decoding="async"
                     referrerPolicy="no-referrer"
                   />
                   <span className="player-card-name">{getPlayerDisplayName(player.id, customNames)}</span>

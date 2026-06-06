@@ -88,7 +88,7 @@ export default function Header() {
 
           <Link to="/" className="header-logo" onClick={() => setMenuOpen(false)}>
             {poolConfigData?.logo_url ? (
-              <img src={poolConfigData.logo_url} alt="La Polla del Ponce" className="header-logo-img" />
+              <img src={poolConfigData.logo_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="La Polla del Ponce" className="header-logo-img" loading="eager" decoding="async" />
             ) : (
               <span className="header-logo-icon">⚽</span>
             )}
@@ -112,9 +112,9 @@ export default function Header() {
                 <button onClick={handleLogout}>Salir</button>
                 <span className="header-user">
                   {user.avatar_url ? (
-                    <img src={user.avatar_url} alt="" className="player-header-img" referrerPolicy="no-referrer" />
+                    <img src={user.avatar_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="" className="player-header-img" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
                   ) : player ? (
-                    <img src={player.image} alt={player.name} className="player-header-img" referrerPolicy="no-referrer" />
+                    <img src={player.image} alt={player.name} className="player-header-img" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
                   ) : null}
                   {user.name}
                 </span>
@@ -133,9 +133,9 @@ export default function Header() {
           {user && (
             <Link to="/profile" className="header-mobile-avatar">
               {user.avatar_url ? (
-                <img src={user.avatar_url} alt="" className="player-header-img" referrerPolicy="no-referrer" />
+                <img src={user.avatar_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="" className="player-header-img" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
               ) : player ? (
-                <img src={player.image} alt={player.name} className="player-header-img" referrerPolicy="no-referrer" />
+                <img src={player.image} alt={player.name} className="player-header-img" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
               ) : (
                 <span className="header-avatar-placeholder">{user.name.charAt(0)}</span>
               )}
@@ -150,7 +150,7 @@ export default function Header() {
           <nav className="mobile-drawer" onClick={(e) => e.stopPropagation()}>
             <div className="mobile-drawer-header">
               {player && (
-                <img src={player.image} alt={player.name} className="mobile-drawer-avatar" referrerPolicy="no-referrer" />
+                <img src={player.image} alt={player.name} className="mobile-drawer-avatar" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
               )}
               <div>
                 <div className="mobile-drawer-name">{user?.name || "Invitado"}</div>

@@ -81,11 +81,11 @@ export default function Profile() {
           {/* Avatar */}
           <div style={{ position: "relative", display: "inline-block" }}>
             {previewUrl ? (
-              <img src={previewUrl} alt="Preview" style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover", border: "3px solid var(--gold)" }} />
+              <img src={previewUrl} alt="Preview" style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover", border: "3px solid var(--gold)" }} loading="lazy" decoding="async" />
             ) : user.avatar_url ? (
-              <img src={user.avatar_url} alt="Avatar" style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover", border: "3px solid var(--border)" }} />
+              <img src={user.avatar_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="Avatar" style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover", border: "3px solid var(--border)" }} loading="lazy" decoding="async" />
             ) : player ? (
-              <img src={player.image} alt={player.name} style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover", border: "3px solid var(--border)" }} referrerPolicy="no-referrer" />
+              <img src={player.image} alt={player.name} style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover", border: "3px solid var(--border)" }} referrerPolicy="no-referrer" loading="lazy" decoding="async" />
             ) : (
               <div style={{ width: 120, height: 120, borderRadius: "50%", background: "var(--bg-card)", border: "3px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "3rem", color: "var(--text-muted)" }}>
                 {user.name.charAt(0).toUpperCase()}
@@ -178,7 +178,7 @@ export default function Profile() {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ color: "var(--text-secondary)" }}>Personaje actual</span>
                 <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <img src={player.image} alt={player.name} style={{ width: 24, height: 24, borderRadius: "50%", objectFit: "cover" }} referrerPolicy="no-referrer" />
+                  <img src={player.image} alt={player.name} style={{ width: 24, height: 24, borderRadius: "50%", objectFit: "cover" }} referrerPolicy="no-referrer" loading="lazy" decoding="async" />
                   {player.name}
                 </span>
               </div>

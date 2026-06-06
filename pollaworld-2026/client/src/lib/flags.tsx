@@ -37,6 +37,7 @@ export function FlagImage({ teamName, size = 32, className }: FlagImageProps) {
           border: "1px solid #30363d",
         }}
         loading="lazy"
+        decoding="async"
         onError={() => setError(true)}
       />
     );

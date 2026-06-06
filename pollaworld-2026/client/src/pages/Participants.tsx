@@ -307,6 +307,8 @@ export default function Participants() {
                         alt={getPlayer(modalData.playerSlug)!.name}
                         style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover" }}
                         referrerPolicy="no-referrer"
+                        loading="lazy"
+                        decoding="async"
                       />
                     )}
                     {modalData.userName}

@@ -297,7 +297,7 @@ export default function Home() {
       <section className="home-hero">
         <div className="home-hero-content">
           {config?.logo_url ? (
-            <img src={config.logo_url} alt="La Polla del Ponce" className="home-hero-logo" />
+            <img src={config.logo_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="La Polla del Ponce" className="home-hero-logo" loading="lazy" decoding="async" />
           ) : (
             <h1 className="home-hero-title">
               <span className="home-hero-highlight">La Polla del Ponce</span> 2026
