@@ -35,10 +35,11 @@ export default function Header() {
   const player = user ? getPlayer(user.player_slug) : null;
   const isActive = (path: string) => location.pathname === path;
 
-  const navItems = user ? NAV_ITEMS_AUTH : NAV_ITEMS_GUEST;
-  if (user?.role === "admin") {
-    navItems.push({ path: "/admin", label: "Admin", icon: "⚙️" });
-  }
+  const navItems = user
+    ? user.role === "admin"
+      ? [...NAV_ITEMS_AUTH, { path: "/admin", label: "Admin", icon: "⚙️" }]
+      : [...NAV_ITEMS_AUTH]
+    : [...NAV_ITEMS_GUEST];
 
   return (
     <>
