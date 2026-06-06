@@ -14,13 +14,6 @@ type SimResult = {
   results: { name: string; pred: string; points: number; pass: boolean }[];
 } | null;
 
-const EXPECTED_PTS: Record<string, Record<string, number>> = {
-  "1-0": { "1-0": 5, "2-0": 3, "0-0": 0, "0-1": 0 },
-  "0-0": { "1-0": 0, "2-0": 0, "0-0": 5, "0-1": 0 },
-  "0-1": { "1-0": 0, "2-0": 0, "0-0": 0, "0-1": 5 },
-  "2-1": { "1-0": 3, "2-0": 3, "0-0": 0, "0-1": 0 },
-};
-
 export default function TestingPanel({ onReload }: { onReload: () => void }) {
   const [verifyResult, setVerifyResult]   = useState<VerifyResult>(null);
   const [simResult, setSimResult]         = useState<SimResult>(null);
@@ -97,9 +90,6 @@ export default function TestingPanel({ onReload }: { onReload: () => void }) {
       <span>{label}</span>
     </div>
   );
-
-  const resultKey = `${homeReal}-${awayReal}`;
-  const expected = EXPECTED_PTS[resultKey];
 
   return (
     <div className="testing-panel">
