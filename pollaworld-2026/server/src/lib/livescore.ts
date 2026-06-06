@@ -1,12 +1,13 @@
 import { db } from "../db";
 import { matches } from "../db/schema";
-import { eq, and, inArray } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { calculatePoints } from "./scoring";
 import { predictions } from "../db/schema";
 import logger from "./logger";
 
 const API_URL = "https://worldcup26.ir/get/games";
 const SYNC_INTERVAL = 60_000; // 60 seconds
+const MAX_BACKOFF_MS = 300_000; // 5 min max
 
 // Map English team names from API → Spanish names used in our DB
 const TEAM_NAME_MAP: Record<string, string> = {
@@ -77,11 +78,21 @@ interface ApiResponse {
   games: ApiGame[];
 }
 
+let fetchAttempts = 0;
+
 async function fetchGames(): Promise<ApiGame[]> {
-  const res = await fetch(API_URL);
-  if (!res.ok) throw new Error(`API returned ${res.status}`);
-  const data: ApiResponse = await res.json() as ApiResponse;
-  return data.games;
+  try {
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error(`API returned ${res.status}`);
+    const data: ApiResponse = await res.json() as ApiResponse;
+    fetchAttempts = 0; // Reset on success
+    return data.games;
+  } catch (err) {
+    fetchAttempts++;
+    const backoffMs = Math.min(1000 * Math.pow(2, fetchAttempts), MAX_BACKOFF_MS);
+    logger.warn({ fetchAttempts, backoffMs }, "Live score API fetch failed, will retry with backoff");
+    throw err;
+  }
 }
 
 async function syncScores(): Promise<{ updated: number; live: number }> {
@@ -90,32 +101,46 @@ async function syncScores(): Promise<{ updated: number; live: number }> {
     let updated = 0;
     let live = 0;
 
+    // Build a map of (home_team, away_team) -> game from API
+    const gameMap = new Map<string, ApiGame>();
     for (const game of games) {
       const homeName = TEAM_NAME_MAP[game.home_team_name_en];
       const awayName = TEAM_NAME_MAP[game.away_team_name_en];
-
       if (!homeName || !awayName) continue;
+      gameMap.set(`${homeName}||${awayName}`, game);
+    }
+
+    // Get ALL DB matches at once (one query instead of N)
+    const allDbMatches = await db
+      .select({
+        id: matches.id,
+        home_team: matches.home_team,
+        away_team: matches.away_team,
+        home_score_real: matches.home_score_real,
+        away_score_real: matches.away_score_real,
+        is_locked: matches.is_locked,
+      })
+      .from(matches);
+
+    // Build lookup by (home_team, away_team)
+    const matchLookup = new Map<string, typeof allDbMatches[0]>();
+    for (const m of allDbMatches) {
+      matchLookup.set(`${m.home_team}||${m.away_team}`, m);
+    }
+
+    // Collect finished match IDs for batch prediction update
+    const finishedMatchIds: string[] = [];
+    const matchesToUpdate: { id: string; homeScore: number; awayScore: number; isFinished: boolean }[] = [];
+
+    for (const [key, game] of gameMap) {
+      const dbMatch = matchLookup.get(key);
+      if (!dbMatch) continue;
 
       const homeScore = parseInt(game.home_score, 10);
       const awayScore = parseInt(game.away_score, 10);
       const isFinished = game.finished === "TRUE";
-      const isLive = game.time_elapsed !== "notstarted" && !isFinished;
 
-      // Find matching match in DB
-      const [dbMatch] = await db
-        .select()
-        .from(matches)
-        .where(
-          and(
-            eq(matches.home_team, homeName),
-            eq(matches.away_team, awayName)
-          )
-        )
-        .limit(1);
-
-      if (!dbMatch) continue;
-
-      if (isLive) live++;
+      if (game.time_elapsed !== "notstarted" && !isFinished) live++;
 
       // Only update if scores changed or match just finished
       const scoresChanged =
@@ -123,37 +148,44 @@ async function syncScores(): Promise<{ updated: number; live: number }> {
         dbMatch.away_score_real !== awayScore;
 
       if (scoresChanged || (isFinished && !dbMatch.is_locked)) {
-        await db
-          .update(matches)
-          .set({
-            home_score_real: homeScore,
-            away_score_real: awayScore,
-            is_locked: isFinished ? true : dbMatch.is_locked,
-          })
-          .where(eq(matches.id, dbMatch.id));
-
-        // If match finished, calculate points for all predictions
-        if (isFinished) {
-          const preds = await db
-            .select()
-            .from(predictions)
-            .where(eq(predictions.match_id, dbMatch.id));
-
-          for (const pred of preds) {
-            const points = calculatePoints(
-              pred.home_score_pred,
-              pred.away_score_pred,
-              homeScore,
-              awayScore
-            );
-            await db
-              .update(predictions)
-              .set({ points_earned: points })
-              .where(eq(predictions.id, pred.id));
-          }
-        }
-
+        matchesToUpdate.push({ id: dbMatch.id, homeScore, awayScore, isFinished });
+        if (isFinished) finishedMatchIds.push(dbMatch.id);
         updated++;
+      }
+    }
+
+    // Batch update all matches
+    for (const m of matchesToUpdate) {
+      await db
+        .update(matches)
+        .set({
+          home_score_real: m.homeScore,
+          away_score_real: m.awayScore,
+          is_locked: m.isFinished ? true : undefined,
+        })
+        .where(eq(matches.id, m.id));
+    }
+
+    // Batch process predictions for ALL finished matches (one query instead of N)
+    if (finishedMatchIds.length > 0) {
+      const allPreds = await db
+        .select()
+        .from(predictions)
+        .where(inArray(predictions.match_id, finishedMatchIds));
+
+      // Build result lookup
+      const resultMap = new Map<string, { home: number; away: number }>();
+      for (const m of matchesToUpdate) {
+        if (m.isFinished) resultMap.set(m.id, { home: m.homeScore, away: m.awayScore });
+      }
+
+      // Batch update all predictions
+      for (const pred of allPreds) {
+        const result = resultMap.get(pred.match_id);
+        if (!result) continue;
+
+        const points = calculatePoints(pred.home_score_pred, pred.away_score_pred, result.home, result.away);
+        await db.update(predictions).set({ points_earned: points }).where(eq(predictions.id, pred.id));
       }
     }
 
@@ -172,9 +204,7 @@ let intervalHandle: ReturnType<typeof setInterval> | null = null;
 
 export function startLiveScoreSync(): void {
   logger.info("Starting live score sync every 60s");
-  // Run immediately
   syncScores();
-  // Then every 60s
   intervalHandle = setInterval(syncScores, SYNC_INTERVAL);
 }
 

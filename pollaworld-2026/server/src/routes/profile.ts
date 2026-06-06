@@ -6,6 +6,7 @@ import { users } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { eq } from "drizzle-orm";
 import cloudinary from "../lib/cloudinary";
+import logger from "../lib/logger";
 
 const router = Router();
 
@@ -35,7 +36,7 @@ router.patch("/name", requireAuth, async (req: Request, res: Response) => {
     res.json({ user: updated });
   } catch (err) {
     if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
-    console.error("Profile name error:", err);
+    logger.error(err, "Profile name error:");
     res.status(500).json({ error: "Error al actualizar nombre." });
   }
 });
@@ -78,10 +79,13 @@ router.post("/avatar", requireAuth, (req: Request, res: Response, next) => {
       .where(eq(users.id, req.user!.userId));
 
     res.json({ avatar_url: result.secure_url, message: "Foto de perfil actualizada." });
-  } catch (err: any) {
-    console.error("Upload avatar error:", err);
-    if (err?.http_code === 401 || err?.message?.includes("Invalid")) {
-      return res.status(500).json({ error: "Error de configuración de Cloudinary." });
+  } catch (err: unknown) {
+    logger.error(err, "Upload avatar error:");
+    if (err && typeof err === "object" && ("http_code" in err || "message" in err)) {
+      const errObj = err as { http_code?: number; message?: string };
+      if (errObj.http_code === 401 || errObj.message?.includes("Invalid")) {
+        return res.status(500).json({ error: "Error de configuración de Cloudinary." });
+      }
     }
     res.status(500).json({ error: "Error al subir foto." });
   }

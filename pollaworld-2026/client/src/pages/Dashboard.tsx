@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { pdf } from "@react-pdf/renderer";
 import { api, MatchWithPrediction, PoolConfig, Entry } from "../lib/api";
@@ -82,7 +82,7 @@ export default function Dashboard() {
     }
   };
 
-  const handleCreateEntry = async () => {
+  const handleCreateEntry = useCallback(async () => {
     setCreatingEntry(true);
     try {
       const newEntry = await api.createEntry();
@@ -94,7 +94,7 @@ export default function Dashboard() {
     } finally {
       setCreatingEntry(false);
     }
-  };
+  }, []);
 
   const checkLiveMatches = async () => {
     try {
@@ -112,13 +112,16 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  const filteredMatches = matches.filter((m) =>
+  const filteredMatches = useMemo(() => matches.filter((m) =>
     activeTab === "groups" ? m.phase === "groups" : m.phase !== "groups"
+  ), [matches, activeTab]);
+
+  const predictionCount = useMemo(
+    () => filteredMatches.filter((m) => predictions[m.id]?.home !== undefined).length,
+    [filteredMatches, predictions]
   );
 
-  const predictionCount = filteredMatches.filter((m) => predictions[m.id]?.home !== undefined).length;
-
-  const handlePredictionChange = (matchId: string, field: "home" | "away", value: string) => {
+  const handlePredictionChange = useCallback((matchId: string, field: "home" | "away", value: string) => {
     const num = parseInt(value, 10);
     if (value !== "" && (isNaN(num) || num < 0 || num > 20)) return;
 
@@ -129,9 +132,9 @@ export default function Dashboard() {
         away: field === "away" ? value : (prev[matchId]?.away ?? ""),
       },
     }));
-  };
+  }, []);
 
-  const handleSaveAll = async () => {
+  const handleSaveAll = useCallback(async () => {
     if (!selectedEntryId) return;
     setSaving(true);
     setMessage("");
@@ -157,9 +160,9 @@ export default function Dashboard() {
     } finally {
       setSaving(false);
     }
-  };
+  }, [selectedEntryId, predictions]);
 
-  const handleUploadProof = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadProof = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !selectedEntryId) return;
     setUploading(true);
@@ -177,9 +180,9 @@ export default function Dashboard() {
         fileInputRef.current.value = "";
       }
     }
-  };
+  }, [selectedEntryId]);
 
-  const handleGeneratePdf = async () => {
+  const handleGeneratePdf = useCallback(async () => {
     setGeneratingPdf(true);
     try {
       const entryId = selectedEntry?.id;
@@ -190,7 +193,7 @@ export default function Dashboard() {
       const matchesWithPreds = await api.getMatchesWithPredictions(entryId);
 
       // Transform to the format PdfBoleto expects
-      const predictions = matchesWithPreds
+      const predictionsData = matchesWithPreds
         .filter((m) => m.prediction)
         .map((m) => ({
           prediction: m.prediction!,
@@ -203,7 +206,7 @@ export default function Dashboard() {
           userName={user!.name}
           userPhone={user!.phone}
           playerSlug={user!.player_slug}
-          predictions={predictions}
+          predictions={predictionsData}
           allMatches={allMatches}
         />
       ).toBlob();
@@ -219,7 +222,7 @@ export default function Dashboard() {
     } finally {
       setGeneratingPdf(false);
     }
-  };
+  }, [selectedEntry, user]);
 
   const formatDate = (d: string) => {
     const date = new Date(d);

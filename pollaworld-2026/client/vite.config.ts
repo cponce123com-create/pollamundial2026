@@ -12,4 +12,19 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React core
+          vendor: ["react", "react-dom", "react-router-dom"],
+          // PDF generation (heavy)
+          pdf: ["@react-pdf/renderer"],
+          // Notifications
+          ui: ["sonner"],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 500,
+  },
 });

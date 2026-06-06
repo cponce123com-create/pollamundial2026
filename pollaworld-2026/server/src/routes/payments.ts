@@ -1,12 +1,20 @@
 import { Router, Request, Response } from "express";
 import multer from "multer";
+import rateLimit from "express-rate-limit";
 import { db } from "../db";
 import { entries } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { eq } from "drizzle-orm";
 import cloudinary from "../lib/cloudinary";
+import logger from "../lib/logger";
 
 const router = Router();
+
+const paymentLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: { error: "Demasiadas solicitudes de pago. Espera un minuto." },
+});
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -82,9 +90,10 @@ router.post("/upload", requireAuth, (req: Request, res: Response, next) => {
       .where(eq(entries.id, entry_id));
 
     res.json({ url: result.secure_url, message: "Comprobante subido. Pendiente de revisión." });
-  } catch (err: any) {
-    console.error("Upload proof error:", err);
-    if (err?.http_code === 401 || err?.message?.includes("Invalid")) {
+  } catch (err: unknown) {
+    logger.error(err, "Upload proof error:");
+    const errObj = err as Record<string, unknown>;
+    if (errObj?.http_code === 401 || (typeof errObj?.message === "string" && (errObj.message as string).includes("Invalid"))) {
       return res.status(500).json({ error: "Error de configuración de Cloudinary. Contacta al administrador." });
     }
     res.status(500).json({ error: "Error al subir comprobante. Verifica que el archivo sea una imagen válida." });

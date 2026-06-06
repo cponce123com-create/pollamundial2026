@@ -1,30 +1,42 @@
 import { Router, Request, Response } from "express";
+import { z } from "zod";
+import rateLimit from "express-rate-limit";
 import { db } from "../db";
 import { users, entries, matches, predictions, poolConfig } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
-import { eq, and, asc, sql, inArray } from "drizzle-orm";
+import { eq, and, asc, inArray } from "drizzle-orm";
 import { calculatePoints } from "../lib/scoring";
+import logger from "../lib/logger";
+import { broadcastEvent } from "../lib/sse";
 
 const router = Router();
+
+const adminLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  message: { error: "Demasiadas solicitudes." },
+});
+
+router.use(adminLimiter);
 
 // GET /api/admin/users — listar todos los usuarios
 router.get("/users", requireAdmin, async (_req: Request, res: Response) => {
   try {
-    try {
-      const result = await db.execute<{ id: string; name: string; phone: string; player_slug: string | null; role: "participant" | "admin"; avatar_url: string | null; created_at: string }>(
-        sql`SELECT id, name, phone, player_slug, role, avatar_url, created_at FROM users ORDER BY created_at`
-      );
-      res.json(result.rows || []);
-      return;
-    } catch {
-      // Fallback without avatar_url
-      const result = await db.execute<{ id: string; name: string; phone: string; player_slug: string | null; role: "participant" | "admin"; created_at: string }>(
-        sql`SELECT id, name, phone, player_slug, role, created_at FROM users ORDER BY created_at`
-      );
-      res.json(result.rows || []);
-    }
+    const result = await db
+      .select({
+        id: users.id,
+        name: users.name,
+        phone: users.phone,
+        player_slug: users.player_slug,
+        role: users.role,
+        avatar_url: users.avatar_url,
+        created_at: users.created_at,
+      })
+      .from(users)
+      .orderBy(users.created_at);
+    res.json(result);
   } catch (err) {
-    console.error("Admin users error:", err);
+    logger.error(err, "Admin users error:");
     res.status(500).json({ error: "Error al obtener usuarios." });
   }
 });
@@ -51,7 +63,7 @@ router.put("/users/:id", requireAdmin, async (req: Request, res: Response) => {
 
     res.json(updated);
   } catch (err) {
-    console.error("Admin update user error:", err);
+    logger.error(err, "Admin update user error:");
     res.status(500).json({ error: "Error al actualizar usuario." });
   }
 });
@@ -79,7 +91,7 @@ router.get("/entries", requireAdmin, async (_req: Request, res: Response) => {
 
     res.json(allEntries);
   } catch (err) {
-    console.error("Admin entries error:", err);
+    logger.error(err, "Admin entries error:");
     res.status(500).json({ error: "Error al obtener entradas." });
   }
 });
@@ -106,7 +118,7 @@ router.get("/entries/pending", requireAdmin, async (_req: Request, res: Response
 
     res.json(pending);
   } catch (err) {
-    console.error("Pending entries error:", err);
+    logger.error(err, "Pending entries error:");
     res.status(500).json({ error: "Error al obtener entradas pendientes." });
   }
 });
@@ -133,7 +145,7 @@ router.get("/entries/approved", requireAdmin, async (_req: Request, res: Respons
 
     res.json(approved);
   } catch (err) {
-    console.error("Approved entries error:", err);
+    logger.error(err, "Approved entries error:");
     res.status(500).json({ error: "Error al obtener entradas aprobadas." });
   }
 });
@@ -163,9 +175,12 @@ router.patch("/entries/:id/approve", requireAdmin, async (req: Request, res: Res
       return;
     }
 
+    // Notify client
+    broadcastEvent("payment_approved", { entryId: updated.id, ticketNumber: updated.ticket_number, userId: updated.user_id });
+
     res.json({ message: "Pago aprobado.", entry: updated });
   } catch (err) {
-    console.error("Approve entry error:", err);
+    logger.error(err, "Approve entry error:");
     res.status(500).json({ error: "Error al aprobar pago." });
   }
 });
@@ -185,9 +200,12 @@ router.patch("/entries/:id/reject", requireAdmin, async (req: Request, res: Resp
       return;
     }
 
+    // Notify client
+    broadcastEvent("payment_rejected", { entryId: updated.id, ticketNumber: updated.ticket_number, userId: updated.user_id, reason });
+
     res.json({ message: reason ? `Pago rechazado: ${reason}` : "Pago rechazado.", entry: updated });
   } catch (err) {
-    console.error("Reject entry error:", err);
+    logger.error(err, "Reject entry error:");
     res.status(500).json({ error: "Error al rechazar pago." });
   }
 });
@@ -234,7 +252,7 @@ router.get("/predictions/export", requireAdmin, async (_req: Request, res: Respo
 
     res.json({ exported_at: new Date().toISOString(), users: result, matches: allMatches });
   } catch (err) {
-    console.error("Export error:", err);
+    logger.error(err, "Export error:");
     res.status(500).json({ error: "Error al exportar predicciones." });
   }
 });
@@ -243,10 +261,10 @@ router.get("/predictions/export", requireAdmin, async (_req: Request, res: Respo
 router.get("/players", requireAdmin, async (_req: Request, res: Response) => {
   try {
     const [config] = await db.select({ names: poolConfig.player_custom_names }).from(poolConfig).limit(1);
-    const customNames: Record<string, string> = config?.names ? JSON.parse(config.names) : {};
+    const customNames: Record<string, string> = (config?.names as Record<string, string>) || {};
     res.json({ customNames });
   } catch (err) {
-    console.error("Admin players error:", err);
+    logger.error(err, "Admin players error:");
     res.status(500).json({ error: "Error al obtener jugadores." });
   }
 });
@@ -255,16 +273,15 @@ router.get("/players", requireAdmin, async (_req: Request, res: Response) => {
 router.put("/players", requireAdmin, async (req: Request, res: Response) => {
   try {
     const { customNames } = req.body;
-    const json = JSON.stringify(customNames || {});
     const configs = await db.select().from(poolConfig).limit(1);
     if (configs.length === 0) {
-      await db.insert(poolConfig).values({ player_custom_names: json });
+      await db.insert(poolConfig).values({ player_custom_names: customNames || {} });
     } else {
-      await db.update(poolConfig).set({ player_custom_names: json }).where(eq(poolConfig.id, configs[0].id));
+      await db.update(poolConfig).set({ player_custom_names: customNames || {} }).where(eq(poolConfig.id, configs[0].id));
     }
     res.json({ message: "Nombres actualizados.", customNames });
   } catch (err) {
-    console.error("Admin save players error:", err);
+    logger.error(err, "Admin save players error:");
     res.status(500).json({ error: "Error al guardar nombres." });
   }
 });
@@ -284,29 +301,22 @@ router.delete("/entries/:id", requireAdmin, async (req: Request, res: Response) 
 
     res.json({ message: `Ticket #${deleted.ticket_number} eliminado.` });
   } catch (err) {
-    console.error("Delete entry error:", err);
+    logger.error(err, "Delete entry error:");
     res.status(500).json({ error: "Error al eliminar entrada." });
   }
 });
 
 // POST /api/admin/matches/:id/result — admin ingresa resultado y dispara cálculo
+const resultSchema = z.object({
+  home_score_real: z.number().int().min(0, "El marcador local debe ser 0 o más"),
+  away_score_real: z.number().int().min(0, "El marcador visitante debe ser 0 o más"),
+});
+
 router.post("/matches/:id/result", requireAdmin, async (req: Request, res: Response) => {
   try {
-    const { home_score_real, away_score_real } = req.body;
-
-    if (home_score_real === "" || home_score_real === undefined || home_score_real === null ||
-        away_score_real === "" || away_score_real === undefined || away_score_real === null) {
-      res.status(400).json({ error: "Debes ingresar el marcador real del partido." });
-      return;
-    }
-
-    const homeScore = Number(home_score_real);
-    const awayScore = Number(away_score_real);
-
-    if (isNaN(homeScore) || isNaN(awayScore) || homeScore < 0 || awayScore < 0) {
-      res.status(400).json({ error: "Los marcadores deben ser números válidos (0 o más)." });
-      return;
-    }
+    const { home_score_real, away_score_real } = resultSchema.parse(req.body);
+    const homeScore = home_score_real;
+    const awayScore = away_score_real;
 
     const [match] = await db
       .select()
@@ -334,9 +344,19 @@ router.post("/matches/:id/result", requireAdmin, async (req: Request, res: Respo
       await db.update(predictions).set({ points_earned: points }).where(eq(predictions.id, pred.id));
     }
 
+    // Notify clients
+    broadcastEvent("match_result", {
+      matchId: match.id,
+      homeTeam: match.home_team,
+      awayTeam: match.away_team,
+      homeScore,
+      awayScore,
+      predictionsCalculated: allPredictions.length,
+    });
+
     res.json({ message: `Resultado guardado. ${allPredictions.length} predicciones calculadas.` });
   } catch (err) {
-    console.error("Save result error:", err);
+    logger.error(err, "Save result error:");
     res.status(500).json({ error: "Error al guardar resultado." });
   }
 });
@@ -379,7 +399,7 @@ router.patch("/matches/:id/lock", requireAdmin, async (req: Request, res: Respon
       res.json({ message: "Partido desbloqueado. Resultado y puntos eliminados.", match });
     }
   } catch (err) {
-    console.error("Lock match error:", err);
+    logger.error(err, "Lock match error:");
     res.status(500).json({ error: "Error al bloquear partido." });
   }
 });

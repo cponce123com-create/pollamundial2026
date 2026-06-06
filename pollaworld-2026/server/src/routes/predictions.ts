@@ -1,11 +1,19 @@
 import { Router, Request, Response } from "express";
 import { z } from "zod";
+import rateLimit from "express-rate-limit";
 import { db } from "../db";
 import { predictions, matches, users, entries, poolConfig } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { eq, and, asc, desc, sql, inArray } from "drizzle-orm";
+import logger from "../lib/logger";
 
 const router = Router();
+
+const predictionLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  message: { error: "Demasiadas solicitudes. Intenta de nuevo en un minuto." },
+});
 
 const predictionSchema = z.object({
   entry_id: z.string().uuid(),
@@ -24,7 +32,7 @@ const bulkPredictionSchema = z.object({
 });
 
 // POST /api/predictions — crear/actualizar UNA predicción (upsert)
-router.post("/", requireAuth, async (req: Request, res: Response) => {
+router.post("/", predictionLimiter, requireAuth, async (req: Request, res: Response) => {
   try {
     const data = predictionSchema.parse(req.body);
 
@@ -84,7 +92,7 @@ router.post("/", requireAuth, async (req: Request, res: Response) => {
     }
   } catch (err) {
     if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
-    console.error("Prediction error:", err);
+    logger.error(err, "Prediction error:");
     res.status(500).json({ error: "Error al guardar predicción." });
   }
 });
@@ -140,7 +148,7 @@ router.post("/bulk", requireAuth, async (req: Request, res: Response) => {
     res.json({ saved: results.length, predictions: results });
   } catch (err) {
     if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
-    console.error("Bulk prediction error:", err);
+    logger.error(err, "Bulk prediction error:");
     res.status(500).json({ error: "Error al guardar predicciones." });
   }
 });
@@ -173,7 +181,7 @@ router.get("/my/:entryId", requireAuth, async (req: Request, res: Response) => {
 
     res.json(data);
   } catch (err) {
-    console.error("My predictions by entry error:", err);
+    logger.error(err, "My predictions by entry error:");
     res.status(500).json({ error: "Error al obtener predicciones." });
   }
 });
@@ -210,7 +218,7 @@ router.get("/matches/:entryId", requireAuth, async (req: Request, res: Response)
 
     res.json(result);
   } catch (err) {
-    console.error("Matches with predictions by entry error:", err);
+    logger.error(err, "Matches with predictions by entry error:");
     res.status(500).json({ error: "Error al obtener partidos." });
   }
 });
@@ -238,7 +246,7 @@ router.get("/user/:userId", async (req: Request, res: Response) => {
 
     res.json(data);
   } catch (err) {
-    console.error("User predictions error:", err);
+    logger.error(err, "User predictions error:");
     res.status(500).json({ error: "Error al obtener predicciones." });
   }
 });
@@ -272,7 +280,7 @@ router.get("/popular", async (_req: Request, res: Response) => {
 
     res.json(result);
   } catch (err) {
-    console.error("Popular predictions error:", err);
+    logger.error(err, "Popular predictions error:");
     res.status(500).json({ error: "Error al obtener predicciones populares." });
   }
 });

@@ -4,6 +4,7 @@ import path from "path";
 import { db } from "../db";
 import { matches } from "../db/schema";
 import { eq, or, asc } from "drizzle-orm";
+import logger from "../lib/logger";
 
 const router = Router();
 
@@ -14,7 +15,7 @@ router.get("/squads", (_req: Request, res: Response) => {
     const data = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
     res.json(data);
   } catch (err) {
-    console.error("Squads error:", err);
+    logger.error(err, "Squads error:");
     res.status(500).json({ error: "Error al cargar datos de equipos." });
   }
 });
@@ -36,7 +37,7 @@ router.get("/matches/:teamName", async (req: Request, res: Response) => {
 
     res.json(teamMatches);
   } catch (err) {
-    console.error("Team matches error:", err);
+    logger.error(err, "Team matches error:");
     res.status(500).json({ error: "Error al obtener partidos." });
   }
 });

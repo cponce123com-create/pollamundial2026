@@ -5,6 +5,7 @@ import { db } from "./index";
 import { users, matches, poolConfig } from "./schema";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
+import logger from "../lib/logger";
 
 // ─── Helper: ISO2 country code → flag emoji ──────────────────────
 function isoToEmoji(code: string): string {
@@ -277,6 +278,6 @@ async function seed() {
 }
 
 seed().catch((err) => {
-  console.error("Seed failed:", err);
+  logger.error(err, "Seed failed:");
   process.exit(1);
 });

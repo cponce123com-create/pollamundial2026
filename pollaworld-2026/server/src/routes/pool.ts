@@ -6,6 +6,7 @@ import { poolConfig, users, entries, predictions } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
 import { eq, sql, count, desc } from "drizzle-orm";
 import cloudinary from "../lib/cloudinary";
+import logger from "../lib/logger";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -24,7 +25,7 @@ const poolConfigSchema = z.object({
   tournament_started: z.boolean().optional(),
   yape_qr_url: z.string().nullable().optional(),
   yape_phone: z.string().nullable().optional(),
-  player_custom_names: z.string().nullable().optional(),
+  player_custom_names: z.record(z.string()).nullable().optional(),
 });
 
 const router = Router();
@@ -54,7 +55,7 @@ router.get("/stats", async (_req: Request, res: Response) => {
       tournamentStarted: config?.tournament_started ?? false,
     });
   } catch (err) {
-    console.error("Pool stats error:", err);
+    logger.error(err, "Pool stats error:");
     res.status(500).json({ error: "Error al obtener estadísticas." });
   }
 });
@@ -88,7 +89,7 @@ router.get("/participants", async (_req: Request, res: Response) => {
 
     res.json(masked);
   } catch (err) {
-    console.error("Participants error:", err);
+    logger.error(err, "Participants error:");
     res.status(500).json({ error: "Error al obtener participantes." });
   }
 });
@@ -104,7 +105,7 @@ router.get("/config", async (_req: Request, res: Response) => {
     }
     res.json(configs[0]);
   } catch (err) {
-    console.error("Get pool config error:", err);
+    logger.error(err, "Get pool config error:");
     res.status(500).json({ error: "Error al obtener configuración." });
   }
 });
@@ -127,7 +128,7 @@ router.put("/config", requireAdmin, async (req: Request, res: Response) => {
     }
   } catch (err) {
     if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
-    console.error("Update pool config error:", err);
+    logger.error(err, "Update pool config error:");
     res.status(500).json({ error: "Error al actualizar configuración." });
   }
 });
@@ -151,11 +152,15 @@ router.get("/ranking", async (_req: Request, res: Response) => {
       .leftJoin(predictions, eq(entries.id, predictions.entry_id))
       .where(eq(entries.payment_status, "approved"))
       .groupBy(entries.id, users.id)
-      .orderBy(desc(sql`COALESCE(SUM(${predictions.points_earned}), 0)`));
+      .orderBy(
+        desc(sql`COALESCE(SUM(${predictions.points_earned}), 0)`),
+        desc(sql`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 5 THEN 1 ELSE 0 END), 0)`),
+        desc(sql`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 3 THEN 1 ELSE 0 END), 0)`)
+      );
 
     res.json(ranking);
   } catch (err) {
-    console.error("Ranking error:", err);
+    logger.error(err, "Ranking error:");
     res.status(500).json({ error: "Error al obtener ranking." });
   }
 });
@@ -207,9 +212,10 @@ router.post("/upload-yape-qr", requireAdmin, (req: Request, res: Response, next)
     }
 
     res.json({ url: result.secure_url, message: "Código QR de Yape actualizado." });
-  } catch (err: any) {
-    console.error("Upload yape QR error:", err);
-    if (err?.http_code === 401 || err?.message?.includes("Invalid")) {
+  } catch (err: unknown) {
+    logger.error(err, "Upload yape QR error:");
+    const errObj = err as Record<string, unknown>;
+    if (errObj?.http_code === 401 || (typeof errObj?.message === "string" && (errObj.message as string).includes("Invalid"))) {
       return res.status(500).json({ error: "Error de configuración de Cloudinary. Contacta al administrador." });
     }
     res.status(500).json({ error: "Error al subir código QR." });

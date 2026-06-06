@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, varchar, integer, boolean, timestamp, uniqueIndex, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, varchar, integer, boolean, timestamp, uniqueIndex, jsonb, index, pgEnum } from "drizzle-orm/pg-core";
 
 export const roleEnum = pgEnum("role", ["participant", "admin"]);
 export const paymentStatusEnum = pgEnum("payment_status", ["pending", "approved", "rejected"]);
@@ -8,7 +8,7 @@ export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 100 }).notNull(),
   phone: varchar("phone", { length: 20 }).unique().notNull(),
-  password_hash: text("password_hash"),
+  password_hash: text("password_hash").notNull(),
   player_slug: text("player_slug"),
   avatar_url: text("avatar_url"),
   role: roleEnum("role").default("participant").notNull(),
@@ -28,7 +28,9 @@ export const matches = pgTable("matches", {
   away_score_real: integer("away_score_real"),
   is_locked: boolean("is_locked").default(false).notNull(),
   match_order: integer("match_order").notNull(),
-});
+}, (table) => ({
+  matchDateIdx: index("idx_matches_date").on(table.match_date),
+}));
 
 export const entries = pgTable("entries", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -37,7 +39,9 @@ export const entries = pgTable("entries", {
   payment_status: paymentStatusEnum("payment_status").default("pending").notNull(),
   payment_proof_url: text("payment_proof_url"),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-});
+}, (table) => ({
+  userIdIdx: index("idx_entries_user").on(table.user_id),
+}));
 
 export const predictions = pgTable(
   "predictions",
@@ -54,6 +58,8 @@ export const predictions = pgTable(
   },
   (table) => ({
     uniqueEntryMatch: uniqueIndex("unique_entry_match").on(table.entry_id, table.match_id),
+    entryIdIdx: index("idx_predictions_entry").on(table.entry_id),
+    matchIdIdx: index("idx_predictions_match").on(table.match_id),
   })
 );
 
@@ -66,5 +72,5 @@ export const poolConfig = pgTable("pool_config", {
   tournament_started: boolean("tournament_started").default(false).notNull(),
   yape_qr_url: text("yape_qr_url"),
   yape_phone: text("yape_phone"),
-  player_custom_names: text("player_custom_names"),
+  player_custom_names: jsonb("player_custom_names"),
 });

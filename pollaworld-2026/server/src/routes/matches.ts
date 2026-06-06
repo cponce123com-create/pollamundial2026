@@ -4,6 +4,7 @@ import { db } from "../db";
 import { matches } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
 import { eq, asc, lte, gte, desc, and, isNotNull } from "drizzle-orm";
+import logger from "../lib/logger";
 
 const matchCreateSchema = z.object({
   phase: z.enum(["groups", "round_of_32", "round_of_16", "quarterfinals", "semifinals", "final_3rd", "final"]),
@@ -25,7 +26,7 @@ router.get("/", async (_req: Request, res: Response) => {
     const allMatches = await db.select().from(matches).orderBy(asc(matches.match_order));
     res.json(allMatches);
   } catch (err) {
-    console.error("Get matches error:", err);
+    logger.error(err, "Get matches error:");
     res.status(500).json({ error: "Error al obtener partidos." });
   }
 });
@@ -63,7 +64,7 @@ router.get("/live", async (_req: Request, res: Response) => {
 
     res.json({ live: liveMatches, recent: recentMatches });
   } catch (err) {
-    console.error("Live matches error:", err);
+    logger.error(err, "Live matches error:");
     res.status(500).json({ error: "Error al obtener partidos en vivo." });
   }
 });
@@ -78,7 +79,7 @@ router.get("/:id", async (req: Request, res: Response) => {
     }
     res.json(match);
   } catch (err) {
-    console.error("Get match error:", err);
+    logger.error(err, "Get match error:");
     res.status(500).json({ error: "Error al obtener partido." });
   }
 });
@@ -92,7 +93,7 @@ router.post("/", requireAdmin, async (req: Request, res: Response) => {
     res.status(201).json(newMatch);
   } catch (err) {
     if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
-    console.error("Create match error:", err);
+    logger.error(err, "Create match error:");
     res.status(500).json({ error: "Error al crear partido." });
   }
 });
@@ -115,7 +116,7 @@ router.put("/:id", requireAdmin, async (req: Request, res: Response) => {
     res.json(updated);
   } catch (err) {
     if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
-    console.error("Update match error:", err);
+    logger.error(err, "Update match error:");
     res.status(500).json({ error: "Error al actualizar partido." });
   }
 });

@@ -2,6 +2,12 @@ import { useState, useEffect } from "react";
 import { api, PoolStats, RankingEntry } from "../lib/api";
 import { getPlayer } from "../lib/players";
 
+function getShareText(stats: PoolStats | null, position: number, name: string): string {
+  const prizeStr = position === 1 ? `S/.${stats?.prizes.first}` : position === 2 ? `S/.${stats?.prizes.second}` : position === 3 ? `S/.${stats?.prizes.third}` : "";
+  const posText = position <= 3 ? `🥇🥈🥉`.charAt(position - 1) : `#${position}°`;
+  return `🏆 *PollaWorld 2026*\n${posText} — ${name}${prizeStr ? ` (Premio: ${prizeStr})` : ""}\n\n⬇️ Ve el ranking completo en:\n${window.location.href}`;
+}
+
 export default function RankingPage() {
   const [ranking, setRanking] = useState<RankingEntry[]>([]);
   const [stats, setStats] = useState<PoolStats | null>(null);
@@ -218,6 +224,24 @@ export default function RankingPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Share on WhatsApp */}
+        {currentUserId && (
+          <div style={{ marginTop: 16, textAlign: "center" }}>
+            <button
+              className="btn btn-outline"
+              onClick={() => {
+                const userEntry = ranking.find((e) => e.userId === currentUserId);
+                const pos = userEntry ? ranking.indexOf(userEntry) + 1 : 0;
+                const text = getShareText(stats, pos, userEntry?.name || "Participante");
+                const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                window.open(url, "_blank", "noopener,noreferrer");
+              }}
+            >
+              📱 Compartir mi posición en WhatsApp
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

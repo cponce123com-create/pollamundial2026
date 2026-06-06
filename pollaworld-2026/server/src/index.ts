@@ -3,6 +3,7 @@ dotenv.config();
 
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
+import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import path from "path";
 
@@ -21,7 +22,9 @@ import { eq, lte, and } from "drizzle-orm";
 import logger from "./lib/logger";
 import pinoHttp from "pino-http";
 import { sanitizeBody } from "./middleware/sanitize";
-import { startLiveScoreSync } from "./lib/livescore";
+import { csrfProtection } from "./middleware/csrf";
+import { startLiveScoreSync, stopLiveScoreSync } from "./lib/livescore";
+import { sseHandler, broadcastEvent } from "./lib/sse";
 
 // Validar variables de entorno requeridas
 const REQUIRED_VARS = ["DATABASE_URL", "JWT_SECRET", "CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"];
@@ -41,9 +44,16 @@ app.use(cors({
   origin: CLIENT_URL,
   credentials: true,
 }));
-app.use(express.json());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: false, // Desactivado para permitir recursos externos (Cloudinary, flagcdn)
+}));
+app.use(express.json({ limit: "10mb" }));
 app.use(sanitizeBody);
 app.use(cookieParser());
+
+// CSRF Protection — must be after cookieParser
+app.use(csrfProtection);
 
 // HTTP request logging
 app.use(pinoHttp({ logger }));
@@ -57,6 +67,9 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/pool", poolRoutes);
 app.use("/api/profile", profileRoutes);
+
+// SSE endpoint for real-time notifications
+app.get("/api/events", sseHandler);
 
 // Health check
 app.get("/api/health", (_req, res) => {
@@ -93,6 +106,9 @@ async function checkTournamentStart() {
       // Lock all group phase matches
       await db.update(matches).set({ is_locked: true }).where(eq(matches.phase, "groups"));
 
+      // Notify clients
+      broadcastEvent("tournament_started", { startedAt: now.toISOString() });
+
       logger.info(`[CRON] Tournament auto-started at ${now.toISOString()}`);
     }
   } catch (err) {
@@ -101,9 +117,23 @@ async function checkTournamentStart() {
 }
 
 // Run check every 60 seconds
-setInterval(checkTournamentStart, 60_000);
+const tournamentCheckInterval = setInterval(checkTournamentStart, 60_000);
 // Also run once on startup
 checkTournamentStart();
+
+// Graceful shutdown
+process.on("SIGTERM", () => {
+  logger.info("[SHUTDOWN] Received SIGTERM, cleaning up...");
+  clearInterval(tournamentCheckInterval);
+  stopLiveScoreSync();
+  process.exit(0);
+});
+process.on("SIGINT", () => {
+  logger.info("[SHUTDOWN] Received SIGINT, cleaning up...");
+  clearInterval(tournamentCheckInterval);
+  stopLiveScoreSync();
+  process.exit(0);
+});
 
 // Global error handler (must be after all routes)
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

@@ -18,9 +18,7 @@ export default function Register() {
   useEffect(() => {
     api.getPoolConfig().then((cfg) => {
       if (cfg.player_custom_names) {
-        try {
-          setCustomNames(JSON.parse(cfg.player_custom_names));
-        } catch {}
+        setCustomNames(cfg.player_custom_names as Record<string, string>);
       }
     }).catch(() => {});
   }, []);

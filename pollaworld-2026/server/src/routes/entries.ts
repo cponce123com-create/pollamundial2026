@@ -3,6 +3,7 @@ import { db } from "../db";
 import { entries } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { eq, sql, count } from "drizzle-orm";
+import logger from "../lib/logger";
 
 const router = Router();
 
@@ -17,7 +18,7 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
 
     res.json(userEntries);
   } catch (err) {
-    console.error("Get entries error:", err);
+    logger.error(err, "Get entries error:");
     res.status(500).json({ error: "Error al obtener tus entradas." });
   }
 });
@@ -49,7 +50,7 @@ router.post("/", requireAuth, async (req: Request, res: Response) => {
 
     res.status(201).json(entry);
   } catch (err) {
-    console.error("Create entry error:", err);
+    logger.error(err, "Create entry error:");
     res.status(500).json({ error: "Error al crear nueva entrada." });
   }
 });
