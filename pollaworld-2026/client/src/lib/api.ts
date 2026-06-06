@@ -59,6 +59,8 @@ export interface PoolConfig {
   yape_qr_url: string | null;
   yape_phone: string | null;
   whatsapp_group_link: string | null;
+  logo_url: string | null;
+  favicon_url: string | null;
   player_custom_names: Record<string, string> | null;
 }
 
