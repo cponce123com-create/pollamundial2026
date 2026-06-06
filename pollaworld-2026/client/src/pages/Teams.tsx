@@ -21,6 +21,9 @@ interface TeamSquad {
   nickname?: string;
   bestWC?: string;
   stadium?: string;
+  confederation?: string;
+  worldCupTitles?: number;
+  worldCupApps?: number;
   players: SquadPlayer[];
 }
 
@@ -159,29 +162,47 @@ export default function Teams() {
               {/* Team Info Cards */}
               {selectedSquad && (
                 <div className="team-info-cards" style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "12px 0" }}>
-                  <div className="card" style={{ flex: 1, minWidth: 100, textAlign: "center", padding: "8px 12px" }}>
+                  <div className="card" style={{ flex: 1, minWidth: 90, textAlign: "center", padding: "8px 12px" }}>
                     <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--gold)" }}>
                       #{selectedSquad.fifaRank ?? "—"}
                     </div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Ranking FIFA</div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>Ranking FIFA</div>
                   </div>
-                  <div className="card" style={{ flex: 1, minWidth: 100, textAlign: "center", padding: "8px 12px" }}>
+                  <div className="card" style={{ flex: 1, minWidth: 90, textAlign: "center", padding: "8px 12px" }}>
                     <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--gold)" }}>
                       {selectedSquad.nickname ?? "—"}
                     </div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Apodo</div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>Apodo</div>
                   </div>
-                  <div className="card" style={{ flex: 1, minWidth: 120, textAlign: "center", padding: "8px 12px" }}>
+                  <div className="card" style={{ flex: 1, minWidth: 90, textAlign: "center", padding: "8px 12px" }}>
+                    <div style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--gold)" }}>
+                      {selectedSquad.confederation ?? "—"}
+                    </div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>Confederación</div>
+                  </div>
+                  <div className="card" style={{ flex: 1, minWidth: 90, textAlign: "center", padding: "8px 12px" }}>
                     <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--gold)" }}>
                       {selectedSquad.bestWC ?? "—"}
                     </div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Mejor Mundial</div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>Mejor Mundial</div>
+                  </div>
+                  <div className="card" style={{ flex: 1, minWidth: 90, textAlign: "center", padding: "8px 12px" }}>
+                    <div style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--gold)" }}>
+                      {selectedSquad.worldCupTitles ?? 0}
+                    </div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>🏆 Títulos</div>
+                  </div>
+                  <div className="card" style={{ flex: 1, minWidth: 90, textAlign: "center", padding: "8px 12px" }}>
+                    <div style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--gold)" }}>
+                      {selectedSquad.worldCupApps ?? 0}
+                    </div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>🌍 Mundiales</div>
                   </div>
                   <div className="card" style={{ flex: 1, minWidth: 120, textAlign: "center", padding: "8px 12px" }}>
                     <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--gold)" }}>
                       {selectedSquad.stadium ?? "—"}
                     </div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Estadio</div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>Estadio</div>
                   </div>
                 </div>
               )}

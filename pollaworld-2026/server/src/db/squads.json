@@ -217,7 +217,9 @@
     "nickname": "Lokomotiva",
     "bestWC": "Subcampeón (1934, 1962)",
     "stadium": "Estadio Eden",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 9
   },
   {
     "team": "México",
@@ -437,7 +439,9 @@
     "nickname": "El Tri",
     "bestWC": "Cuartos de final (1970, 1986)",
     "stadium": "Estadio Azteca",
-    "confederation": "CONCACAF"
+    "confederation": "CONCACAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 17
   },
   {
     "team": "Sudáfrica",
@@ -657,7 +661,9 @@
     "nickname": "Bafana Bafana",
     "bestWC": "Fase de grupos (1998, 2002, 2010)",
     "stadium": "Estadio Soccer City",
-    "confederation": "CAF"
+    "confederation": "CAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 4
   },
   {
     "team": "Corea del Sur",
@@ -877,7 +883,9 @@
     "nickname": "Tigres de Asia",
     "bestWC": "Cuarto lugar (2002)",
     "stadium": "Estadio Mundialista",
-    "confederation": "AFC"
+    "confederation": "AFC",
+    "worldCupTitles": 0,
+    "worldCupApps": 11
   },
   {
     "team": "Bosnia y Herzegovina",
@@ -1097,7 +1105,9 @@
     "nickname": "Zmajevi",
     "bestWC": "Fase de grupos (2014)",
     "stadium": "Estadio Grbavica",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 1
   },
   {
     "team": "Canadá",
@@ -1317,7 +1327,9 @@
     "nickname": "Canucks",
     "bestWC": "Fase de grupos (1986, 2022)",
     "stadium": "BMO Field",
-    "confederation": "CONCACAF"
+    "confederation": "CONCACAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 3
   },
   {
     "team": "Catar",
@@ -1537,7 +1549,9 @@
     "nickname": "Los Marrones",
     "bestWC": "Fase de grupos (2022)",
     "stadium": "Estadio Khalifa",
-    "confederation": "AFC"
+    "confederation": "AFC",
+    "worldCupTitles": 0,
+    "worldCupApps": 2
   },
   {
     "team": "Suiza",
@@ -1757,7 +1771,9 @@
     "nickname": "La Nati",
     "bestWC": "Cuartos de final (1934, 1938, 1954)",
     "stadium": "St. Jakob-Park",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 12
   },
   {
     "team": "Brasil",
@@ -1977,7 +1993,9 @@
     "nickname": "Canarinho",
     "bestWC": "Campeón (5 veces)",
     "stadium": "Estadio Maracaná",
-    "confederation": "CONMEBOL"
+    "confederation": "CONMEBOL",
+    "worldCupTitles": 5,
+    "worldCupApps": 22
   },
   {
     "team": "Haití",
@@ -2197,7 +2215,9 @@
     "nickname": "Rojos y Azules",
     "bestWC": "Fase de grupos (1974)",
     "stadium": "Estadio Sylvio Cator",
-    "confederation": "CONCACAF"
+    "confederation": "CONCACAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 2
   },
   {
     "team": "Marruecos",
@@ -2417,7 +2437,9 @@
     "nickname": "Atlas Lions",
     "bestWC": "Cuarto lugar (2022)",
     "stadium": "Estadio Príncipe Moulay",
-    "confederation": "CAF"
+    "confederation": "CAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 6
   },
   {
     "team": "Escocia",
@@ -2637,7 +2659,9 @@
     "nickname": "Tartan Army",
     "bestWC": "Fase de grupos (1974, 1978, 1982)",
     "stadium": "Hampden Park",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 8
   },
   {
     "team": "Australia",
@@ -2857,7 +2881,9 @@
     "nickname": "Socceroos",
     "bestWC": "Octavos de final (2022)",
     "stadium": "Stadium Australia",
-    "confederation": "AFC"
+    "confederation": "AFC",
+    "worldCupTitles": 0,
+    "worldCupApps": 6
   },
   {
     "team": "Paraguay",
@@ -3077,7 +3103,9 @@
     "nickname": "La Albirroja",
     "bestWC": "Cuartos de final (2010)",
     "stadium": "Estadio Defensores del Chaco",
-    "confederation": "CONMEBOL"
+    "confederation": "CONMEBOL",
+    "worldCupTitles": 0,
+    "worldCupApps": 8
   },
   {
     "team": "Turquía",
@@ -3297,7 +3325,9 @@
     "nickname": "Semimoon Stars",
     "bestWC": "Tercer lugar (2002)",
     "stadium": "Estadio Olímpico Atatürk",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 3
   },
   {
     "team": "Estados Unidos",
@@ -3517,7 +3547,9 @@
     "nickname": "Stars and Stripes",
     "bestWC": "Tercer lugar (1930)",
     "stadium": "Mercedes-Benz Stadium",
-    "confederation": "CONCACAF"
+    "confederation": "CONCACAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 12
   },
   {
     "team": "Curazao",
@@ -3737,7 +3769,9 @@
     "nickname": "Los Azules",
     "bestWC": "—",
     "stadium": "Estadio Ergilio Hato",
-    "confederation": "CONCACAF"
+    "confederation": "CONCACAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 1
   },
   {
     "team": "Ecuador",
@@ -3957,7 +3991,9 @@
     "nickname": "La Tri",
     "bestWC": "Octavos de final (2006, 2022)",
     "stadium": "Estadio Rodrigo Paz",
-    "confederation": "CONMEBOL"
+    "confederation": "CONMEBOL",
+    "worldCupTitles": 0,
+    "worldCupApps": 4
   },
   {
     "team": "Alemania",
@@ -4177,7 +4213,9 @@
     "nickname": "Die Mannschaft",
     "bestWC": "Campeón (1954, 1974, 1990, 2014)",
     "stadium": "Estadio Olímpico de Berlín",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 4,
+    "worldCupApps": 20
   },
   {
     "team": "Costa de Marfil",
@@ -4397,7 +4435,9 @@
     "nickname": "Los Elefantes",
     "bestWC": "Fase de grupos (2006, 2010, 2014)",
     "stadium": "Estadio Olímpico",
-    "confederation": "CAF"
+    "confederation": "CAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 4
   },
   {
     "team": "Japón",
@@ -4617,7 +4657,9 @@
     "nickname": "Samuráis Azules",
     "bestWC": "Octavos de final (2002, 2010, 2018, 2022)",
     "stadium": "Estadio Nissan",
-    "confederation": "AFC"
+    "confederation": "AFC",
+    "worldCupTitles": 0,
+    "worldCupApps": 7
   },
   {
     "team": "Países Bajos",
@@ -4837,7 +4879,9 @@
     "nickname": "Oranje",
     "bestWC": "Subcampeón (1974, 1978, 2010)",
     "stadium": "Johan Cruijff ArenA",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 11
   },
   {
     "team": "Suecia",
@@ -5057,7 +5101,9 @@
     "nickname": "Tre Kronor",
     "bestWC": "Subcampeón (1958)",
     "stadium": "Friends Arena",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 12
   },
   {
     "team": "Túnez",
@@ -5277,7 +5323,9 @@
     "nickname": "Águilas de Cartago",
     "bestWC": "Fase de grupos (5 veces)",
     "stadium": "Estadio Olímpico",
-    "confederation": "CAF"
+    "confederation": "CAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 6
   },
   {
     "team": "Bélgica",
@@ -5497,7 +5545,9 @@
     "nickname": "Diablos Rojos",
     "bestWC": "Tercer lugar (2018)",
     "stadium": "Estadio Rey Balduino",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 14
   },
   {
     "team": "Egipto",
@@ -5709,7 +5759,9 @@
     "nickname": "Los Faraones",
     "bestWC": "Fase de grupos (1934, 1990, 2018)",
     "stadium": "Estadio Internacional El Cairo",
-    "confederation": "CAF"
+    "confederation": "CAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 4
   },
   {
     "team": "Irán",
@@ -5929,7 +5981,9 @@
     "nickname": "Team Melli",
     "bestWC": "Fase de grupos (6 veces)",
     "stadium": "Estadio Azadi",
-    "confederation": "AFC"
+    "confederation": "AFC",
+    "worldCupTitles": 0,
+    "worldCupApps": 6
   },
   {
     "team": "Nueva Zelanda",
@@ -6149,7 +6203,9 @@
     "nickname": "All Whites",
     "bestWC": "Fase de grupos (1982, 2010)",
     "stadium": "Eden Park",
-    "confederation": "OFC"
+    "confederation": "OFC",
+    "worldCupTitles": 0,
+    "worldCupApps": 3
   },
   {
     "team": "Cabo Verde",
@@ -6369,7 +6425,9 @@
     "nickname": "Tubarões Azuis",
     "bestWC": "—",
     "stadium": "Estádio Nacional",
-    "confederation": "CAF"
+    "confederation": "CAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 1
   },
   {
     "team": "Arabia Saudita",
@@ -6589,7 +6647,9 @@
     "nickname": "Halcones Verdes",
     "bestWC": "Octavos de final (1994)",
     "stadium": "Estadio Rey Fahd",
-    "confederation": "AFC"
+    "confederation": "AFC",
+    "worldCupTitles": 0,
+    "worldCupApps": 6
   },
   {
     "team": "España",
@@ -6809,7 +6869,9 @@
     "nickname": "La Roja",
     "bestWC": "Campeón (2010)",
     "stadium": "Estadio La Cartuja",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 1,
+    "worldCupApps": 16
   },
   {
     "team": "Uruguay",
@@ -7029,7 +7091,9 @@
     "nickname": "La Celeste",
     "bestWC": "Campeón (1930, 1950)",
     "stadium": "Estadio Centenario",
-    "confederation": "CONMEBOL"
+    "confederation": "CONMEBOL",
+    "worldCupTitles": 2,
+    "worldCupApps": 14
   },
   {
     "team": "Francia",
@@ -7249,7 +7313,9 @@
     "nickname": "Les Bleus",
     "bestWC": "Campeón (1998, 2018)",
     "stadium": "Stade de France",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 2,
+    "worldCupApps": 16
   },
   {
     "team": "Irak",
@@ -7461,7 +7527,9 @@
     "nickname": "León de Mesopotamia",
     "bestWC": "Fase de grupos (1986)",
     "stadium": "Estadio Internacional Basra",
-    "confederation": "AFC"
+    "confederation": "AFC",
+    "worldCupTitles": 0,
+    "worldCupApps": 2
   },
   {
     "team": "Noruega",
@@ -7681,7 +7749,9 @@
     "nickname": "Landslaget",
     "bestWC": "Octavos de final (1938, 1998)",
     "stadium": "Ullevaal Stadion",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 3
   },
   {
     "team": "Senegal",
@@ -7901,7 +7971,9 @@
     "nickname": "Leones de Teranga",
     "bestWC": "Cuartos de final (2002)",
     "stadium": "Estadio Abdoulaye Wade",
-    "confederation": "CAF"
+    "confederation": "CAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 3
   },
   {
     "team": "Argelia",
@@ -8121,7 +8193,9 @@
     "nickname": "Zorros del Desierto",
     "bestWC": "Octavos de final (2014)",
     "stadium": "Estadio Nelson Mandela",
-    "confederation": "CAF"
+    "confederation": "CAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 4
   },
   {
     "team": "Argentina",
@@ -8341,7 +8415,9 @@
     "nickname": "La Albiceleste",
     "bestWC": "Campeón (1978, 1986, 2022)",
     "stadium": "Estadio Monumental",
-    "confederation": "CONMEBOL"
+    "confederation": "CONMEBOL",
+    "worldCupTitles": 3,
+    "worldCupApps": 18
   },
   {
     "team": "Austria",
@@ -8561,7 +8637,9 @@
     "nickname": "Das Team",
     "bestWC": "Tercer lugar (1954)",
     "stadium": "Ernst-Happel-Stadion",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 7
   },
   {
     "team": "Jordania",
@@ -8781,7 +8859,9 @@
     "nickname": "Nashama",
     "bestWC": "—",
     "stadium": "Estadio Rey Abdullah",
-    "confederation": "AFC"
+    "confederation": "AFC",
+    "worldCupTitles": 0,
+    "worldCupApps": 1
   },
   {
     "team": "Colombia",
@@ -9001,7 +9081,9 @@
     "nickname": "La Tricolor",
     "bestWC": "Cuartos de final (2014)",
     "stadium": "Estadio Metropolitano",
-    "confederation": "CONMEBOL"
+    "confederation": "CONMEBOL",
+    "worldCupTitles": 0,
+    "worldCupApps": 7
   },
   {
     "team": "RD Congo",
@@ -9221,7 +9303,9 @@
     "nickname": "Los Simbas",
     "bestWC": "—",
     "stadium": "Estadio de los Mártires",
-    "confederation": "CAF"
+    "confederation": "CAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 1
   },
   {
     "team": "Portugal",
@@ -9441,7 +9525,9 @@
     "nickname": "A Seleção",
     "bestWC": "Tercer lugar (1966)",
     "stadium": "Estádio da Luz",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 8
   },
   {
     "team": "Uzbekistán",
@@ -9685,7 +9771,9 @@
     "nickname": "Lobos Blancos",
     "bestWC": "—",
     "stadium": "Estadio Pakhtakor",
-    "confederation": "AFC"
+    "confederation": "AFC",
+    "worldCupTitles": 0,
+    "worldCupApps": 1
   },
   {
     "team": "Croacia",
@@ -9905,7 +9993,9 @@
     "nickname": "Vatreni",
     "bestWC": "Subcampeón (2018)",
     "stadium": "Estadio Maksimir",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 0,
+    "worldCupApps": 6
   },
   {
     "team": "Inglaterra",
@@ -10125,7 +10215,9 @@
     "nickname": "Three Lions",
     "bestWC": "Campeón (1966)",
     "stadium": "Wembley Stadium",
-    "confederation": "UEFA"
+    "confederation": "UEFA",
+    "worldCupTitles": 1,
+    "worldCupApps": 16
   },
   {
     "team": "Ghana",
@@ -10345,7 +10437,9 @@
     "nickname": "Black Stars",
     "bestWC": "Cuartos de final (2010)",
     "stadium": "Estadio Baba Yara",
-    "confederation": "CAF"
+    "confederation": "CAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 4
   },
   {
     "team": "Panamá",
@@ -10565,6 +10659,8 @@
     "nickname": "Los Canaleros",
     "bestWC": "Fase de grupos (2018)",
     "stadium": "Estadio Rommel Fernández",
-    "confederation": "CONCACAF"
+    "confederation": "CONCACAF",
+    "worldCupTitles": 0,
+    "worldCupApps": 2
   }
 ]
