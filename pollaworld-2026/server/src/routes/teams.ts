@@ -8,10 +8,18 @@ import logger from "../lib/logger";
 
 const router = Router();
 
+function getSquadsPath(): string {
+  // Dev (tsx): __dirname = server/src/routes/ → ../db/squads.json
+  const devPath = path.join(__dirname, "../db/squads.json");
+  if (fs.existsSync(devPath)) return devPath;
+  // Prod (dist/): __dirname = server/dist/routes/ → ../../src/db/squads.json
+  return path.join(__dirname, "../../src/db/squads.json");
+}
+
 // GET /api/teams/squads — devuelve datos de los 48 equipos
 router.get("/squads", (_req: Request, res: Response) => {
   try {
-    const dataPath = path.join(__dirname, "../db/squads.json");
+    const dataPath = getSquadsPath();
     const data = JSON.parse(fs.readFileSync(dataPath, "utf-8"));
     res.json(data);
   } catch (err) {
