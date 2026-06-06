@@ -1,7 +1,7 @@
 import { Document, Page, Text, View, Image, StyleSheet } from "@react-pdf/renderer";
 import { Match, Prediction } from "../lib/api";
 import { getPlayer } from "../lib/players";
-import { getTeamDisplayName, TEAMS } from "../lib/teams";
+import { getTeamInfo, TEAMS } from "../lib/teams";
 
 // ── Text flags (reliable in PDF vs emoji) ──────────────────────────
 const TEXT_FLAGS: Record<string, string> = {};
@@ -9,6 +9,11 @@ TEAMS.forEach(t => {
   TEXT_FLAGS[t.name] = t.fifa;
   TEXT_FLAGS[t.name_en] = t.fifa;
 });
+
+function getFifaCode(team: string): string {
+  const info = getTeamInfo(team);
+  return info?.fifa || team.slice(0, 3).toUpperCase();
+}
 
 function getTextFlag(team: string): string {
   return TEXT_FLAGS[team] || team.slice(0, 3).toUpperCase();
@@ -101,19 +106,27 @@ const S = StyleSheet.create({
     borderTop: "0.5pt solid #000",
     borderBottom: "0.5pt solid #000",
   },
+  // ── Column headers ──
+  colHeader: {
+    flexDirection: "row",
+    fontSize: 5.5,
+    color: "#666",
+    marginBottom: 1,
+  },
   // ── Match row (compact, one line each) ──
   matchRow: {
     flexDirection: "row",
     fontSize: 7,
     paddingVertical: 0.5,
   },
-  matchNum: { width: "5%" },
-  matchGroup: { width: "8%", fontSize: 6, color: "#666" },
-  matchHome: { width: "26%", textAlign: "right" as const, fontSize: 6.5 },
-  matchVs: { width: "5%", textAlign: "center" as const, fontSize: 6.5 },
-  matchAway: { width: "26%", fontSize: 6.5 },
-  matchPred: { width: "14%", textAlign: "right" as const },
-  matchResult: { width: "18%", textAlign: "right" as const, color: "#333" },
+  matchNum: { width: "6%" },
+  matchGroup: { width: "7%", fontSize: 6, color: "#666" },
+  matchHome: { width: "14%", textAlign: "right" as const, fontSize: 7 },
+  matchVs: { width: "5%", textAlign: "center" as const, fontSize: 6 },
+  matchAway: { width: "14%", fontSize: 7 },
+  matchPred: { width: "14%", textAlign: "right" as const, fontSize: 7 },
+  matchPts: { width: "16%", textAlign: "center" as const, fontSize: 7, color: "#999" },
+  matchReal: { width: "24%", textAlign: "center" as const, fontSize: 7, color: "#999" },
   // ── Summary ──
   summaryRow: {
     flexDirection: "row",
@@ -166,7 +179,9 @@ interface PrecomputedMatch {
   id: string;
   flag: string;
   home: string;
+  homeFifa: string;
   away: string;
+  awayFifa: string;
   group: string;
   phase: string;
   homeReal: number | null;
@@ -178,8 +193,10 @@ function precomputeMatches(allMatches: Match[]): PrecomputedMatch[] {
   return allMatches.map((m) => ({
     id: m.id,
     flag: getTextFlag(m.home_team),
-    home: getTeamDisplayName(m.home_team),
-    away: getTeamDisplayName(m.away_team),
+    home: getTeamInfo(m.home_team)?.name || m.home_team,
+    homeFifa: getFifaCode(m.home_team),
+    away: getTeamInfo(m.away_team)?.name || m.away_team,
+    awayFifa: getFifaCode(m.away_team),
     group: m.group_name || PHASE_LABELS[m.phase] || m.phase,
     phase: m.phase,
     homeReal: m.home_score_real,
@@ -191,6 +208,9 @@ function precomputeMatches(allMatches: Match[]): PrecomputedMatch[] {
 function buildPredMap(predictions: UserPrediction[]): Map<string, Prediction> {
   return new Map(predictions.map((p) => [p.match.id, p.prediction]));
 }
+
+const POINTS_BOX = "[  ]";
+const SCORE_BOX = "[  ]-[  ]";
 
 function ParticipantPage({
   userName,
@@ -254,6 +274,16 @@ function ParticipantPage({
 
       {/* ══ GROUPS ══ */}
       <Text style={S.sectionTitle}>FASE DE GRUPOS</Text>
+      <View style={S.colHeader}>
+        <Text style={S.matchNum}>N°</Text>
+        <Text style={S.matchGroup}>GRP</Text>
+        <Text style={S.matchHome}>LOCAL</Text>
+        <Text style={S.matchVs}> </Text>
+        <Text style={S.matchAway}>VISIT</Text>
+        <Text style={S.matchPred}>PRED</Text>
+        <Text style={S.matchPts}>PTS</Text>
+        <Text style={S.matchReal}>REAL</Text>
+      </View>
       {groups.length === 0 ? (
         <Text style={S.empty}>Sin partidos de grupos</Text>
       ) : (
@@ -261,23 +291,32 @@ function ParticipantPage({
           <View key={m.id} style={S.matchRow} wrap={false}>
             <Text style={S.matchNum}>{String(i + 1).padStart(2)}</Text>
             <Text style={S.matchGroup}>{m.group}</Text>
-            <Text style={S.matchHome}>{m.home}</Text>
-            <Text style={S.matchVs}>vs</Text>
-            <Text style={S.matchAway}>{m.away}</Text>
+            <Text style={S.matchHome}>{m.homeFifa}</Text>
+            <Text style={S.matchVs}>v</Text>
+            <Text style={S.matchAway}>{m.awayFifa}</Text>
             <Text style={S.matchPred}>
-              {predMap.has(m.id) ? (
-                `${predMap.get(m.id)!.home_score_pred}-${predMap.get(m.id)!.away_score_pred}`
-              ) : " - "}
+              {predMap.has(m.id)
+                ? `${predMap.get(m.id)!.home_score_pred}-${predMap.get(m.id)!.away_score_pred}`
+                : " - "}
             </Text>
-            <Text style={S.matchResult}>
-              {m.homeReal !== null && m.awayReal !== null && m.isLocked ? `${m.homeReal}-${m.awayReal}` : ""}
-            </Text>
+            <Text style={S.matchPts}>{POINTS_BOX}</Text>
+            <Text style={S.matchReal}>{SCORE_BOX}</Text>
           </View>
         ))
       )}
 
       {/* ══ KNOCKOUTS ══ */}
       <Text style={S.sectionTitle}>ELIMINATORIAS</Text>
+      <View style={S.colHeader}>
+        <Text style={S.matchNum}>N°</Text>
+        <Text style={S.matchGroup}>FASE</Text>
+        <Text style={S.matchHome}>LOCAL</Text>
+        <Text style={S.matchVs}> </Text>
+        <Text style={S.matchAway}>VISIT</Text>
+        <Text style={S.matchPred}>PRED</Text>
+        <Text style={S.matchPts}>PTS</Text>
+        <Text style={S.matchReal}>REAL</Text>
+      </View>
       {elims.length === 0 ? (
         <Text style={S.empty}>A determinar al finalizar grupos</Text>
       ) : (
@@ -285,20 +324,25 @@ function ParticipantPage({
           <View key={m.id} style={S.matchRow} wrap={false}>
             <Text style={S.matchNum}>{String(groups.length + i + 1).padStart(2)}</Text>
             <Text style={S.matchGroup}>{m.group}</Text>
-            <Text style={S.matchHome}>{m.home}</Text>
-            <Text style={S.matchVs}>vs</Text>
-            <Text style={S.matchAway}>{m.away}</Text>
+            <Text style={S.matchHome}>{m.homeFifa}</Text>
+            <Text style={S.matchVs}>v</Text>
+            <Text style={S.matchAway}>{m.awayFifa}</Text>
             <Text style={S.matchPred}>
-              {predMap.has(m.id) ? (
-                `${predMap.get(m.id)!.home_score_pred}-${predMap.get(m.id)!.away_score_pred}`
-              ) : " - "}
+              {predMap.has(m.id)
+                ? `${predMap.get(m.id)!.home_score_pred}-${predMap.get(m.id)!.away_score_pred}`
+                : " - "}
             </Text>
-            <Text style={S.matchResult}>
-              {m.homeReal !== null && m.awayReal !== null && m.isLocked ? `${m.homeReal}-${m.awayReal}` : ""}
-            </Text>
+            <Text style={S.matchPts}>{POINTS_BOX}</Text>
+            <Text style={S.matchReal}>{SCORE_BOX}</Text>
           </View>
         ))
       )}
+
+      {/* ══ Legend ══ */}
+      <View style={{ marginTop: 6, fontSize: 5.5, color: "#666", lineHeight: 1.4 }}>
+        <Text>PTS: Anota los puntos que ganaste (5, 3, 2 o 0)</Text>
+        <Text>REAL: Anota el marcador real del partido (ej: 2-1)</Text>
+      </View>
 
       {/* ══ SUMMARY ══ */}
       <View style={S.summaryRow}>
