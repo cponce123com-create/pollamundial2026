@@ -278,12 +278,16 @@ export const api = {
   saveMatchResult: (matchId: string, home_score_real: number, away_score_real: number) =>
     request<{ message: string }>(`/admin/matches/${matchId}/result`, { method: "POST", body: JSON.stringify({ home_score_real, away_score_real }) }),
 
-  uploadLogo: (file: File) => {
+  uploadLogo: async (file: File) => {
     const fd = new FormData();
     fd.append("logo", file);
+    const token = await getCSRFToken();
+    const headers: Record<string, string> = {};
+    if (token) headers["x-csrf-token"] = token;
     return fetch("/api/pool/upload-logo", {
       method: "POST",
       credentials: "include",
+      headers,
       body: fd,
     }).then(async (res) => {
       const data = await res.json();
@@ -292,12 +296,16 @@ export const api = {
     });
   },
 
-  uploadFavicon: (file: File) => {
+  uploadFavicon: async (file: File) => {
     const fd = new FormData();
     fd.append("favicon", file);
+    const token = await getCSRFToken();
+    const headers: Record<string, string> = {};
+    if (token) headers["x-csrf-token"] = token;
     return fetch("/api/pool/upload-favicon", {
       method: "POST",
       credentials: "include",
+      headers,
       body: fd,
     }).then(async (res) => {
       const data = await res.json();
@@ -306,12 +314,16 @@ export const api = {
     });
   },
 
-  uploadYapeQr: (file: File) => {
+  uploadYapeQr: async (file: File) => {
     const fd = new FormData();
     fd.append("qr", file);
+    const token = await getCSRFToken();
+    const headers: Record<string, string> = {};
+    if (token) headers["x-csrf-token"] = token;
     return fetch("/api/pool/upload-yape-qr", {
       method: "POST",
       credentials: "include",
+      headers,
       body: fd,
     }).then(async (res) => {
       const data = await res.json();
