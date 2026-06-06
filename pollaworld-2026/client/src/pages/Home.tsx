@@ -3,129 +3,139 @@ import { Link } from "react-router-dom";
 import { api, PoolStats, PoolConfig } from "../lib/api";
 import { useAuth } from "../lib/AuthContext";
 
-const SECTIONS = [
-  {
-    id: "como-funciona",
-    icon: "⚽",
-    title: "¿Cómo funciona?",
-    content: (
-      <ul className="home-checklist">
-        <li>📝 <strong>Regístrate</strong> con tu nombre, celular y un emoji.</li>
-        <li>🔮 <strong>Predice</strong> el marcador de todos los partidos del Mundial.</li>
-        <li>💳 <strong>Paga</strong> tu inscripción vía Yape (antes o después de predecir).</li>
-        <li>✅ <strong>Espera</strong> que el organizador confirme tu pago.</li>
-        <li>🏆 <strong>Sigue</strong> tu puntuación en el ranking en vivo.</li>
-      </ul>
-    ),
-  },
-  {
-    id: "puntuacion",
-    icon: "⭐",
-    title: "Puntuación y Desempate",
-    content: (
-      <>
-        <div className="home-points-grid">
-          <div className="home-points-card">
-            <span className="home-points-icon">🎯</span>
-            <span className="home-points-value">+5 pts</span>
-            <span className="home-points-label">Marcador exacto</span>
-            <span className="home-points-desc">Aciertas el resultado exacto (ej: 2-1)</span>
-          </div>
-          <div className="home-points-card">
-            <span className="home-points-icon">✅</span>
-            <span className="home-points-value">+3 pts</span>
-            <span className="home-points-label">Ganador correcto</span>
-            <span className="home-points-desc">Aciertas quién gana o el empate, sin marcador exacto</span>
-          </div>
-          <div className="home-points-card">
-            <span className="home-points-icon">❌</span>
-            <span className="home-points-value">+0 pts</span>
-            <span className="home-points-label">Sin acierto</span>
-            <span className="home-points-desc">No aciertas ni ganador ni empate</span>
-          </div>
-        </div>
-        <div className="home-note" style={{ marginTop: 16 }}>
-          ⚖️ <strong>Desempate:</strong> Si dos o más jugadores terminan con los mismos puntos, gana quien tenga más aciertos de marcador exacto (+5 pts). Si siguen empatados, se reparte el premio entre ellos.
-        </div>
-      </>
-    ),
-  },
-  {
-    id: "predicciones",
-    icon: "🔮",
-    title: "Las Predicciones",
-    content: (
-      <ul className="home-checklist">
-        <li>📋 Predice <strong>todos</strong> los partidos del torneo (local - visitante).</li>
-        <li>🎲 <strong>Llenar con suerte</strong> — relleno aleatorio, ideal si no sabes de fútbol.</li>
-        <li>🧠 <strong>Llenar con lógica</strong> — usa el ranking FIFA para generar marcadores realistas.</li>
-        <li>✏️ Puedes <strong>editar</strong> tus predicciones hasta el inicio del primer partido.</li>
-        <li>🔒 Al arrancar el primer partido, las predicciones se <strong>cierran automáticamente</strong>.</li>
-        <li>📄 Descarga un <strong>PDF</strong> con todas tus predicciones como respaldo.</li>
-      </ul>
-    ),
-  },
-  {
-    id: "pagos",
-    icon: "💳",
-    title: "Pagos y Confirmación",
-    content: (
-      <>
-        <div className="home-payment-card">
-          <div className="home-payment-row">
-            <span>Inscripción:</span>
-            <strong className="home-payment-amount">S/. <span id="entry-fee">20</span>.00</strong>
-          </div>
-          <div className="home-payment-row">
-            <span>Método:</span>
-            <strong>Yape</strong>
-          </div>
-          <div className="home-payment-row">
-            <span>Número:</span>
-            <strong id="yape-phone">—</strong>
-          </div>
-        </div>
-        <ul className="home-checklist" style={{ marginTop: 14 }}>
-          <li>Yapea el monto exacto al número del organizador.</li>
-          <li>Sube la captura de pantalla desde tu panel.</li>
-          <li>El organizador aprueba y quedas habilitado para participar.</li>
+function getSections(config: PoolConfig | null) {
+  const yapePhone = config?.yape_phone || "998130656";
+
+  return [
+    {
+      id: "como-funciona",
+      icon: "⚽",
+      title: "¿Cómo funciona?",
+      content: (
+        <ul className="home-checklist">
+          <li>📝 <strong>Regístrate</strong> con tu nombre, celular y un emoji.</li>
+          <li>🔮 <strong>Predice</strong> el marcador de todos los partidos del Mundial.</li>
+          <li>💳 <strong>Paga</strong> tu inscripción vía Yape (antes o después de predecir).</li>
+          <li>✅ <strong>Espera</strong> que el organizador confirme tu pago.</li>
+          <li>🏆 <strong>Sigue</strong> tu puntuación en el ranking en vivo.</li>
         </ul>
-        <div className="home-note" style={{ marginTop: 12 }}>
-          💡 Si tu pago es rechazado, puedes volver a subir un nuevo comprobante.
+      ),
+    },
+    {
+      id: "puntuacion",
+      icon: "⭐",
+      title: "Puntuación y Desempate",
+      content: (
+        <>
+          <div className="home-points-grid">
+            <div className="home-points-card">
+              <span className="home-points-icon">🎯</span>
+              <span className="home-points-value">+5 pts</span>
+              <span className="home-points-label">Marcador exacto</span>
+              <span className="home-points-desc">Aciertas el resultado exacto (ej: 2-1)</span>
+            </div>
+            <div className="home-points-card">
+              <span className="home-points-icon">✅</span>
+              <span className="home-points-value">+3 pts</span>
+              <span className="home-points-label">Ganador correcto</span>
+              <span className="home-points-desc">Aciertas qué equipo gana, sin marcador exacto</span>
+            </div>
+            <div className="home-points-card">
+              <span className="home-points-icon">🤝</span>
+              <span className="home-points-value">+3 pts</span>
+              <span className="home-points-label">Empate correcto</span>
+              <span className="home-points-desc">Aciertas que empatan, sin marcador exacto</span>
+            </div>
+            <div className="home-points-card">
+              <span className="home-points-icon">❌</span>
+              <span className="home-points-value">+0 pts</span>
+              <span className="home-points-label">Sin acierto</span>
+              <span className="home-points-desc">No aciertas ni ganador ni empate</span>
+            </div>
+          </div>
+          <div className="home-note" style={{ marginTop: 16 }}>
+            ⚖️ <strong>Desempate:</strong> Si dos o más jugadores terminan con los mismos puntos, gana quien tenga más aciertos de marcador exacto (+5 pts). Si siguen empatados, se reparte el premio entre ellos.
+          </div>
+        </>
+      ),
+    },
+    {
+      id: "predicciones",
+      icon: "🔮",
+      title: "Las Predicciones",
+      content: (
+        <ul className="home-checklist">
+          <li>📋 Predice <strong>todos</strong> los partidos del torneo (local - visitante).</li>
+          <li>🎲 <strong>Llenar con suerte</strong> — relleno aleatorio, ideal si no sabes de fútbol.</li>
+          <li>🧠 <strong>Llenar con lógica</strong> — usa el ranking FIFA para generar marcadores realistas.</li>
+          <li>✏️ Puedes <strong>editar</strong> tus predicciones hasta el inicio del primer partido.</li>
+          <li>🔒 Al arrancar el primer partido, las predicciones se <strong>cierran automáticamente</strong>.</li>
+          <li>📄 Descarga un <strong>PDF</strong> con todas tus predicciones como respaldo.</li>
+        </ul>
+      ),
+    },
+    {
+      id: "pagos",
+      icon: "💳",
+      title: "Pagos y Confirmación",
+      content: (
+        <>
+          <div className="home-payment-card">
+            <div className="home-payment-row">
+              <span>Inscripción:</span>
+              <strong className="home-payment-amount">S/. <span id="entry-fee">20</span>.00</strong>
+            </div>
+            <div className="home-payment-row">
+              <span>Método:</span>
+              <strong>Yape</strong>
+            </div>
+            <div className="home-payment-row">
+              <span>Número:</span>
+              <strong id="yape-phone">{yapePhone}</strong>
+            </div>
+          </div>
+          <ul className="home-checklist" style={{ marginTop: 14 }}>
+            <li>Yapea el monto exacto al número del organizador.</li>
+            <li>Sube la captura de pantalla desde tu panel.</li>
+            <li>El organizador aprueba y quedas habilitado para participar.</li>
+          </ul>
+          <div className="home-note" style={{ marginTop: 12 }}>
+            💡 Si tu pago es rechazado, puedes volver a subir un nuevo comprobante.
+          </div>
+        </>
+      ),
+    },
+    {
+      id: "inicio-torneo",
+      icon: "🏁",
+      title: "¿Qué pasa al inicio del torneo?",
+      content: (
+        <div className="home-event-cards">
+          <div className="home-event-card">
+            <span className="home-event-icon">🔒</span>
+            <h4>Predicciones cerradas</h4>
+            <p>Ya no se pueden modificar. Quedan congeladas tal como las ingresaste.</p>
+          </div>
+          <div className="home-event-card">
+            <span className="home-event-icon">👀</span>
+            <h4>Transparencia total</h4>
+            <p>Todos pueden <strong>ver y descargar en PDF</strong> las predicciones de cualquier participante desde la sección <strong>Participantes</strong>, asegurando que no hubo modificaciones durante el torneo.</p>
+          </div>
+          <div className="home-event-card">
+            <span className="home-event-icon">📊</span>
+            <h4>Ranking en vivo</h4>
+            <p>El ranking se actualiza automáticamente con cada partido jugado.</p>
+          </div>
+          <div className="home-event-card">
+            <span className="home-event-icon">🏆</span>
+            <h4>Ganador final</h4>
+            <p>Al término del Mundial, el líder del ranking se lleva el primer premio.</p>
+          </div>
         </div>
-      </>
-    ),
-  },
-  {
-    id: "inicio-torneo",
-    icon: "🏁",
-    title: "¿Qué pasa al inicio del torneo?",
-    content: (
-      <div className="home-event-cards">
-        <div className="home-event-card">
-          <span className="home-event-icon">🔒</span>
-          <h4>Predicciones cerradas</h4>
-          <p>Ya no se pueden modificar. Quedan congeladas tal como las ingresaste.</p>
-        </div>
-        <div className="home-event-card">
-          <span className="home-event-icon">👀</span>
-          <h4>Todo se hace público</h4>
-          <p>Las predicciones de todos los participantes se vuelven visibles.</p>
-        </div>
-        <div className="home-event-card">
-          <span className="home-event-icon">📊</span>
-          <h4>Ranking en vivo</h4>
-          <p>El ranking se actualiza automáticamente con cada partido jugado.</p>
-        </div>
-        <div className="home-event-card">
-          <span className="home-event-icon">🏆</span>
-          <h4>Ganador final</h4>
-          <p>Al término del Mundial, el líder del ranking se lleva el primer premio.</p>
-        </div>
-      </div>
-    ),
-  },
-];
+      ),
+    },
+  ];
+}
 
 export default function Home() {
   const { user } = useAuth();
@@ -229,7 +239,7 @@ export default function Home() {
 
       {/* SECTIONS NAV */}
       <nav className="home-sections-nav">
-        {SECTIONS.map((s) => (
+        {getSections(config).map((s) => (
           <a key={s.id} href={`#${s.id}`}>
             <span>{s.icon}</span>
             {s.title}
@@ -239,7 +249,7 @@ export default function Home() {
 
       {/* SECTIONS */}
       <div className="home-sections">
-        {SECTIONS.map((section) => (
+        {getSections(config).map((section) => (
           <section key={section.id} id={section.id} className="home-section card">
             <h2 className="home-section-title">
               <span className="home-section-icon">{section.icon}</span>
