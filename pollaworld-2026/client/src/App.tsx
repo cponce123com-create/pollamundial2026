@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Toaster } from "sonner";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import { AuthProvider, useAuth } from "./lib/AuthContext";
 import { useSSE } from "./lib/useSSE";
 
@@ -81,6 +82,7 @@ export default function App() {
         <main className="main-content">
           <AppRoutes />
         </main>
+        <Footer />
         <Toaster position="top-right" theme="dark" />
       </div>
     </AuthProvider>
