@@ -141,6 +141,7 @@ export default function Home() {
   const { user } = useAuth();
   const [stats, setStats] = useState<PoolStats | null>(null);
   const [config, setConfig] = useState<PoolConfig | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -149,7 +150,7 @@ export default function Home() {
     ]).then(([s, c]) => {
       setStats(s);
       setConfig(c);
-    }).catch(() => {});
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const sections = getSections(config);
@@ -159,8 +160,10 @@ export default function Home() {
       {/* HERO */}
       <section className="home-hero">
         <div className="home-hero-content">
-          {config?.logo_url ? (
-            <img src={config.logo_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="La Polla del Ponce" className="home-hero-logo" loading="lazy" decoding="async" />
+          {loading ? (
+            <div className="home-hero-skeleton" />
+          ) : config?.logo_url ? (
+            <img src={config.logo_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="La Polla del Ponce" className="home-hero-logo" loading="eager" decoding="async" />
           ) : (
             <h1 className="home-hero-title">
               <span className="home-hero-highlight">La Polla del Ponce</span> 2026
