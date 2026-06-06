@@ -200,7 +200,7 @@ async function main() {
   console.log();
 
   const teamsById = new Map(teamsData.map((t: ExternalTeam) => [t.id, t]));
-  const stadiumsById = new Map(stadiumsData.map((s: any) => [s.id, s]));
+  const stadiumsById = new Map<string, any>(stadiumsData.map((s: any) => [s.id, s]));
 
   console.log("Consultando partidos existentes en BD...");
   const existingRows = await db
