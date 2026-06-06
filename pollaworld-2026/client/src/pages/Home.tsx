@@ -34,24 +34,24 @@ function getSections(config: PoolConfig | null) {
               <span className="home-points-label">Marcador exacto</span>
               <span className="home-points-desc">Aciertas el resultado exacto (ej: 2-1)</span>
             </div>
-            <div className="home-points-card">
-              <span className="home-points-icon">✅</span>
-              <span className="home-points-value">+3 pts</span>
-              <span className="home-points-label">Ganador correcto</span>
-              <span className="home-points-desc">Aciertas qué equipo gana, sin marcador exacto</span>
-            </div>
-            <div className="home-points-card">
-              <span className="home-points-icon">🤝</span>
-              <span className="home-points-value">+3 pts</span>
-              <span className="home-points-label">Empate correcto</span>
-              <span className="home-points-desc">Aciertas que empatan, sin marcador exacto</span>
-            </div>
-            <div className="home-points-card">
-              <span className="home-points-icon">❌</span>
-              <span className="home-points-value">+0 pts</span>
-              <span className="home-points-label">Sin acierto</span>
-              <span className="home-points-desc">No aciertas ni ganador ni empate</span>
-            </div>
+          <div className="home-points-card">
+            <span className="home-points-icon">✅</span>
+            <span className="home-points-value">+3 pts</span>
+            <span className="home-points-label">Ganador correcto</span>
+            <span className="home-points-desc">Aciertas qué equipo gana, pero no el marcador exacto</span>
+          </div>
+          <div className="home-points-card">
+            <span className="home-points-icon">🤝</span>
+            <span className="home-points-value">+2 pts</span>
+            <span className="home-points-label">Empate sin marcador</span>
+            <span className="home-points-desc">Aciertas que empatan, pero no el marcador exacto</span>
+          </div>
+          <div className="home-points-card">
+            <span className="home-points-icon">❌</span>
+            <span className="home-points-value">+0 pts</span>
+            <span className="home-points-label">Sin acierto</span>
+            <span className="home-points-desc">No aciertas ganador, empate ni marcador</span>
+          </div>
           </div>
           <div className="home-note" style={{ marginTop: 16 }}>
             ⚖️ <strong>Desempate:</strong> Si dos o más jugadores terminan con los mismos puntos, gana quien tenga más aciertos de marcador exacto (+5 pts). Si siguen empatados, se reparte el premio entre ellos.
