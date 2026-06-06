@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "gen:og": "node gen-og-image.js",
-    "prebuild": "node gen-og-image.js",
+    "gen:og": "node gen-og-image.cjs",
+    "prebuild": "node gen-og-image.cjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
