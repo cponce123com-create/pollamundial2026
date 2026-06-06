@@ -146,7 +146,7 @@ router.get("/ranking", async (_req: Request, res: Response) => {
         playerSlug: users.player_slug,
         totalPoints: sql<number>`COALESCE(SUM(${predictions.points_earned}), 0)`.mapWith(Number),
         exactScores: sql<number>`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 5 THEN 1 ELSE 0 END), 0)`.mapWith(Number),
-        correctResults: sql<number>`COALESCE(SUM(CASE WHEN ${predictions.points_earned} = 3 THEN 1 ELSE 0 END), 0)`.mapWith(Number),
+        correctResults: sql<number>`COALESCE(SUM(CASE WHEN ${predictions.points_earned} IN (2, 3) THEN 1 ELSE 0 END), 0)`.mapWith(Number),
       })
       .from(entries)
       .innerJoin(users, eq(entries.user_id, users.id))

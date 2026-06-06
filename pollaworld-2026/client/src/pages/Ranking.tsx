@@ -157,7 +157,7 @@ export default function RankingPage() {
                 <th>#</th>
                 <th>Participante</th>
                 <th>Ticket</th>
-                <th>Aciertos (3pts)</th>
+                <th>Aciertos (2-3pts)</th>
                 <th>Exactos (5pts)</th>
                 <th>Total Puntos</th>
               </tr>

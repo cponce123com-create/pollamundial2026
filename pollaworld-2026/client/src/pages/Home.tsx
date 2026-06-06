@@ -4,7 +4,7 @@ import { api, PoolStats, PoolConfig } from "../lib/api";
 import { useAuth } from "../lib/AuthContext";
 
 function getSections(config: PoolConfig | null) {
-  const yapePhone = config?.yape_phone || "998130656";
+  const yapePhone = config?.yape_phone || "—";
 
   return [
     {
@@ -152,6 +152,8 @@ export default function Home() {
     }).catch(() => {});
   }, []);
 
+  const sections = getSections(config);
+
   return (
     <div className="home-page">
       {/* HERO */}
@@ -195,7 +197,7 @@ export default function Home() {
             <div className="home-prize home-prize-1">
               <span className="home-prize-medal">🥇</span>
               <span className="home-prize-pos">1.er puesto</span>
-              <span className="home-prize-pct">70%</span>
+              <span className="home-prize-pct">{config?.prize_1st_pct ?? 70}%</span>
               <span className="home-prize-amount">
                 {stats ? `S/. ${stats.prizes.first}` : <span className="home-hero-stat-skeleton" style={{ width: 60, height: 18, display: 'inline-block' }} />}
               </span>
@@ -203,7 +205,7 @@ export default function Home() {
             <div className="home-prize home-prize-2">
               <span className="home-prize-medal">🥈</span>
               <span className="home-prize-pos">2.° puesto</span>
-              <span className="home-prize-pct">20%</span>
+              <span className="home-prize-pct">{config?.prize_2nd_pct ?? 20}%</span>
               <span className="home-prize-amount">
                 {stats ? `S/. ${stats.prizes.second}` : <span className="home-hero-stat-skeleton" style={{ width: 60, height: 18, display: 'inline-block' }} />}
               </span>
@@ -211,7 +213,7 @@ export default function Home() {
             <div className="home-prize home-prize-3">
               <span className="home-prize-medal">🥉</span>
               <span className="home-prize-pos">3.er puesto</span>
-              <span className="home-prize-pct">10%</span>
+              <span className="home-prize-pct">{config?.prize_3rd_pct ?? 10}%</span>
               <span className="home-prize-amount">
                 {stats ? `S/. ${stats.prizes.third}` : <span className="home-hero-stat-skeleton" style={{ width: 60, height: 18, display: 'inline-block' }} />}
               </span>
@@ -239,7 +241,7 @@ export default function Home() {
 
       {/* SECTIONS NAV */}
       <nav className="home-sections-nav">
-        {getSections(config).map((s) => (
+        {sections.map((s) => (
           <a key={s.id} href={`#${s.id}`}>
             <span>{s.icon}</span>
             {s.title}
@@ -249,7 +251,7 @@ export default function Home() {
 
       {/* SECTIONS */}
       <div className="home-sections">
-        {getSections(config).map((section) => (
+        {sections.map((section) => (
           <section key={section.id} id={section.id} className="home-section card">
             <h2 className="home-section-title">
               <span className="home-section-icon">{section.icon}</span>

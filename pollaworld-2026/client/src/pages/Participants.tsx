@@ -153,7 +153,7 @@ export default function Participants() {
             S/. {totalPool.toFixed(2)}
           </div>
           <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-            Poza total
+            Pozo total
           </div>
         </div>
         <div className="card" style={{ textAlign: "center" }}>
