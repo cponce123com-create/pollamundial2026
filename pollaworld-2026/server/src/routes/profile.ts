@@ -24,6 +24,27 @@ const nameSchema = z.object({
   name: z.string().min(1, "El nombre no puede estar vacío").max(100, "Máximo 100 caracteres"),
 });
 
+// PATCH /api/profile/player — update player slug (character)
+const playerSchema = z.object({
+  player_slug: z.string().min(1, "Debes seleccionar un personaje"),
+});
+
+router.patch("/player", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { player_slug } = playerSchema.parse(req.body);
+    const [updated] = await db
+      .update(users)
+      .set({ player_slug })
+      .where(eq(users.id, req.user!.userId))
+      .returning({ id: users.id, name: users.name, phone: users.phone, player_slug: users.player_slug, role: users.role, avatar_url: users.avatar_url });
+    res.json({ user: updated });
+  } catch (err) {
+    if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
+    logger.error(err, "Profile player error:");
+    res.status(500).json({ error: "Error al actualizar personaje." });
+  }
+});
+
 // PATCH /api/profile/name — update display name
 router.patch("/name", requireAuth, async (req: Request, res: Response) => {
   try {

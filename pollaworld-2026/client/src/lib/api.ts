@@ -161,6 +161,12 @@ export const api = {
     });
   },
 
+  updatePlayer: (player_slug: string) =>
+    request<{ user: User }>("/profile/player", {
+      method: "PATCH",
+      body: JSON.stringify({ player_slug }),
+    }),
+
   // ── Entries ──
   getEntries: () => request<Entry[]>("/entries"),
 

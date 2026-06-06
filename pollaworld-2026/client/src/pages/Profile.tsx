@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { api, Entry } from "../lib/api";
 import { useAuth } from "../lib/AuthContext";
-import { getPlayer } from "../lib/players";
+import { getPlayer, PLAYERS } from "../lib/players";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -12,13 +12,18 @@ export default function Profile() {
   const [name, setName] = useState("");
   const [savingName, setSavingName] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [savingPlayer, setSavingPlayer] = useState(false);
+  const [selectedPlayerSlug, setSelectedPlayerSlug] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!authLoading && !user) { navigate("/login"); return; }
-    if (user) setName(user.name);
+    if (user) {
+      setName(user.name);
+      setSelectedPlayerSlug(user.player_slug);
+    }
     api.getEntries().then(setEntries).catch(() => {});
   }, [user, authLoading]);
 
@@ -53,6 +58,17 @@ export default function Profile() {
     finally { setUploading(false); }
   };
 
+  const handlePlayerSave = async () => {
+    if (!selectedPlayerSlug || selectedPlayerSlug === user?.player_slug) return;
+    setSavingPlayer(true);
+    try {
+      await api.updatePlayer(selectedPlayerSlug);
+      await refresh();
+      toast.success("Personaje actualizado");
+    } catch { toast.error("Error al actualizar personaje"); }
+    finally { setSavingPlayer(false); }
+  };
+
   if (authLoading) return <div className="placeholder-page"><p>Cargando...</p></div>;
   if (!user) return null;
 
@@ -60,7 +76,7 @@ export default function Profile() {
 
   return (
     <div className="auth-page" style={{ paddingTop: 16 }}>
-      <div className="card" style={{ maxWidth: 500, width: "100%" }}>
+      <div className="card" style={{ maxWidth: 520, width: "100%" }}>
         <div style={{ textAlign: "center", marginBottom: 24 }}>
           {/* Avatar */}
           <div style={{ position: "relative", display: "inline-block" }}>
@@ -68,6 +84,8 @@ export default function Profile() {
               <img src={previewUrl} alt="Preview" style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover", border: "3px solid var(--gold)" }} />
             ) : user.avatar_url ? (
               <img src={user.avatar_url} alt="Avatar" style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover", border: "3px solid var(--border)" }} />
+            ) : player ? (
+              <img src={player.image} alt={player.name} style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover", border: "3px solid var(--border)" }} referrerPolicy="no-referrer" />
             ) : (
               <div style={{ width: 120, height: 120, borderRadius: "50%", background: "var(--bg-card)", border: "3px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "3rem", color: "var(--text-muted)" }}>
                 {user.name.charAt(0).toUpperCase()}
@@ -80,6 +98,9 @@ export default function Profile() {
         {/* Avatar upload */}
         <div className="card" style={{ marginBottom: 16 }}>
           <h3 className="card-title">Foto de perfil</h3>
+          <p style={{ fontSize: "0.83rem", color: "var(--text-secondary)", marginBottom: 12 }}>
+            Tómate una foto o elige una de tu galería.
+          </p>
           <div className="admin-action-group" style={{ justifyContent: "center" }}>
             <button className="btn btn-outline btn-sm" onClick={() => fileInputRef.current?.click()}>
               📁 Desde galería
@@ -98,6 +119,33 @@ export default function Profile() {
               </button>
               <button className="btn btn-outline btn-sm" style={{ marginLeft: 8 }} onClick={() => { setPreviewUrl(null); if (fileInputRef.current) fileInputRef.current.value = ""; if (cameraInputRef.current) cameraInputRef.current.value = ""; }}>
                 Cancelar
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Player selector */}
+        <div className="card" style={{ marginBottom: 16 }}>
+          <h3 className="card-title">🎭 Elegir personaje</h3>
+          <p style={{ fontSize: "0.83rem", color: "var(--text-secondary)", marginBottom: 12 }}>
+            Selecciona un personaje para representarte en el ranking y participantes.
+          </p>
+          <div className="player-grid">
+            {PLAYERS.map((p) => (
+              <div
+                key={p.id}
+                className={`player-card ${selectedPlayerSlug === p.id ? "selected" : ""}`}
+                onClick={() => setSelectedPlayerSlug(p.id)}
+              >
+                <img src={p.image} alt={p.name} className="player-card-img" referrerPolicy="no-referrer" />
+                <span className="player-card-name">{p.name}</span>
+              </div>
+            ))}
+          </div>
+          {selectedPlayerSlug !== user.player_slug && (
+            <div style={{ textAlign: "center", marginTop: 12 }}>
+              <button className="btn btn-gold" onClick={handlePlayerSave} disabled={savingPlayer}>
+                {savingPlayer ? "Guardando..." : "💾 Guardar personaje"}
               </button>
             </div>
           )}
@@ -128,7 +176,7 @@ export default function Profile() {
             </div>
             {player && (
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ color: "var(--text-secondary)" }}>Personaje</span>
+                <span style={{ color: "var(--text-secondary)" }}>Personaje actual</span>
                 <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
                   <img src={player.image} alt={player.name} style={{ width: 24, height: 24, borderRadius: "50%", objectFit: "cover" }} referrerPolicy="no-referrer" />
                   {player.name}
