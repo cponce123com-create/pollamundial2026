@@ -69,6 +69,7 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/pool", poolRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/teams", teamRoutes);
 
 // SSE endpoint for real-time notifications
 app.get("/api/events", sseHandler);
@@ -157,4 +158,3 @@ app.listen(PORT, async () => {
 startLiveScoreSync();
 
 export default app;
- app;
