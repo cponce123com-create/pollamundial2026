@@ -2087,6 +2087,75 @@ h3.admin-section-title {
   margin: 0;
 }
 
+/* Prizes row */
+.home-prizes {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 0 8px;
+  flex-wrap: wrap;
+}
+
+.home-prize {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  min-width: 100px;
+  flex: 1;
+  max-width: 160px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.home-prize:hover {
+  transform: translateY(-2px);
+}
+
+.home-prize-1 {
+  border-color: #f0a500;
+  box-shadow: 0 0 16px rgba(240, 165, 0, 0.2);
+}
+
+.home-prize-2 {
+  border-color: #9ba3a8;
+  box-shadow: 0 0 10px rgba(155, 163, 168, 0.12);
+}
+
+.home-prize-3 {
+  border-color: #cd7f32;
+  box-shadow: 0 0 10px rgba(205, 127, 50, 0.12);
+}
+
+.home-prize-medal {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.home-prize-pos {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.home-prize-pct {
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+}
+
+.home-prize-amount {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
 /* CTA footer */
 .home-cta {
   text-align: center;
@@ -2149,6 +2218,19 @@ h3.admin-section-title {
 
   .home-hero-stat-divider {
     height: 28px;
+  }
+
+  .home-prizes {
+    gap: 8px;
+  }
+
+  .home-prize {
+    min-width: 80px;
+    padding: 10px 12px;
+  }
+
+  .home-prize-medal {
+    font-size: 1.3rem;
   }
 
   .home-points-grid {
