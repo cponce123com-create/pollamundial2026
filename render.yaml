@@ -2,7 +2,7 @@ services:
   - type: web
     name: pollaworld-2026
     env: node
-    buildCommand: cd pollaworld-2026/client && npm install && npm run build && cd ../server && npm install && npm run build
+    buildCommand: cd pollaworld-2026/client && npm install && npm run build && cd ../server && npm install && npm run build && npm run db:push
     startCommand: node pollaworld-2026/server/dist/index.js
     envVars:
       - key: DATABASE_URL
