@@ -8,12 +8,19 @@ interface SquadPlayer {
   name: string;
   num: number;
   pos: string;
+  club?: string;
+  age?: number;
+  caps?: number;
 }
 
 interface TeamSquad {
   team: string;
   coach: string;
   formation: string;
+  fifaRank?: number;
+  nickname?: string;
+  bestWC?: string;
+  stadium?: string;
   players: SquadPlayer[];
 }
 
@@ -29,7 +36,7 @@ export default function Teams() {
       .then(setMatches)
       .catch(() => navigate("/login"));
 
-    // Load squads from static JSON (player data only)
+    // Load squads from static JSON
     fetch("/api/teams/squads")
       .then((r) => r.json())
       .then((data) => setSquads(data))
@@ -58,42 +65,31 @@ export default function Teams() {
     const parts = formation.split("-").map(Number);
     const positions: { x: number; y: number }[] = [];
 
-    // GK at bottom
     positions.push({ x: 50, y: 92 });
 
-    // Defenders
     if (parts[0]) {
       for (let i = 0; i < parts[0]; i++) {
         positions.push({ x: (100 / (parts[0] + 1)) * (i + 1), y: 74 });
       }
     }
-
-    // Midfielders
     if (parts[1]) {
       for (let i = 0; i < parts[1]; i++) {
         positions.push({ x: (100 / (parts[1] + 1)) * (i + 1), y: 54 });
       }
     }
-
-    // Forwards
     if (parts[2]) {
       for (let i = 0; i < parts[2]; i++) {
         positions.push({ x: (100 / (parts[2] + 1)) * (i + 1), y: 34 });
       }
     }
-
-    // Extra forward line (4-3-3 has forwards at y=34)
     if (parts[3]) {
       for (let i = 0; i < parts[3]; i++) {
         positions.push({ x: (100 / (parts[3] + 1)) * (i + 1), y: 20 });
       }
     }
-
-    // Ensure we have exactly 11 positions
     while (positions.length < 11) {
       positions.push({ x: 50 + Math.random() * 20, y: 40 });
     }
-
     return positions.slice(0, 11);
   };
 
@@ -170,6 +166,36 @@ export default function Teams() {
                 </div>
               </div>
 
+              {/* Team Info Cards */}
+              {selectedSquad && (
+                <div className="team-info-cards" style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "12px 0" }}>
+                  <div className="card" style={{ flex: 1, minWidth: 100, textAlign: "center", padding: "8px 12px" }}>
+                    <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--gold)" }}>
+                      #{selectedSquad.fifaRank ?? "—"}
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Ranking FIFA</div>
+                  </div>
+                  <div className="card" style={{ flex: 1, minWidth: 100, textAlign: "center", padding: "8px 12px" }}>
+                    <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--gold)" }}>
+                      {selectedSquad.nickname ?? "—"}
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Apodo</div>
+                  </div>
+                  <div className="card" style={{ flex: 1, minWidth: 120, textAlign: "center", padding: "8px 12px" }}>
+                    <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--gold)" }}>
+                      {selectedSquad.bestWC ?? "—"}
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Mejor Mundial</div>
+                  </div>
+                  <div className="card" style={{ flex: 1, minWidth: 120, textAlign: "center", padding: "8px 12px" }}>
+                    <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--gold)" }}>
+                      {selectedSquad.stadium ?? "—"}
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Estadio</div>
+                  </div>
+                </div>
+              )}
+
               <div className="team-detail-sections">
                 {/* Pitch View */}
                 {selectedSquad && (
@@ -195,15 +221,32 @@ export default function Teams() {
                         })}
                       </div>
                       <div className="pitch-squad-list">
-                        <h5>Jugadores</h5>
-                        <div className="pitch-squad-grid">
-                          {selectedSquad.players.map((p) => (
-                            <div key={p.num} className="pitch-squad-item">
-                              <span className="pitch-squad-pos">{p.pos}</span>
-                              <span className="pitch-squad-num">{p.num}</span>
-                              <span className="pitch-squad-name">{p.name}</span>
-                            </div>
-                          ))}
+                        <h5>Plantilla Completa ({selectedSquad.players.length})</h5>
+                        <div className="admin-table-wrapper">
+                          <table className="admin-table" style={{ fontSize: "0.8rem" }}>
+                            <thead>
+                              <tr>
+                                <th>N°</th>
+                                <th>POS</th>
+                                <th>Jugador</th>
+                                <th>Club</th>
+                                <th>Edad</th>
+                                <th>PJ</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {selectedSquad.players.map((p) => (
+                                <tr key={p.num}>
+                                  <td style={{ fontWeight: 700 }}>{p.num}</td>
+                                  <td><span className="badge badge-pending" style={{ fontSize: "0.65rem" }}>{p.pos}</span></td>
+                                  <td>{p.name}</td>
+                                  <td style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>{p.club || "—"}</td>
+                                  <td style={{ textAlign: "center" }}>{p.age ?? "—"}</td>
+                                  <td style={{ textAlign: "center" }}>{p.caps ?? "—"}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     </div>
