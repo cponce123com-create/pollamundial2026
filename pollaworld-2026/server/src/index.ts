@@ -104,6 +104,56 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+// Dynamic PWA manifest with custom logo
+app.get("/manifest.json", async (_req, res) => {
+  try {
+    const [config] = await db.select().from(poolConfig).limit(1);
+    const logoUrl = config?.logo_url || "/logo-og.png";
+
+    res.json({
+      name: "La Polla del Ponce 2026",
+      short_name: "La Polla 2026",
+      description: "La quiniela del Mundial 2026 — Predice los resultados y compite con amigos",
+      start_url: "/",
+      display: "standalone",
+      background_color: "#0d1117",
+      theme_color: "#0d1117",
+      orientation: "portrait",
+      categories: ["sports", "games"],
+      icons: [
+        {
+          src: logoUrl,
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: logoUrl,
+          sizes: "192x192",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: "/logo.svg",
+          sizes: "any",
+          type: "image/svg+xml",
+          purpose: "maskable",
+        },
+      ],
+    });
+  } catch {
+    // Fallback if DB fails
+    res.json({
+      name: "La Polla del Ponce 2026",
+      short_name: "La Polla 2026",
+      icons: [
+        { src: "/logo.svg", sizes: "any", type: "image/svg+xml", purpose: "maskable" },
+        { src: "/logo-og.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      ],
+    });
+  }
+});
+
 // Serve static files in production
 if (process.env.NODE_ENV === "production") {
   const clientBuild = path.join(__dirname, "../../client/dist");
