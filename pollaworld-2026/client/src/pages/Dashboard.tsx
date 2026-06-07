@@ -161,10 +161,36 @@ export default function Dashboard() {
     const suggestion = result[match.id];
     const homeStr = getStrength(match.home_team);
     const awayStr = getStrength(match.away_team);
-    const favTeam = homeStr >= awayStr ? match.home_team : match.away_team;
+    const homeScore = parseInt(suggestion.home, 10);
+    const awayScore = parseInt(suggestion.away, 10);
+
+    // Determine which team is the favorite by strength
+    const isHomeFav = homeStr >= awayStr;
+    const favTeam = isHomeFav ? match.home_team : match.away_team;
+
+    // Ensure the favorite actually wins (or at least doesn't lose)
+    let adjustedHome = homeScore;
+    let adjustedAway = awayScore;
+
+    if (homeScore < awayScore && isHomeFav) {
+      // Home is favorite but losing → swap so home wins by at least 1
+      adjustedHome = Math.max(homeScore, awayScore) + 1;
+      adjustedAway = Math.min(homeScore, awayScore);
+    } else if (awayScore < homeScore && !isHomeFav) {
+      // Away is favorite but losing → swap so away wins by at least 1
+      adjustedAway = Math.max(homeScore, awayScore) + 1;
+      adjustedHome = Math.min(homeScore, awayScore);
+    }
+
+    // If equal strength, keep the random result and declare no favorite
+    if (homeStr === awayStr) {
+      adjustedHome = homeScore;
+      adjustedAway = awayScore;
+    }
+
     return {
-      homeScore: suggestion.home,
-      awayScore: suggestion.away,
+      homeScore: String(adjustedHome),
+      awayScore: String(adjustedAway),
       favTeam,
       homeStrength: homeStr,
       awayStrength: awayStr,
@@ -639,9 +665,13 @@ export default function Dashboard() {
                                   return (
                                     <>
                                       <span className="suggestion-text">
-                                        <strong>{getTeamDisplayName(s.favTeam)}</strong> es favorito
+                                        {s.homeStrength === s.awayStrength ? (
+                                          <>Fuerza similar ({s.homeStrength}/5). Resultado sugerido:{" "}</>
+                                        ) : (
+                                          <><strong>{getTeamDisplayName(s.favTeam)}</strong> es favorito
                                         {" (fuerza "}{s.homeStrength >= s.awayStrength ? s.homeStrength : s.awayStrength}
-                                        /5). Resultado sugerido:{" "}
+                                        /5). Resultado sugerido:{" "}</>
+                                        )}
                                         <strong>{s.homeScore}-{s.awayScore}</strong>
                                       </span>
                                       <button
