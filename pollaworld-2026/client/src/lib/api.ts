@@ -105,6 +105,7 @@ export interface PoolConfig {
   whatsapp_group_link: string | null;
   logo_url: string | null;
   favicon_url: string | null;
+  hero_video_url: string | null;
   player_custom_names: Record<string, string> | null;
 }
 
@@ -373,6 +374,24 @@ export const api = {
     const headers: Record<string, string> = {};
     if (token) headers["x-csrf-token"] = token;
     return fetch("/api/pool/upload-yape-qr", {
+      method: "POST",
+      credentials: "include",
+      headers,
+      body: fd,
+    }).then(async (res) => {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error");
+      return data as { url: string; message: string };
+    });
+  },
+
+  uploadHeroVideo: async (file: File) => {
+    const fd = new FormData();
+    fd.append("video", file);
+    const token = await getCSRFToken();
+    const headers: Record<string, string> = {};
+    if (token) headers["x-csrf-token"] = token;
+    return fetch("/api/pool/upload-video", {
       method: "POST",
       credentials: "include",
       headers,

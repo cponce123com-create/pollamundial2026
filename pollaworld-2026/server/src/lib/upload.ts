@@ -29,6 +29,9 @@ export function createUpload(allowedMimeTypes: string[] = ["image/"]) {
 /** Default image upload instance */
 export const imageUpload = createUpload();
 
+/** Video upload instance (for hero background videos) */
+export const videoUpload = createUpload(["video/"]);
+
 /**
  * Compress an image buffer using sharp before uploading.
  * Converts to JPEG with quality 80% and max 1200px width for photos,

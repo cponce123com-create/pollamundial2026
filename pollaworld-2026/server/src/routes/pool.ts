@@ -4,7 +4,7 @@ import { db } from "../db";
 import { poolConfig, users, entries, predictions } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
 import { eq, sql, count, desc } from "drizzle-orm";
-import { imageUpload, uploadToCloudinary, cloudinaryErrorResponse } from "../lib/upload";
+import { imageUpload, videoUpload, uploadToCloudinary, cloudinaryErrorResponse } from "../lib/upload";
 import logger from "../lib/logger";
 
 const poolConfigSchema = z.object({
@@ -267,6 +267,45 @@ router.post("/upload-favicon", requireAdmin, (req: Request, res: Response, next)
     res.json({ url: result.secure_url, message: "Favicon actualizado." });
   } catch (err: unknown) {
     const errResp = cloudinaryErrorResponse(err, "Upload favicon");
+    res.status(errResp.status).json({ error: errResp.error });
+  }
+});
+
+// POST /api/pool/upload-video — subir video de fondo del hero (admin)
+router.post("/upload-video", requireAdmin, (req: Request, res: Response, next) => {
+  videoUpload.single("video")(req, res, (err) => {
+    if (err) {
+      const handled = cloudinaryErrorResponse(err, "Upload hero video");
+      return res.status(handled.status).json({ error: handled.error });
+    }
+    next();
+  });
+}, async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: "Debes enviar un archivo de video." });
+      return;
+    }
+
+    const result = await uploadToCloudinary(req.file.buffer, {
+      folder: "pollaworld/hero-video",
+      allowedFormats: ["mp4", "webm", "ogg", "mov"],
+      compress: false, // skip sharp compression for video
+    });
+
+    const configs = await db.select().from(poolConfig).limit(1);
+    if (configs.length === 0) {
+      await db.insert(poolConfig).values({ hero_video_url: result.secure_url });
+    } else {
+      await db
+        .update(poolConfig)
+        .set({ hero_video_url: result.secure_url })
+        .where(eq(poolConfig.id, configs[0].id));
+    }
+
+    res.json({ url: result.secure_url, message: "Video de fondo actualizado." });
+  } catch (err: unknown) {
+    const errResp = cloudinaryErrorResponse(err, "Upload hero video");
     res.status(errResp.status).json({ error: errResp.error });
   }
 });

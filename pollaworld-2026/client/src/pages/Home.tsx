@@ -159,6 +159,17 @@ export default function Home() {
     <div className="home-page">
       {/* HERO */}
       <section className="home-hero">
+        {config?.hero_video_url && (
+          <video
+            className="hero-video-bg"
+            src={config.hero_video_url.replace('/upload/', '/upload/f_auto:video,q_auto/')}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        )}
+        <div className="hero-video-overlay" />
         <div className="home-hero-content">
           {loading ? (
             <div className="home-hero-skeleton" />

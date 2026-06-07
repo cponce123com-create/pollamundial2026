@@ -51,6 +51,7 @@ export default function Admin() {
   const [qrFile, setQrFile] = useState<File | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [faviconFile, setFaviconFile] = useState<File | null>(null);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
   const [whatsappLink, setWhatsappLink] = useState("");
 
   // Export state
@@ -156,6 +157,18 @@ export default function Admin() {
       const data = await api.uploadFavicon(faviconFile);
       toast.success(data.message || "Favicon subido");
       setFaviconFile(null);
+      await loadAll();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error");
+    }
+  };
+
+  const handleUploadVideo = async () => {
+    if (!videoFile) return;
+    try {
+      const data = await api.uploadHeroVideo(videoFile);
+      toast.success(data.message || "Video subido");
+      setVideoFile(null);
       await loadAll();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Error");
@@ -368,6 +381,10 @@ export default function Admin() {
             onFaviconFileChange={setFaviconFile}
             onUploadLogo={handleUploadLogo}
             onUploadFavicon={handleUploadFavicon}
+            heroVideoUrl={config?.hero_video_url || ""}
+            videoFile={videoFile}
+            onVideoFileChange={setVideoFile}
+            onUploadVideo={handleUploadVideo}
           />
         )}
 

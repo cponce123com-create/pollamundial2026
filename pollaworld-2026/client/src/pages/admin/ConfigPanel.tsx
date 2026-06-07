@@ -27,6 +27,10 @@ interface ConfigPanelProps {
   onFaviconFileChange?: (f: File | null) => void;
   onUploadLogo?: () => void;
   onUploadFavicon?: () => void;
+  heroVideoUrl?: string;
+  videoFile?: File | null;
+  onVideoFileChange?: (f: File | null) => void;
+  onUploadVideo?: () => void;
 }
 
 export default function ConfigPanel({
@@ -56,6 +60,10 @@ export default function ConfigPanel({
   onFaviconFileChange,
   onUploadLogo,
   onUploadFavicon,
+  heroVideoUrl,
+  videoFile,
+  onVideoFileChange,
+  onUploadVideo,
 }: ConfigPanelProps) {
   const totalPct = prize1 + prize2 + prize3;
 
@@ -180,6 +188,37 @@ export default function ConfigPanel({
             disabled={!faviconFile}
           >
             Subir Favicon
+          </button>
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Video de fondo (hero)</label>
+          {heroVideoUrl && (
+            <div className="admin-qr-preview">
+              <video
+                src={heroVideoUrl}
+                muted
+                loop
+                playsInline
+                style={{ maxWidth: 200, borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}
+              />
+            </div>
+          )}
+          <input
+            type="file"
+            accept="video/mp4,video/webm,video/ogg"
+            onChange={(e) => onVideoFileChange?.(e.target.files?.[0] || null)}
+            className="admin-file-input"
+          />
+          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 4 }}>
+            Recomendado: MP4, 5-10 segundos, sin audio, paisaje. Se muestra en loop en desktop.
+          </p>
+          <button
+            className="btn btn-outline"
+            onClick={onUploadVideo}
+            disabled={!videoFile}
+          >
+            Subir Video
           </button>
         </div>
 

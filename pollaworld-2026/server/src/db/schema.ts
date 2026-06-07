@@ -76,5 +76,6 @@ export const poolConfig = pgTable("pool_config", {
   whatsapp_group_link: text("whatsapp_group_link"),
   logo_url: text("logo_url"),
   favicon_url: text("favicon_url"),
+  hero_video_url: text("hero_video_url"),
   player_custom_names: jsonb("player_custom_names"),
 });
