@@ -122,14 +122,14 @@ app.get("/manifest.json", async (_req, res) => {
       categories: ["sports", "games"],
       icons: [
         {
-          src: logoUrl,
-          sizes: "512x512",
+          src: "/icon-192.png",
+          sizes: "192x192",
           type: "image/png",
           purpose: "any",
         },
         {
-          src: logoUrl,
-          sizes: "192x192",
+          src: "/icon-512.png",
+          sizes: "512x512",
           type: "image/png",
           purpose: "any",
         },
@@ -147,17 +147,95 @@ app.get("/manifest.json", async (_req, res) => {
       name: "La Polla del Ponce 2026",
       short_name: "La Polla 2026",
       icons: [
+        { src: "/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+        { src: "/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
         { src: "/logo.svg", sizes: "any", type: "image/svg+xml", purpose: "maskable" },
-        { src: "/logo-og.png", sizes: "512x512", type: "image/png", purpose: "any" },
       ],
     });
   }
 });
 
+// ─── DYNAMIC OPEN GRAPH (scraper bots) ──────────────────────────
+// Social scrapers (WhatsApp, FB, Twitter, Telegram, Discord, Slack, LinkedIn)
+// don't execute JS, so we must serve static HTML with OG meta tags.
+// If the request comes from a known scraper, handle it here before the SPA.
+const SCRAPER_AGENTS = [
+  "facebookexternalhit", "Twitterbot", "WhatsApp", "TelegramBot",
+  "Slackbot", "LinkedInBot", "Discordbot", "Discord",
+];
+
+function isScraper(ua: string): boolean {
+  return SCRAPER_AGENTS.some((agent) => ua.toLowerCase().includes(agent.toLowerCase()));
+}
+
+async function scraperMiddleware(req: Request, res: Response, next: NextFunction) {
+  const ua = (req.headers["user-agent"] || "").toLowerCase();
+  if (!ua || !isScraper(ua)) return next();
+
+  const entryMatch = req.path.match(/^\/entry\/([a-f0-9-]+)/i);
+  const BASE_URL = process.env.BASE_URL || "https://pollamundial2026.onrender.com";
+
+  if (entryMatch) {
+    const entryId = entryMatch[1];
+    try {
+      const result = await db.execute(
+        sql`SELECT u.name, COALESCE(SUM(p.points_earned), 0) AS puntos
+            FROM entries e
+            JOIN users u ON u.id = e.user_id
+            LEFT JOIN predictions p ON p.entry_id = e.id
+            WHERE e.id = ${entryId}
+            GROUP BY u.name`
+      );
+
+      const rows = (result as any).rows || [];
+      const name = rows[0]?.name || "Participante";
+      const puntos = rows[0]?.puntos ?? 0;
+
+      const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta property="og:title" content="${escapeHtml(name)} — La Polla del Ponce 2026" />
+  <meta property="og:description" content="Puntaje actual: ${puntos} pts. \u00bfPuedes superarlo?" />
+  <meta property="og:image" content="${BASE_URL}/logo-og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="La Polla del Ponce 2026 — Quiniela del Mundial" />
+  <meta property="og:url" content="${BASE_URL}/entry/${entryId}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${escapeHtml(name)} — La Polla del Ponce 2026" />
+  <meta name="twitter:description" content="Puntaje actual: ${puntos} pts. \u00bfPuedes superarlo?" />
+  <meta name="twitter:image" content="${BASE_URL}/logo-og.png" />
+  <meta http-equiv="refresh" content="0;url=/entry/${entryId}" />
+  <title>${escapeHtml(name)} — La Polla del Ponce 2026</title>
+</head>
+<body><a href="/entry/${entryId}">Ver quiniela</a></body>
+</html>`;
+
+      return res.status(200).send(html);
+    } catch (err) {
+      logger.warn(err, "[OG] Error fetching entry %s", entryId);
+      // Fall through to SPA
+      return next();
+    }
+  }
+
+  // For other routes, just show the base SPA (which already has OG metas)
+  return next();
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
 // Serve static files in production
 if (process.env.NODE_ENV === "production") {
   const clientBuild = path.join(__dirname, "../../client/dist");
   app.use(express.static(clientBuild));
+
+  // OG scraper middleware — intercept scrapers before SPA catch-all
+  app.use(scraperMiddleware);
+
   app.get("*", (_req, res) => {
     res.sendFile(path.join(clientBuild, "index.html"));
   });

@@ -267,7 +267,8 @@
         "caps": 2,
         "wikiPage": "Denis_Višinský"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833703/pollaworld/stadiums/rep_blica_checa.jpg"
   },
   {
     "team": "México",
@@ -541,7 +542,8 @@
         "wikiPage": "Brian_Gutiérrez",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780815534/pollaworld/squads/m_xico_brian_guti_rrez.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833707/pollaworld/stadiums/m_xico.jpg"
   },
   {
     "team": "Sudáfrica",
@@ -803,7 +805,8 @@
         "caps": 0,
         "wikiPage": "Bradley_Cross_(soccer)"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833712/pollaworld/stadiums/sud_frica.jpg"
   },
   {
     "team": "Corea del Sur",
@@ -1076,7 +1079,8 @@
         "wikiPage": "Lee_Dong-gyeong",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780815580/pollaworld/squads/corea_del_sur_lee_dong_gyeong.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833716/pollaworld/stadiums/corea_del_sur.jpg"
   },
   {
     "team": "Bosnia y Herzegovina",
@@ -1600,7 +1604,8 @@
         "wikiPage": "Nathan_Saliba",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780816478/pollaworld/squads/canad__nathan_saliba.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833720/pollaworld/stadiums/canad_.jpg"
   },
   {
     "team": "Catar",
@@ -1867,12 +1872,13 @@
         "caps": 10,
         "wikiPage": "Mohamed_Manai"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833724/pollaworld/stadiums/catar.jpg"
   },
   {
     "team": "Suiza",
     "coach": "Murat Yakin",
-    "formation": "4-3-3 / 4-2-3-1",
+    "formation": "4-3-3",
     "fifaRank": 17,
     "nickname": "La Nati",
     "bestWC": "Cuartos de final (1934, 1938, 1954)",
@@ -2132,7 +2138,8 @@
         "caps": 15,
         "wikiPage": "Cedric_Itten"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833733/pollaworld/stadiums/suiza.jpg"
   },
   {
     "team": "Brasil",
@@ -2403,7 +2410,8 @@
         "wikiPage": "Rayan_(footballer,_born_2006)",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780817074/pollaworld/squads/brasil_rayan.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833743/pollaworld/stadiums/brasil.jpg"
   },
   {
     "team": "Haití",
@@ -2661,12 +2669,13 @@
         "caps": 1,
         "wikiPage": "Woodensky_Pierre"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833752/pollaworld/stadiums/hait_.jpg"
   },
   {
     "team": "Marruecos",
     "coach": "Mohamed Ouahbi",
-    "formation": "4-2-3-1 / 4-2-2-2",
+    "formation": "4-2-3-1",
     "fifaRank": 8,
     "nickname": "Atlas Lions",
     "bestWC": "Cuarto lugar (2022)",
@@ -2918,12 +2927,13 @@
         "caps": 9,
         "wikiPage": "Defender_(association_football)"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833757/pollaworld/stadiums/marruecos.jpg"
   },
   {
     "team": "Escocia",
     "coach": "Steve Clarke",
-    "formation": "Variable (3/4 defensas)",
+    "formation": "4-3-3",
     "fifaRank": 36,
     "nickname": "Tartan Army",
     "bestWC": "Fase de grupos (1974, 1978, 1982)",
@@ -3188,7 +3198,8 @@
         "wikiPage": "Scott_McKenna",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780817421/pollaworld/squads/escocia_scott_mckenna.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833761/pollaworld/stadiums/escocia.jpg"
   },
   {
     "team": "Australia",
@@ -3459,7 +3470,8 @@
         "wikiPage": "Tete_Yengi",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780817669/pollaworld/squads/australia_tete_yengi.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833770/pollaworld/stadiums/australia.jpg"
   },
   {
     "team": "Paraguay",
@@ -3727,7 +3739,8 @@
         "caps": 2,
         "wikiPage": "Alexandro_Maidana"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833780/pollaworld/stadiums/paraguay.jpg"
   },
   {
     "team": "Turquía",
@@ -3999,7 +4012,8 @@
         "wikiPage": "Can_Uzun",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780818220/pollaworld/squads/turqu_a_can_uzun.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833784/pollaworld/stadiums/turqu_a.jpg"
   },
   {
     "team": "Estados Unidos",
@@ -4272,7 +4286,8 @@
         "wikiPage": "Alejandro_Zendejas",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780818303/pollaworld/squads/estados_unidos_alejandro_zendejas.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833788/pollaworld/stadiums/estados_unidos.jpg"
   },
   {
     "team": "Curazao",
@@ -4539,7 +4554,8 @@
         "wikiPage": "Trevor_Doornbusch",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780818481/pollaworld/squads/curazao_trevor_doornbusch.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833793/pollaworld/stadiums/curazao.jpg"
   },
   {
     "team": "Ecuador",
@@ -4806,7 +4822,8 @@
         "caps": 5,
         "wikiPage": "Yaimar_Medina"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833797/pollaworld/stadiums/ecuador.jpg"
   },
   {
     "team": "Alemania",
@@ -5570,7 +5587,8 @@
     "stadium": "Estadio Nissan",
     "confederation": "AFC",
     "worldCupTitles": 0,
-    "worldCupApps": 7
+    "worldCupApps": 7,
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833801/pollaworld/stadiums/jap_n.jpg"
   },
   {
     "team": "Países Bajos",
@@ -5797,7 +5815,7 @@
   {
     "team": "Suecia",
     "coach": "Graham Potter",
-    "formation": "4-4-2 / 4-2-3-1",
+    "formation": "4-4-2",
     "fifaRank": 22,
     "nickname": "Tre Kronor",
     "bestWC": "Subcampeón (1958)",
@@ -6331,7 +6349,7 @@
   {
     "team": "Bélgica",
     "coach": "Rudi Garcia",
-    "formation": "4-3-3 / 4-2-3-1",
+    "formation": "4-3-3",
     "fifaRank": 8,
     "nickname": "Diablos Rojos",
     "bestWC": "Tercer lugar (2018)",
@@ -6598,7 +6616,8 @@
         "wikiPage": "Matias_Fernandez-Pardo",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780819598/pollaworld/squads/b_lgica_matias_fernandez_pardo.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833806/pollaworld/stadiums/b_lgica.jpg"
   },
   {
     "team": "Egipto",
@@ -6863,7 +6882,8 @@
         "wikiPage": "Mohamed_Alaa",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780819755/pollaworld/squads/egipto_mohamed_alaa.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833810/pollaworld/stadiums/egipto.jpg"
   },
   {
     "team": "Irán",
@@ -7135,7 +7155,8 @@
         "caps": 4,
         "wikiPage": "Amirmohammad_Razzaghinia"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833819/pollaworld/stadiums/ir_n.jpg"
   },
   {
     "team": "Nueva Zelanda",
@@ -7405,7 +7426,8 @@
         "wikiPage": "Tommy_Smith_(footballer,_born_1990)",
         "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820096/pollaworld/squads/nueva_zelanda_tommy_smith.jpg"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833823/pollaworld/stadiums/nueva_zelanda.jpg"
   },
   {
     "team": "Cabo Verde",
@@ -7435,7 +7457,8 @@
         "club": "Torreense",
         "age": 38,
         "caps": 61,
-        "wikiPage": "Stopira"
+        "wikiPage": "Stopira",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820117/pollaworld/squads/cabo_verde_stopira.jpg"
       },
       {
         "name": "Diney",
@@ -7453,7 +7476,8 @@
         "club": "Shamrock Rovers",
         "age": 33,
         "caps": 45,
-        "wikiPage": "Roberto_Lopes_(footballer,_born_1992)"
+        "wikiPage": "Roberto_Lopes_(footballer,_born_1992)",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820120/pollaworld/squads/cabo_verde_roberto_lopes.jpg"
       },
       {
         "name": "Logan Costa",
@@ -7462,7 +7486,8 @@
         "club": "Villarreal",
         "age": 25,
         "caps": 27,
-        "wikiPage": "Logan_Costa"
+        "wikiPage": "Logan_Costa",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820138/pollaworld/squads/cabo_verde_logan_costa.jpg"
       },
       {
         "name": "Kevin Pina",
@@ -7471,7 +7496,8 @@
         "club": "Krasnodar",
         "age": 29,
         "caps": 31,
-        "wikiPage": "Kevin_Pina_(footballer)"
+        "wikiPage": "Kevin_Pina_(footballer)",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820155/pollaworld/squads/cabo_verde_kevin_pina.jpg"
       },
       {
         "name": "Jovane Cabral",
@@ -7480,7 +7506,8 @@
         "club": "Estrela Amadora",
         "age": 27,
         "caps": 26,
-        "wikiPage": "Jovane_Cabral"
+        "wikiPage": "Jovane_Cabral",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820173/pollaworld/squads/cabo_verde_jovane_cabral.jpg"
       },
       {
         "name": "João Paulo",
@@ -7498,7 +7525,8 @@
         "club": "Akron Tolyatti",
         "age": 24,
         "caps": 22,
-        "wikiPage": "Gilson_Benchimol"
+        "wikiPage": "Gilson_Benchimol",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820191/pollaworld/squads/cabo_verde_gilson_benchimol.jpg"
       },
       {
         "name": "Jamiro Monteiro",
@@ -7507,7 +7535,8 @@
         "club": "PEC Zwolle",
         "age": 32,
         "caps": 54,
-        "wikiPage": "Jamiro_Monteiro"
+        "wikiPage": "Jamiro_Monteiro",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820194/pollaworld/squads/cabo_verde_jamiro_monteiro.jpg"
       },
       {
         "name": "Garry Rodrigues",
@@ -7516,7 +7545,8 @@
         "club": "Apollon Limassol",
         "age": 35,
         "caps": 59,
-        "wikiPage": "Garry_Rodrigues"
+        "wikiPage": "Garry_Rodrigues",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820212/pollaworld/squads/cabo_verde_garry_rodrigues.jpg"
       },
       {
         "name": "Márcio Rosa",
@@ -7525,7 +7555,8 @@
         "club": "Montana",
         "age": 29,
         "caps": 10,
-        "wikiPage": "Márcio_Rosa"
+        "wikiPage": "Márcio_Rosa",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820214/pollaworld/squads/cabo_verde_m_rcio_rosa.jpg"
       },
       {
         "name": "Sidny Lopes Cabral",
@@ -7543,7 +7574,8 @@
         "club": "Ludogorets Razgrad",
         "age": 26,
         "caps": 30,
-        "wikiPage": "Deroy_Duarte"
+        "wikiPage": "Deroy_Duarte",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820232/pollaworld/squads/cabo_verde_deroy_duarte.jpg"
       },
       {
         "name": "Laros Duarte",
@@ -7570,7 +7602,8 @@
         "club": "Omonia",
         "age": 32,
         "caps": 37,
-        "wikiPage": "Willy_Semedo"
+        "wikiPage": "Willy_Semedo",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820250/pollaworld/squads/cabo_verde_willy_semedo.jpg"
       },
       {
         "name": "Telmo Arcanjo",
@@ -7597,7 +7630,8 @@
         "club": "Iğdır",
         "age": 36,
         "caps": 97,
-        "wikiPage": "Ryan_Mendes"
+        "wikiPage": "Ryan_Mendes",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820253/pollaworld/squads/cabo_verde_ryan_mendes.jpg"
       },
       {
         "name": "Nuno da Costa",
@@ -7606,7 +7640,8 @@
         "club": "İstanbul Başakşehir",
         "age": 35,
         "caps": 8,
-        "wikiPage": "Nuno_da_Costa"
+        "wikiPage": "Nuno_da_Costa",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820271/pollaworld/squads/cabo_verde_nuno_da_costa.jpg"
       },
       {
         "name": "Steven Moreira",
@@ -7615,7 +7650,8 @@
         "club": "Columbus Crew",
         "age": 31,
         "caps": 19,
-        "wikiPage": "Steven_Moreira"
+        "wikiPage": "Steven_Moreira",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780820274/pollaworld/squads/cabo_verde_steven_moreira.jpg"
       },
       {
         "name": "CJ dos Santos",
@@ -7624,7 +7660,8 @@
         "club": "San Diego FC",
         "age": 25,
         "caps": 1,
-        "wikiPage": "CJ_dos_Santos"
+        "wikiPage": "CJ_dos_Santos",
+        "image": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_80,h_80,c_fill,g_face,e_improve/v1780833056/pollaworld/squads/cabo_verde_cj_dos_santos.jpg"
       },
       {
         "name": "Wagner Pina",
@@ -7653,7 +7690,8 @@
         "caps": 20,
         "wikiPage": "Hélio_Varela"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833827/pollaworld/stadiums/cabo_verde.jpg"
   },
   {
     "team": "Arabia Saudita",
@@ -7906,7 +7944,7 @@
   {
     "team": "España",
     "coach": "Luis de la Fuente",
-    "formation": "4-3-3 / 4-2-3-1",
+    "formation": "4-3-3",
     "fifaRank": 1,
     "nickname": "La Roja",
     "bestWC": "Campeón (2010)",
@@ -8397,7 +8435,8 @@
         "caps": 8,
         "wikiPage": "Rodrigo_Zalazar"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833831/pollaworld/stadiums/uruguay.jpg"
   },
   {
     "team": "Francia",
@@ -8619,7 +8658,8 @@
     "stadium": "Stade de France",
     "confederation": "UEFA",
     "worldCupTitles": 2,
-    "worldCupApps": 16
+    "worldCupApps": 16,
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833835/pollaworld/stadiums/francia.jpg"
   },
   {
     "team": "Irak",
@@ -8833,7 +8873,8 @@
     "stadium": "Estadio Internacional Basra",
     "confederation": "AFC",
     "worldCupTitles": 0,
-    "worldCupApps": 2
+    "worldCupApps": 2,
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833839/pollaworld/stadiums/irak.jpg"
   },
   {
     "team": "Noruega",
@@ -9081,7 +9122,8 @@
         "caps": 42,
         "wikiPage": "Julian_Ryerson"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833844/pollaworld/stadiums/noruega.jpg"
   },
   {
     "team": "Senegal",
@@ -9334,7 +9376,7 @@
   {
     "team": "Argentina",
     "coach": "Vladimir Petković",
-    "formation": "4-3-3 / 4-2-3-1",
+    "formation": "4-3-3",
     "fifaRank": 2,
     "nickname": "La Albiceleste",
     "bestWC": "Campeón (1978, 1986, 2022)",
@@ -10055,7 +10097,8 @@
         "caps": 35,
         "wikiPage": "Alessandro_Schöpf"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833848/pollaworld/stadiums/austria.jpg"
   },
   {
     "team": "Jordania",
@@ -10294,7 +10337,8 @@
         "caps": 1,
         "wikiPage": "Anas_Badawi"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833852/pollaworld/stadiums/jordania.jpg"
   },
   {
     "team": "Colombia",
@@ -10542,7 +10586,8 @@
         "caps": 7,
         "wikiPage": "Andrés_Gómez_(footballer)"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833856/pollaworld/stadiums/colombia.jpg"
   },
   {
     "team": "Portugal",
@@ -10790,7 +10835,8 @@
         "caps": 45,
         "wikiPage": "Arthur_Masuaku"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833860/pollaworld/stadiums/portugal.jpg"
   },
   {
     "team": "RD Congo",
@@ -11038,7 +11084,8 @@
         "caps": 16,
         "wikiPage": "Francisco_Conceição"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833864/pollaworld/stadiums/rd_congo.jpg"
   },
   {
     "team": "Uzbekistán",
@@ -11286,7 +11333,8 @@
         "caps": 3,
         "wikiPage": "Jakhongir_Urozov"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833868/pollaworld/stadiums/uzbekist_n.jpg"
   },
   {
     "team": "Croacia",
@@ -11508,12 +11556,13 @@
     "stadium": "Estadio Maksimir",
     "confederation": "UEFA",
     "worldCupTitles": 0,
-    "worldCupApps": 6
+    "worldCupApps": 6,
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833872/pollaworld/stadiums/croacia.jpg"
   },
   {
     "team": "Inglaterra",
     "coach": "Thomas Tuchel",
-    "formation": "3-2-5 / 3-4-3 (ataque)",
+    "formation": "4-3-3",
     "players": [
       {
         "name": "D. Henderson",
@@ -11730,7 +11779,8 @@
     "stadium": "Wembley Stadium",
     "confederation": "UEFA",
     "worldCupTitles": 1,
-    "worldCupApps": 16
+    "worldCupApps": 16,
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833876/pollaworld/stadiums/inglaterra.jpg"
   },
   {
     "team": "Ghana",
@@ -11978,7 +12028,8 @@
         "caps": 2,
         "wikiPage": "Marvin_Senaya"
       }
-    ]
+    ],
+    "stadiumImage": "https://res.cloudinary.com/dicudg2ok/image/upload/f_auto,q_auto,w_600/v1780833880/pollaworld/stadiums/ghana.jpg"
   },
   {
     "team": "Panamá",
