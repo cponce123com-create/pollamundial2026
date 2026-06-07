@@ -208,13 +208,15 @@ async function scraperMiddleware(req: Request, res: Response, next: NextFunction
       const name = rows[0]?.name || "Participante";
       const puntos = rows[0]?.puntos ?? 0;
 
+      const ogImage = await getOgImageUrl();
+
       const html = `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8" />
   <meta property="og:title" content="${escapeHtml(name)} — La Polla del Ponce 2026" />
   <meta property="og:description" content="Puntaje actual: ${puntos} pts. \u00bfPuedes superarlo?" />
-  <meta property="og:image" content="${BASE_URL}/logo-og.png" />
+  <meta property="og:image" content="${ogImage}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="La Polla del Ponce 2026 — Quiniela del Mundial" />
@@ -222,7 +224,7 @@ async function scraperMiddleware(req: Request, res: Response, next: NextFunction
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${escapeHtml(name)} — La Polla del Ponce 2026" />
   <meta name="twitter:description" content="Puntaje actual: ${puntos} pts. \u00bfPuedes superarlo?" />
-  <meta name="twitter:image" content="${BASE_URL}/logo-og.png" />
+  <meta name="twitter:image" content="${ogImage}" />
   <meta http-equiv="refresh" content="0;url=/entry/${entryId}" />
   <title>${escapeHtml(name)} — La Polla del Ponce 2026</title>
 </head>
@@ -237,8 +239,49 @@ async function scraperMiddleware(req: Request, res: Response, next: NextFunction
     }
   }
 
+  // Root path for scrapers — serve dynamic HTML with OG metas using custom logo
+  if (req.path === "/" || req.path === "") {
+    try {
+      const ogImage = await getOgImageUrl();
+      const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="${BASE_URL}/" />
+  <meta property="og:title" content="La Polla del Ponce 2026" />
+  <meta property="og:description" content="La quiniela del Mundial 2026 — Predice los resultados, compite con amigos y gana premios." />
+  <meta property="og:image" content="${ogImage}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="La Polla del Ponce 2026 — Quiniela del Mundial" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="La Polla del Ponce 2026" />
+  <meta name="twitter:description" content="La quiniela del Mundial 2026 — Predice los resultados, compite con amigos y gana premios." />
+  <meta name="twitter:image" content="${ogImage}" />
+  <title>La Polla del Ponce 2026</title>
+</head>
+<body><a href="/">Ir al sitio</a></body>
+</html>`;
+      return res.status(200).send(html);
+    } catch {
+      // Fall through to SPA
+      return next();
+    }
+  }
+
   // For other routes, just show the base SPA (which already has OG metas)
   return next();
+}
+
+/** Get the best OG image URL: custom logo > favicon > fallback */
+async function getOgImageUrl(): Promise<string> {
+  try {
+    const [config] = await db.select().from(poolConfig).limit(1);
+    return config?.logo_url || config?.favicon_url || "/logo-og.png";
+  } catch {
+    return "/logo-og.png";
+  }
 }
 
 function escapeHtml(s: string): string {
