@@ -1849,25 +1849,18 @@ h3.admin-section-title {
 /* Group filter tabs */
 .teams-filter-bar {
   display: flex;
-  gap: 4px;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  gap: 3px;
   padding: 2px 0;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.teams-filter-bar::-webkit-scrollbar {
-  display: none;
 }
 
 .teams-filter-btn {
-  flex-shrink: 0;
-  padding: 6px 14px;
-  font-size: 0.75rem;
+  padding: 4px 8px;
+  font-size: 0.68rem;
   font-family: var(--font-heading);
   font-weight: 600;
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 14px;
   background: var(--bg-dark);
   color: var(--text-secondary);
   cursor: pointer;
@@ -2270,6 +2263,15 @@ h3.admin-section-title {
   padding: 1px 4px;
   border-radius: 2px;
   white-space: nowrap;
+}
+
+.pitch-markings {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .pitch-modern-label {

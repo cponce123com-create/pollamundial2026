@@ -348,6 +348,28 @@ export default function Teams() {
             </div>
             <div className="pitch-modern">
               <div className="pitch-modern-field">
+                <svg className="pitch-markings" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice">
+                  {/* Outline */}
+                  <rect x="2" y="2" width="296" height="196" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="2" rx="4" />
+                  {/* Center line */}
+                  <line x1="2" y1="100" x2="298" y2="100" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+                  {/* Center circle */}
+                  <circle cx="150" cy="100" r="24" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+                  {/* Center spot */}
+                  <circle cx="150" cy="100" r="2" fill="rgba(255,255,255,0.12)" />
+                  {/* Penalty area top */}
+                  <rect x="60" y="2" width="180" height="50" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+                  {/* Goal area top */}
+                  <rect x="100" y="2" width="100" height="20" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+                  {/* Penalty spot top */}
+                  <circle cx="150" cy="42" r="2" fill="rgba(255,255,255,0.12)" />
+                  {/* Penalty area bottom */}
+                  <rect x="60" y="148" width="180" height="50" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+                  {/* Goal area bottom */}
+                  <rect x="100" y="178" width="100" height="20" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+                  {/* Penalty spot bottom */}
+                  <circle cx="150" cy="158" r="2" fill="rgba(255,255,255,0.12)" />
+                </svg>
                 <div className="pitch-modern-grid">
                   {pitchPositions.map((pos, i) => {
                     const player = selectedSquad.players[i];
