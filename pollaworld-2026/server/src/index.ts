@@ -104,6 +104,22 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+// Dynamic OG image — redirects to the custom logo or favicon from DB, or fallback
+app.get("/api/og-image", async (_req, res) => {
+  try {
+    const [config] = await db.select().from(poolConfig).limit(1);
+    const imageUrl = config?.logo_url || config?.favicon_url || "/logo-og.png";
+    // If it's an absolute URL (Cloudinary), redirect directly
+    if (imageUrl.startsWith("http")) {
+      return res.redirect(302, imageUrl);
+    }
+    // Relative URL — redirect to the same host
+    res.redirect(302, imageUrl);
+  } catch {
+    res.redirect(302, "/logo-og.png");
+  }
+});
+
 // Dynamic PWA manifest with custom logo
 app.get("/manifest.json", async (_req, res) => {
   try {
