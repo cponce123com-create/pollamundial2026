@@ -173,7 +173,8 @@ async function scraperMiddleware(req: Request, res: Response, next: NextFunction
   if (!ua || !isScraper(ua)) return next();
 
   const entryMatch = req.path.match(/^\/entry\/([a-f0-9-]+)/i);
-  const BASE_URL = process.env.BASE_URL || "https://pollamundial2026.onrender.com";
+  // Dynamically determine base URL from the request
+  const BASE_URL = `${req.protocol}://${req.get("host")}`;
 
   if (entryMatch) {
     const entryId = entryMatch[1];
