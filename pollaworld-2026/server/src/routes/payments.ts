@@ -69,6 +69,11 @@ router.post("/upload", requireAuth, (req: Request, res: Response, next) => {
       return;
     }
 
+    if (entry.payment_status === "approved") {
+      res.status(400).json({ error: "Tu pago ya fue aprobado. No puedes subir otro comprobante." });
+      return;
+    }
+
     const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {

@@ -25,6 +25,8 @@ export default function Dashboard() {
   const [generatingPdf, setGeneratingPdf] = useState(false);
   const [liveMatchIds, setLiveMatchIds] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dirtyRef = useRef(false);
+  const prevPredictionsRef = useRef<string>("");
 
   // ── Multi-entry state ──
   const [entries, setEntries] = useState<Entry[]>([]);
@@ -44,6 +46,18 @@ export default function Dashboard() {
       loadData(selectedEntryId);
     }
   }, [selectedEntryId]);
+
+  // ── Warn on unsaved changes (beforeunload + navigation) ──
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (dirtyRef.current) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
 
   const loadEntries = async () => {
     try {
@@ -78,6 +92,8 @@ export default function Dashboard() {
         }
       });
       setPredictions(preds);
+      prevPredictionsRef.current = JSON.stringify(preds);
+      dirtyRef.current = false;
     } catch {
       navigate("/login");
     }
@@ -122,9 +138,22 @@ export default function Dashboard() {
     [filteredMatches, predictions]
   );
 
+  const groupsMatches = useMemo(() => matches.filter((m) => m.phase === "groups"), [matches]);
+  const elimMatches = useMemo(() => matches.filter((m) => m.phase !== "groups"), [matches]);
+  const groupsPending = useMemo(
+    () => groupsMatches.filter((m) => !m.is_locked && !config?.tournament_started && predictions[m.id]?.home === undefined).length,
+    [groupsMatches, predictions, config]
+  );
+  const elimPending = useMemo(
+    () => elimMatches.filter((m) => !m.is_locked && !config?.tournament_started && predictions[m.id]?.home === undefined).length,
+    [elimMatches, predictions, config]
+  );
+
   const handlePredictionChange = useCallback((matchId: string, field: "home" | "away", value: string) => {
     const num = parseInt(value, 10);
     if (value !== "" && (isNaN(num) || num < 0 || num > 20)) return;
+
+    dirtyRef.current = true;
 
     setPredictions((prev) => ({
       ...prev,
@@ -155,6 +184,7 @@ export default function Dashboard() {
 
       await api.saveBulkPredictions(selectedEntryId, toSave);
       setMessage(`✅ ${toSave.length} predicciones guardadas.`);
+      dirtyRef.current = false;
       await loadData(selectedEntryId); // Refresh
     } catch (err) {
       setMessage(`❌ ${err instanceof Error ? err.message : "Error al guardar"}`);
@@ -344,12 +374,14 @@ export default function Dashboard() {
                 onClick={() => setActiveTab("groups")}
               >
                 🏟️ Fase de Grupos
+                {groupsPending > 0 && <span className="tab-badge">{groupsPending}</span>}
               </button>
               <button
                 className={`tab ${activeTab === "elimination" ? "tab-active" : ""}`}
                 onClick={() => setActiveTab("elimination")}
               >
                 🏆 Fase Eliminatoria
+                {elimPending > 0 && <span className="tab-badge">{elimPending}</span>}
               </button>
             </div>
 
@@ -373,14 +405,20 @@ export default function Dashboard() {
               <div className="autofill-row">
                 <button
                   className="btn btn-autofill btn-autofill-luck"
-                  onClick={() => setPredictions(autofillModerate(filteredMatches))}
+                  onClick={() => {
+                    dirtyRef.current = true;
+                    setPredictions(autofillModerate(filteredMatches));
+                  }}
                   title="Llena todos los partidos con resultados 0-1"
                 >
                   🎲 Llenar con suerte
                 </button>
                 <button
                   className="btn btn-autofill btn-autofill-smart"
-                  onClick={() => setPredictions(autofillSmart(filteredMatches))}
+                  onClick={() => {
+                    dirtyRef.current = true;
+                    setPredictions(autofillSmart(filteredMatches));
+                  }}
                   title="Llena todos los partidos según la fuerza de cada selección"
                 >
                   🧠 Llenar con lógica
@@ -479,6 +517,7 @@ export default function Dashboard() {
                               className="pred-input"
                               min={0}
                               max={20}
+                              inputMode="numeric"
                               placeholder="0"
                               value={pred?.home ?? ""}
                               onChange={(e) => handlePredictionChange(m.id, "home", e.target.value)}
@@ -489,6 +528,7 @@ export default function Dashboard() {
                               className="pred-input"
                               min={0}
                               max={20}
+                              inputMode="numeric"
                               placeholder="0"
                               value={pred?.away ?? ""}
                               onChange={(e) => handlePredictionChange(m.id, "away", e.target.value)}

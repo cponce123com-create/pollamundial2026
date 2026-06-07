@@ -52,7 +52,7 @@ function triangularRandom(low: number, high: number, mode: number): number {
 
 /**
  * BOTÓN 1 — Moderado / Suerte
- * Resultados puramente aleatorios 0-1 para ambos equipos.
+ * Resultados puramente aleatorios 0-3 para ambos equipos.
  * Ideal para quienes no saben de fútbol y quieren probar suerte.
  */
 export function autofillModerate(
@@ -61,8 +61,8 @@ export function autofillModerate(
   const result: Record<string, { home: string; away: string }> = {};
   for (const m of matches) {
     result[m.id] = {
-      home: String(randInt(0, 1)),
-      away: String(randInt(0, 1)),
+      home: String(randInt(0, 3)),
+      away: String(randInt(0, 3)),
     };
   }
   return result;

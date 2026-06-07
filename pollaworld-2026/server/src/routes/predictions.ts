@@ -155,7 +155,7 @@ router.post("/bulk", requireAuth, async (req: Request, res: Response) => {
     if (batch.length > 0) {
       const inserted = await db.insert(predictions).values(batch).onConflictDoUpdate({
         target: [predictions.entry_id, predictions.match_id],
-        set: { home_score_pred: sql`excluded.home_score_pred`, away_score_pred: sql`excluded.away_score_pred`, updated_at: sql`now()` },
+        set: { home_score_pred: sql`excluded.home_score_pred`, away_score_pred: sql`excluded.away_score_pred`, points_earned: sql`excluded.points_earned`, updated_at: sql`now()` },
       }).returning();
       results.push(...inserted);
     }

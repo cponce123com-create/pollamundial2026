@@ -26,6 +26,9 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [poolConfigData, setPoolConfigData] = useState<PoolConfig | null>(null);
+  const [pendingPayment, setPendingPayment] = useState(false);
+  const [dismissedBanner, setDismissedBanner] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -36,15 +39,11 @@ export default function Header() {
   const player = user ? getPlayer(user.player_slug) : null;
   const isActive = (path: string) => location.pathname === path;
 
-  const [poolConfigData, setPoolConfigData] = useState<PoolConfig | null>(null);
-
   useEffect(() => {
     api.getPoolConfig().then((cfg) => {
       setPoolConfigData(cfg);
       if (cfg?.favicon_url) {
-        // Cache busting para forzar recarga del favicon
         const url = cfg.favicon_url + (cfg.favicon_url.includes('?') ? '&' : '?') + 'v=' + Date.now();
-        // Icono principal
         let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
         if (!link) {
           link = document.createElement('link');
@@ -53,7 +52,6 @@ export default function Header() {
         }
         link.removeAttribute('type');
         link.href = url;
-        // Apple touch icon
         let appleLink = document.querySelector<HTMLLinkElement>("link[rel='apple-touch-icon']");
         if (!appleLink) {
           appleLink = document.createElement('link');
@@ -64,6 +62,17 @@ export default function Header() {
       }
     }).catch(() => {});
   }, []);
+
+  // ── Check for pending payments ──
+  useEffect(() => {
+    if (!user) return;
+    api.getEntries().then((entries) => {
+      const hasPending = entries.some(
+        (e) => e.payment_status === "pending" || e.payment_status === "rejected"
+      );
+      setPendingPayment(hasPending);
+    }).catch(() => {});
+  }, [user]);
 
   const navItems = user
     ? user.role === "admin"
@@ -143,6 +152,23 @@ export default function Header() {
           )}
         </div>
       </header>
+
+      {/* Payment Status Banner */}
+      {user && pendingPayment && !dismissedBanner && (
+        <div className="payment-banner">
+          <span>
+            💳 Tienes tickets con pago{" "}
+            <strong>pendiente o rechazado</strong>.{" "}
+            <Link to="/dashboard" style={{ color: "inherit", textDecoration: "underline" }}>
+              Ve al Dashboard
+            </Link>{" "}
+            para subir tu comprobante.
+          </span>
+          <button className="payment-banner-close" onClick={() => setDismissedBanner(true)} aria-label="Cerrar">
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Mobile Drawer */}
       {menuOpen && (

@@ -23,7 +23,7 @@ router.get("/", requireAuth, async (req: Request, res: Response) => {
   }
 });
 
-// POST /api/entries — create new entry (ticket_number = max + 1)
+// POST /api/entries — create new entry (ticket_number = max + 1, atómico)
 router.post("/", requireAuth, async (req: Request, res: Response) => {
   try {
     const MAX_TICKETS = 5;
@@ -33,18 +33,16 @@ router.post("/", requireAuth, async (req: Request, res: Response) => {
       return;
     }
 
-    const [maxEntry] = await db
-      .select({ maxTicket: sql<number>`COALESCE(MAX(${entries.ticket_number}), 0)`.mapWith(Number) })
-      .from(entries)
-      .where(eq(entries.user_id, req.user!.userId));
-
-    const nextTicket = (maxEntry?.maxTicket ?? 0) + 1;
-
+    // Single atomic INSERT with subquery to avoid race condition on ticket_number
     const [entry] = await db
       .insert(entries)
       .values({
         user_id: req.user!.userId,
-        ticket_number: nextTicket,
+        ticket_number: sql<number>`(
+          SELECT COALESCE(MAX(${entries.ticket_number}), 0) + 1
+          FROM ${entries}
+          WHERE ${entries.user_id} = ${req.user!.userId}
+        )`.mapWith(Number),
       })
       .returning();
 

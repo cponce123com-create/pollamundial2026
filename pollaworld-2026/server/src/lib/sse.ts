@@ -18,6 +18,7 @@ export type SSEEventType =
   | "payment_rejected"
   | "tournament_started"
   | "match_result"
+  | "match_locked"
   | "match_unlocked"
   | "admin_action";
 

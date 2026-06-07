@@ -19,7 +19,7 @@ import teamRoutes from "./routes/teams";
 import profileRoutes from "./routes/profile";
 import { db } from "./db";
 import { matches, poolConfig } from "./db/schema";
-import { eq, lte, and } from "drizzle-orm";
+import { eq, lte, and, sql } from "drizzle-orm";
 import logger from "./lib/logger";
 import pinoHttp from "pino-http";
 import { sanitizeBody } from "./middleware/sanitize";
@@ -49,7 +49,19 @@ app.use(cors({
 }));
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
-  contentSecurityPolicy: false, // Desactivado para permitir recursos externos (Cloudinary, flagcdn)
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "res.cloudinary.com", "flagcdn.com", "data:", "blob:"],
+      connectSrc: ["'self'", "res.cloudinary.com"],
+      fontSrc: ["'self'", "data:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
 }));
 app.use(express.json({ limit: "10mb" }));
 app.use(sanitizeBody);
@@ -104,26 +116,47 @@ if (process.env.NODE_ENV === "production") {
 async function checkTournamentStart() {
   try {
     const [config] = await db.select().from(poolConfig).limit(1);
-    if (!config || config.tournament_started) return;
+    if (!config) return;
 
     const now = new Date();
-    const [startedMatch] = await db
-      .select()
-      .from(matches)
-      .where(and(lte(matches.match_date, now), eq(matches.phase, "groups")))
-      .limit(1);
 
-    if (startedMatch) {
-      // Mark tournament as started
-      await db.update(poolConfig).set({ tournament_started: true }).where(eq(poolConfig.id, config.id));
+    // ── Atomic check-and-set: only one cron wins ──
+    if (!config.tournament_started) {
+      const [updated] = await db
+        .update(poolConfig)
+        .set({ tournament_started: true })
+        .where(and(eq(poolConfig.tournament_started, false), eq(poolConfig.id, config.id)))
+        .returning({ id: poolConfig.id });
 
-      // Lock all group phase matches
-      await db.update(matches).set({ is_locked: true }).where(eq(matches.phase, "groups"));
+      if (updated) {
+        // Lock all group phase matches
+        await db.update(matches).set({ is_locked: true }).where(eq(matches.phase, "groups"));
 
-      // Notify clients
-      broadcastEvent("tournament_started", { startedAt: now.toISOString() });
+        // Notify clients
+        broadcastEvent("tournament_started", { startedAt: now.toISOString() });
 
-      logger.info(`[CRON] Tournament auto-started at ${now.toISOString()}`);
+        logger.info(`[CRON] Tournament auto-started at ${now.toISOString()}`);
+      }
+    }
+
+    // ── Auto-lock elimination matches whose match_date has passed ──
+    const lockedElims = await db
+      .update(matches)
+      .set({ is_locked: true })
+      .where(
+        and(
+          lte(matches.match_date, now),
+          eq(matches.is_locked, false),
+          sql`${matches.phase} != 'groups'`
+        )
+      )
+      .returning({ id: matches.id, phase: matches.phase, home_team: matches.home_team, away_team: matches.away_team });
+
+    if (lockedElims.length > 0) {
+      logger.info(`[CRON] Auto-locked ${lockedElims.length} elimination match(es)`);
+      for (const m of lockedElims) {
+        broadcastEvent("match_locked", { matchId: m.id, phase: m.phase, homeTeam: m.home_team, awayTeam: m.away_team });
+      }
     }
   } catch (err) {
     logger.error(err, "[CRON] Error checking tournament start:");

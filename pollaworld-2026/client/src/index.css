@@ -180,6 +180,41 @@ a:hover {
   font-size: 1.4rem;
 }
 
+/* ===== PAYMENT BANNER ===== */
+.payment-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #f0a500 0%, #e07c00 100%);
+  color: #0d1117;
+  font-size: 0.85rem;
+  font-weight: 500;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.payment-banner-close {
+  background: none;
+  border: none;
+  color: #0d1117;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.payment-banner-close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.1);
+}
+
 /* ===== CARDS ===== */
 .card {
   background: var(--bg-card);
@@ -2733,6 +2768,134 @@ h3.admin-section-title {
 
   .dashboard-header h2 {
     font-size: 1.1rem;
+  }
+
+  /* Teams: info cards 1 column on very small screens */
+  .team-info-cards {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Teams: hide less important columns in squad tables */
+  .pitch-squad-list .admin-table th:nth-child(4),
+  .pitch-squad-list .admin-table td:nth-child(4),
+  .pitch-squad-list .admin-table th:nth-child(5),
+  .pitch-squad-list .admin-table td:nth-child(5),
+  .pitch-squad-list .admin-table th:nth-child(6),
+  .pitch-squad-list .admin-table td:nth-child(6) {
+    display: none;
+  }
+
+  /* Full squad table: hide Club + Edad + PJ */
+  .team-pitch-card .admin-table th:nth-child(4),
+  .team-pitch-card .admin-table td:nth-child(4),
+  .team-pitch-card .admin-table th:nth-child(5),
+  .team-pitch-card .admin-table td:nth-child(5),
+  .team-pitch-card .admin-table th:nth-child(6),
+  .team-pitch-card .admin-table td:nth-child(6) {
+    display: none;
+  }
+
+  /* Pitch: truncate long player names */
+  .pitch-player-name {
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 360px) {
+  /* Ultra-small screens: single column match grid */
+  .match-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Match teams stacked on tiny screens */
+  .match-teams {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .match-team {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .match-vs {
+    font-size: 0.75rem;
+  }
+
+  /* Dashboard entry tabs scrollable */
+  .entry-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    gap: 4px;
+  }
+
+  .entry-tab {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
+
+  /* Teams: detail header compact */
+  .team-detail-header {
+    padding: 10px;
+  }
+
+  .team-detail-header h3 {
+    font-size: 1rem;
+  }
+
+  /* Smaller pitch */
+  .pitch-field {
+    height: 240px;
+  }
+
+  .pitch-player-num {
+    width: 18px;
+    height: 18px;
+    font-size: 0.6rem;
+  }
+
+  .pitch-player-name {
+    font-size: 0.5rem;
+    max-width: 60px;
+  }
+
+  /* Admin tables on tiny screens */
+  .admin-table th,
+  .admin-table td {
+    font-size: 0.7rem;
+    padding: 6px;
+  }
+
+  /* Card padding minimal */
+  .card {
+    padding: 10px;
+  }
+
+  .tabs {
+    gap: 2px;
+    padding: 3px;
+  }
+
+  .tab {
+    font-size: 0.75rem;
+    padding: 8px 8px;
+  }
+
+  /* Ranking table compact */
+  .ranking-table th,
+  .ranking-table td {
+    padding: 6px 4px;
+    font-size: 0.7rem;
+  }
+
+  .ranking-pos {
+    font-size: 0.8rem;
+    min-width: 24px;
   }
 }
 
