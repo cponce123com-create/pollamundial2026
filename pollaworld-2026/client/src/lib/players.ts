@@ -81,8 +81,39 @@ export function getPlayer(slug: string): PlayerOption | undefined {
   return PLAYERS.find((p) => p.id === slug);
 }
 
+/**
+ * Retorna la URL optimizada de la imagen del jugador.
+ * Si la URL es de Cloudinary, agrega transforms para:
+ * - f_auto: formato óptimo (WebP/AVIF según el navegador)
+ * - q_auto: calidad automática (balance calidad/ peso)
+ * - w_X,h_Y,c_fill,g_face: redimensiona al tamaño solicitado
+ * - e_improve: mejora automática de contraste/ brillo
+ *
+ * Si la URL es local, la devuelve tal cual (sin Cloudinary disponible).
+ */
+export function getPlayerImageUrl(slug: string, size: number = 48): string {
+  const player = getPlayer(slug);
+  if (!player) return "";
+
+  const url = player.image;
+
+  // Si es URL de Cloudinary, agregar transforms optimizados
+  if (url.includes("res.cloudinary.com")) {
+    // Insertar transforms después de /upload/
+    return url.replace(
+      "/upload/",
+      `/upload/f_auto,q_auto,w_${size},h_${size},c_fill,g_face,e_improve/`
+    );
+  }
+
+  // URL local: devolver tal cual
+  return url;
+}
+
 export function getPlayerDisplayName(slug: string, customNames?: Record<string, string>): string {
   const player = PLAYERS.find((p) => p.id === slug);
   if (!player) return slug;
   return (customNames && customNames[slug]) || player.name;
 }
+
+export { PlayerImage } from "../components/PlayerImage";

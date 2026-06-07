@@ -35,11 +35,12 @@ async function main() {
       const result = await cloudinary.uploader.upload(filePath, {
         folder: "pollaworld/players",
         public_id: slug,
-        width: 120,
-        height: 120,
+        width: 80,
+        height: 80,
         crop: "thumb",
         gravity: "face",
         format: "jpg",
+        quality: "auto:best",
       });
 
       uploaded.push({ slug, url: result.secure_url });

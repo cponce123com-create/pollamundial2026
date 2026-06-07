@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getPlayer } from "../lib/players";
+import { getPlayer, PlayerImage } from "../lib/players";
 import { useAuth } from "../lib/AuthContext";
 import { api, PoolConfig } from "../lib/api";
 
@@ -123,7 +123,7 @@ export default function Header() {
                   {user.avatar_url ? (
                     <img src={user.avatar_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="" className="player-header-img" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
                   ) : player ? (
-                    <img src={player.image} alt={player.name} className="player-header-img" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
+                    <PlayerImage slug={player.id} size={32} className="player-header-img" />
                   ) : null}
                   {user.name}
                 </span>
@@ -144,7 +144,7 @@ export default function Header() {
               {user.avatar_url ? (
                 <img src={user.avatar_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="" className="player-header-img" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
               ) : player ? (
-                <img src={player.image} alt={player.name} className="player-header-img" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
+                <PlayerImage slug={player.id} size={32} className="player-header-img" />
               ) : (
                 <span className="header-avatar-placeholder">{user.name.charAt(0)}</span>
               )}
@@ -176,7 +176,7 @@ export default function Header() {
           <nav className="mobile-drawer" onClick={(e) => e.stopPropagation()}>
             <div className="mobile-drawer-header">
               {player && (
-                <img src={player.image} alt={player.name} className="mobile-drawer-avatar" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
+                <PlayerImage slug={player.id} size={40} className="mobile-drawer-avatar" />
               )}
               <div>
                 <div className="mobile-drawer-name">{user?.name || "Invitado"}</div>

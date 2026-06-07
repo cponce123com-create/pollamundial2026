@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { api, PoolStats, RankingEntry } from "../lib/api";
-import { getPlayer } from "../lib/players";
+import { getPlayer, PlayerImage } from "../lib/players";
 
 function getShareText(stats: PoolStats | null, position: number, name: string): string {
   const prizeStr = position === 1 ? `S/.${stats?.prizes.first}` : position === 2 ? `S/.${stats?.prizes.second}` : position === 3 ? `S/.${stats?.prizes.third}` : "";
@@ -110,20 +110,7 @@ export default function RankingPage() {
               <div style={{ fontSize: "2rem" }}>{p.medal}</div>
               <div style={{ margin: "4px 0" }}>
                 {player ? (
-                  <img
-                    src={player.image}
-                    alt={player.name}
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                    decoding="async"
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                      border: "2px solid rgba(0,0,0,0.2)",
-                    }}
-                  />
+                  <PlayerImage slug={player.id} size={48} />
                 ) : (
                   <div style={{ fontSize: "2.5rem" }}>{"❓"}</div>
                 )}
@@ -181,21 +168,7 @@ export default function RankingPage() {
                     </td>
                     <td>
                       {player ? (
-                        <img
-                          src={player.image}
-                          alt={player.name}
-                    referrerPolicy="no-referrer"
-                          loading="lazy"
-                          decoding="async"
-                          style={{
-                            width: 24,
-                            height: 24,
-                            borderRadius: "50%",
-                            objectFit: "cover",
-                            verticalAlign: "middle",
-                            marginRight: 6,
-                          }}
-                        />
+                        <PlayerImage slug={player.id} size={24} style={{ verticalAlign: "middle", marginRight: 6 }} />
                       ) : (
                         <span style={{ fontSize: "1.2rem", marginRight: 6 }}>{"❓"}</span>
                       )}

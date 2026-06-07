@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { pdf } from "@react-pdf/renderer";
 import { api, MatchWithPrediction, PoolConfig, Entry, GroupStanding } from "../lib/api";
 import { toast } from "sonner";
-import { getPlayer } from "../lib/players";
+import { getPlayer, PlayerImage } from "../lib/players";
 import { FlagImage } from "../lib/flags";
 import PdfBoleto from "../components/PdfBoleto";
 import { autofillModerate, autofillSmart, getStrength } from "../lib/predictionsLogic";
@@ -369,14 +369,7 @@ export default function Dashboard() {
               {user && (
                 <span className="header-user">
                   {player && (
-                    <img
-                      src={player.image}
-                      alt={player.name}
-                    referrerPolicy="no-referrer"
-                      className="player-header-img"
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    <PlayerImage slug={player.id} size={32} className="player-header-img" />
                   )}
                   {user.name}
                 </span>

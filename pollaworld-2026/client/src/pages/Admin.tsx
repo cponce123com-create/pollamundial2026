@@ -11,7 +11,7 @@ import ConfigPanel from "./admin/ConfigPanel";
 import ExportPanel from "./admin/ExportPanel";
 import TestingPanel from "./admin/TestingPanel";
 import ResultModal from "./admin/ResultModal";
-import { PLAYERS } from "../lib/players";
+import { PLAYERS, PlayerImage } from "../lib/players";
 
 type AdminTab = "matches" | "payments" | "config" | "export" | "players" | "testing";
 
@@ -407,14 +407,7 @@ export default function Admin() {
                 const hasCustom = playerCustomNames[player.id] !== undefined;
                 return (
                   <div key={player.id} className={`player-edit-card ${hasCustom ? "has-custom" : ""}`}>
-                    <img
-                      src={player.image}
-                      alt={player.name}
-                      className="player-edit-img"
-                      loading="lazy"
-                      decoding="async"
-                      referrerPolicy="no-referrer"
-                    />
+                    <PlayerImage slug={player.id} size={48} className="player-edit-img" />
                     {isEditing ? (
                       <div className="player-edit-form">
                         <input

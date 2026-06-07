@@ -1,7 +1,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
-import { PLAYERS, getPlayerDisplayName } from "../lib/players";
+import { PLAYERS, getPlayerDisplayName, PlayerImage } from "../lib/players";
 import { api } from "../lib/api";
 
 export default function Register() {
@@ -99,14 +99,7 @@ export default function Register() {
                   className={`player-card ${playerSlug === player.id ? "selected" : ""}`}
                   onClick={() => setPlayerSlug(player.id)}
                 >
-                  <img
-                    src={player.image}
-                    alt={player.name}
-                    className="player-card-img"
-                    loading="lazy"
-                    decoding="async"
-                    referrerPolicy="no-referrer"
-                  />
+                  <PlayerImage slug={player.id} size={64} className="player-card-img" />
                   <span className="player-card-name">{getPlayerDisplayName(player.id, customNames)}</span>
                 </div>
               ))}

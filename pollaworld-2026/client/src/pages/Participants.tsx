@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { pdf } from "@react-pdf/renderer";
 import { api, PoolStats, Participant, Match, Prediction } from "../lib/api";
-import { getPlayer } from "../lib/players";
+import { getPlayer, PlayerImage } from "../lib/players";
 import PdfBoleto from "../components/PdfBoleto";
 
 export default function Participants() {
@@ -215,20 +215,7 @@ export default function Participants() {
               >
                 <div style={{ marginBottom: 4 }}>
                   {player ? (
-                    <img
-                      src={player.image}
-                      alt={player.name}
-                      style={{
-                        width: 48,
-                        height: 48,
-                        borderRadius: "50%",
-                        objectFit: "cover",
-                        border: "2px solid var(--border)",
-                      }}
-                      referrerPolicy="no-referrer"
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    <PlayerImage slug={player.id} size={48} />
                   ) : (
                     <div style={{ fontSize: "2.5rem" }}>{"❓"}</div>
                   )}
