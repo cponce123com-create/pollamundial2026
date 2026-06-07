@@ -1673,6 +1673,15 @@ h3.admin-section-title {
   gap: 1px;
 }
 
+.pitch-player-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  margin-bottom: 2px;
+}
+
 .pitch-player-num {
   background: var(--gold);
   color: var(--bg-dark);

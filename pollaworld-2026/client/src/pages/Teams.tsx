@@ -8,9 +8,10 @@ interface SquadPlayer {
   name: string;
   num: number;
   pos: string;
-  club?: string;
-  age?: number;
-  caps?: number;
+  club: string;
+  age: number;
+  caps: number;
+  image?: string;
 }
 
 interface TeamSquad {
@@ -256,7 +257,15 @@ export default function Teams() {
                             className="pitch-player"
                             style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
                           >
-                            <span className="pitch-player-num">{player.num}</span>
+                            {player.image ? (
+                              <img src={player.image} alt={player.name}
+                                className="pitch-player-img"
+                                loading="lazy" decoding="async"
+                                referrerPolicy="no-referrer"
+                              />
+                            ) : (
+                              <span className="pitch-player-num">{player.num}</span>
+                            )}
                             <span className="pitch-player-name">{player.name}</span>
                           </div>
                         );
@@ -281,7 +290,16 @@ export default function Teams() {
                               <tr key={p.num}>
                                 <td style={{ fontWeight: 700 }}>{p.num}</td>
                                 <td><span className="badge badge-pending" style={{ fontSize: "0.65rem" }}>{p.pos}</span></td>
-                                <td>{p.name}</td>
+                                <td>
+                                  {p.image && (
+                                    <img src={p.image} alt={p.name}
+                                      style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", verticalAlign: "middle", marginRight: 6 }}
+                                      loading="lazy" decoding="async"
+                                      referrerPolicy="no-referrer"
+                                    />
+                                  )}
+                                  {p.name}
+                                </td>
                                 <td style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>{p.club || "—"}</td>
                                 <td style={{ textAlign: "center" }}>{p.age ?? "—"}</td>
                                 <td style={{ textAlign: "center" }}>{p.caps ?? "—"}</td>
@@ -318,7 +336,16 @@ export default function Teams() {
                             <tr key={p.num}>
                               <td style={{ fontWeight: 700 }}>{p.num}</td>
                               <td><span className="badge badge-pending" style={{ fontSize: "0.65rem" }}>{p.pos}</span></td>
-                              <td>{p.name}</td>
+                              <td>
+                                {p.image && (
+                                  <img src={p.image} alt={p.name}
+                                    style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", verticalAlign: "middle", marginRight: 6 }}
+                                    loading="lazy" decoding="async"
+                                    referrerPolicy="no-referrer"
+                                  />
+                                )}
+                                {p.name}
+                              </td>
                               <td style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>{p.club || "—"}</td>
                               <td style={{ textAlign: "center" }}>{p.age ?? "—"}</td>
                               <td style={{ textAlign: "center" }}>{p.caps ?? "—"}</td>
