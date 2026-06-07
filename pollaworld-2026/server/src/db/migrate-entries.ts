@@ -11,6 +11,7 @@ export async function runStartupMigrations() {
     `ALTER TABLE pool_config ADD COLUMN IF NOT EXISTS whatsapp_group_link text;`,
     `ALTER TABLE pool_config ADD COLUMN IF NOT EXISTS logo_url text;`,
     `ALTER TABLE pool_config ADD COLUMN IF NOT EXISTS favicon_url text;`,
+    `ALTER TABLE matches ADD COLUMN IF NOT EXISTS incidents jsonb DEFAULT '[]'::jsonb;`,
   ];
 
   for (const query of migrations) {

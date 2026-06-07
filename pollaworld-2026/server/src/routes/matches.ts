@@ -69,6 +69,25 @@ router.get("/live", async (_req: Request, res: Response) => {
   }
 });
 
+// GET /api/matches/:id/incidents — obtener incidents de un partido
+router.get("/:id/incidents", async (req: Request, res: Response) => {
+  try {
+    const [match] = await db
+      .select({ id: matches.id, incidents: matches.incidents })
+      .from(matches)
+      .where(eq(matches.id, req.params.id))
+      .limit(1);
+    if (!match) {
+      res.status(404).json({ error: "Partido no encontrado." });
+      return;
+    }
+    res.json(match.incidents || []);
+  } catch (err) {
+    logger.error(err, "Get match incidents error:");
+    res.status(500).json({ error: "Error al obtener incidents del partido." });
+  }
+});
+
 // GET /api/matches/:id — obtener un partido específico
 router.get("/:id", async (req: Request, res: Response) => {
   try {

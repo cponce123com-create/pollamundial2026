@@ -26,6 +26,7 @@ export const matches = pgTable("matches", {
   match_date: timestamp("match_date", { withTimezone: true }).notNull(),
   home_score_real: integer("home_score_real"),
   away_score_real: integer("away_score_real"),
+  incidents: jsonb("incidents").default([]).notNull(),
   is_locked: boolean("is_locked").default(false).notNull(),
   match_order: integer("match_order").notNull(),
 }, (table) => ({

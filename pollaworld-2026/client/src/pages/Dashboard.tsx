@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { pdf } from "@react-pdf/renderer";
-import { api, MatchWithPrediction, PoolConfig, Entry } from "../lib/api";
+import { api, MatchWithPrediction, PoolConfig, Entry, GroupStanding } from "../lib/api";
 import { toast } from "sonner";
 import { getPlayer } from "../lib/players";
 import { FlagImage } from "../lib/flags";
@@ -10,13 +10,14 @@ import { autofillModerate, autofillSmart, getStrength } from "../lib/predictions
 import { getTeamDisplayName } from "../lib/teams";
 import { useAuth } from "../lib/AuthContext";
 
-type Tab = "groups" | "elimination";
+type Tab = "groups" | "elimination" | "standings";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [config, setConfig] = useState<PoolConfig | null>(null);
   const [matches, setMatches] = useState<MatchWithPrediction[]>([]);
+  const [standings, setStandings] = useState<GroupStanding[]>([]);
   const [activeTab, setActiveTab] = useState<Tab>("groups");
   const [predictions, setPredictions] = useState<Record<string, { home: string; away: string }>>({});
   const [saving, setSaving] = useState(false);
@@ -80,6 +81,9 @@ export default function Dashboard() {
       ]);
       setConfig(configData);
       setMatches(matchData);
+
+      // Also fetch standings
+      api.getStandings().then(setStandings).catch(() => {});
 
       // Populate predictions state from existing data
       const preds: Record<string, { home: string; away: string }> = {};
@@ -401,6 +405,12 @@ export default function Dashboard() {
                 🏆 Fase Eliminatoria
                 {elimPending > 0 && <span className="tab-badge">{elimPending}</span>}
               </button>
+              <button
+                className={`tab ${activeTab === "standings" ? "tab-active" : ""}`}
+                onClick={() => setActiveTab("standings")}
+              >
+                📊 Tabla de Posiciones
+              </button>
             </div>
 
             {/* Progress */}
@@ -445,8 +455,61 @@ export default function Dashboard() {
               </>
             )}
 
-            {/* Matches Grid */}
-            {filteredMatches.length === 0 ? (
+            {/* Matches Grid / Standings */}
+            {activeTab === "standings" ? (
+              <div className="standings-container">
+                {standings.length === 0 ? (
+                  <p className="placeholder-text" style={{ padding: 24, textAlign: "center" }}>
+                    Las tablas se activarán cuando se jueguen los primeros partidos. ⚽
+                  </p>
+                ) : (
+                  standings.map((group) => (
+                    <div key={group.groupName} className="standings-group">
+                      <h4 className="standings-group-title">Grupo {group.groupName}</h4>
+                      <div className="admin-table-wrapper">
+                        <table className="admin-table standings-table">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Equipo</th>
+                              <th>PJ</th>
+                              <th>PG</th>
+                              <th>PE</th>
+                              <th>PP</th>
+                              <th>GF</th>
+                              <th>GC</th>
+                              <th>DG</th>
+                              <th>Pts</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {group.teams.map((team, idx) => (
+                              <tr key={team.name}>
+                                <td style={{ fontWeight: 700, color: "var(--gold)", textAlign: "center" }}>{idx + 1}</td>
+                                <td>
+                                  <span className="standings-team-flag">{team.flag}</span>
+                                  {team.name}
+                                </td>
+                                <td className="standings-num">{team.played}</td>
+                                <td className="standings-num">{team.won}</td>
+                                <td className="standings-num">{team.drawn}</td>
+                                <td className="standings-num">{team.lost}</td>
+                                <td className="standings-num">{team.goalsFor}</td>
+                                <td className="standings-num">{team.goalsAgainst}</td>
+                                <td className="standings-num" style={{ color: team.goalDiff > 0 ? "var(--success)" : team.goalDiff < 0 ? "var(--error)" : "var(--text-secondary)" }}>
+                                  {team.goalDiff > 0 ? `+${team.goalDiff}` : team.goalDiff}
+                                </td>
+                                <td className="standings-num" style={{ fontWeight: 700, color: "var(--gold)" }}>{team.points}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            ) : filteredMatches.length === 0 ? (
               <p className="placeholder-text" style={{ padding: 24, textAlign: "center" }}>
                 No hay partidos registrados para esta fase aún.
               </p>
@@ -492,6 +555,22 @@ export default function Dashboard() {
                           {m.home_score_real !== null && (
                             <div className="real-score">
                               Resultado: {m.home_score_real} - {m.away_score_real}
+                            </div>
+                          )}
+                          {m.incidents && m.incidents.length > 0 && (
+                            <div className="goal-scorers">
+                              {(() => {
+                                const homeGoals = m.incidents.filter((i) => i.team === "home" && i.type === "goal");
+                                const awayGoals = m.incidents.filter((i) => i.team === "away" && i.type === "goal");
+                                const parts: string[] = [];
+                                if (homeGoals.length > 0) {
+                                  parts.push(formatGoalScorers(homeGoals));
+                                }
+                                if (awayGoals.length > 0) {
+                                  parts.push(formatGoalScorers(awayGoals));
+                                }
+                                return parts.length > 0 ? <>⚽ {parts.join(" · ")}</> : null;
+                              })()}
                             </div>
                           )}
                         </div>
@@ -759,4 +838,21 @@ function formatPhase(phase: string): string {
     final: "Final",
   };
   return map[phase] || phase;
+}
+
+function formatGoalScorers(goals: { minute: number; player: string }[]): string {
+  // Group by player name
+  const playerMinutes = new Map<string, number[]>();
+  for (const g of goals) {
+    const existing = playerMinutes.get(g.player) || [];
+    existing.push(g.minute);
+    playerMinutes.set(g.player, existing);
+  }
+  // Format: "Mbappé 23', 67'" or "Griezmann 45'"
+  return Array.from(playerMinutes.entries())
+    .map(([player, minutes]) => {
+      const mins = minutes.map((m) => `${m}'`).join(", ");
+      return `${player} ${mins}`;
+    })
+    .join(", ");
 }

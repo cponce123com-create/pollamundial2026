@@ -1,6 +1,6 @@
 import { db } from "../db";
 import { matches } from "../db/schema";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import { calculatePoints } from "./scoring";
 import { predictions } from "../db/schema";
 import logger from "./logger";
@@ -8,6 +8,43 @@ import logger from "./logger";
 const API_URL = "https://worldcup26.ir/get/games";
 const SYNC_INTERVAL = 60_000; // 60 seconds
 const MAX_BACKOFF_MS = 300_000; // 5 min max
+
+interface Incident {
+  type: "goal";
+  team: "home" | "away";
+  minute: number;
+  player: string;
+}
+
+/**
+ * Parse a scorer string from the API into structured Incident objects.
+ * Format: "Kylian Mbappé 23', 67'|Antoine Griezmann 45'+2'"
+ * Pipe separates players, comma separates minutes, '+N' is added time.
+ */
+function parseScorers(scorersStr: string, team: "home" | "away"): Incident[] {
+  if (!scorersStr || scorersStr.trim() === "") return [];
+  const incidents: Incident[] = [];
+  const players = scorersStr.split("|");
+  for (const playerStr of players) {
+    const trimmed = playerStr.trim();
+    if (!trimmed) continue;
+    // Match: "Player Name 23', 67'" — extract player name and minutes
+    const match = trimmed.match(/^(.+?)\s+(\d[\d',\s+]*)'?$/);
+    if (!match) continue;
+    const playerName = match[1].trim();
+    const minutesStr = match[2];
+    // Parse minutes (handles "23", "45+2", "90+5'", etc.)
+    const minuteParts = minutesStr.split(",");
+    for (const part of minuteParts) {
+      const clean = part.trim().replace(/'$/, ""); // remove trailing '
+      const minute = parseInt(clean, 10);
+      if (!isNaN(minute)) {
+        incidents.push({ type: "goal", team, minute, player: playerName });
+      }
+    }
+  }
+  return incidents;
+}
 
 // Map English team names from API → Spanish names used in our DB
 const TEAM_NAME_MAP: Record<string, string> = {
@@ -130,7 +167,7 @@ async function syncScores(): Promise<{ updated: number; live: number }> {
 
     // Collect finished match IDs for batch prediction update
     const finishedMatchIds: string[] = [];
-    const matchesToUpdate: { id: string; homeScore: number; awayScore: number; isFinished: boolean }[] = [];
+    const matchesToUpdate: { id: string; homeScore: number; awayScore: number; isFinished: boolean; game: ApiGame | null }[] = [];
 
     for (const [key, game] of gameMap) {
       const dbMatch = matchLookup.get(key);
@@ -158,7 +195,7 @@ async function syncScores(): Promise<{ updated: number; live: number }> {
       if (dbMatch.is_locked && !isFinished) continue;
 
       if (scoresChanged || (isFinished && !dbMatch.is_locked)) {
-        matchesToUpdate.push({ id: dbMatch.id, homeScore: safeHome!, awayScore: safeAway!, isFinished });
+        matchesToUpdate.push({ id: dbMatch.id, homeScore: safeHome!, awayScore: safeAway!, isFinished, game });
         if (isFinished) finishedMatchIds.push(dbMatch.id);
         updated++;
       }
@@ -166,11 +203,16 @@ async function syncScores(): Promise<{ updated: number; live: number }> {
 
     // Batch update all matches
     for (const m of matchesToUpdate) {
+      const homeIncidents = m.game ? parseScorers(m.game.home_scorers, "home") : [];
+      const awayIncidents = m.game ? parseScorers(m.game.away_scorers, "away") : [];
+      const allIncidents = [...homeIncidents, ...awayIncidents];
+
       await db
         .update(matches)
         .set({
           home_score_real: m.homeScore,
           away_score_real: m.awayScore,
+          incidents: allIncidents.length > 0 ? sql`${JSON.stringify(allIncidents)}::jsonb` : undefined,
           is_locked: m.isFinished ? true : undefined,
         })
         .where(eq(matches.id, m.id));

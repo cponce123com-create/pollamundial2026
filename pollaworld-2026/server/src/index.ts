@@ -13,6 +13,7 @@ import entryRoutes from "./routes/entries";
 import matchRoutes from "./routes/matches";
 import predictionRoutes from "./routes/predictions";
 import paymentRoutes from "./routes/payments";
+import standingsRoutes from "./routes/standings";
 import adminRoutes from "./routes/admin";
 import poolRoutes from "./routes/pool";
 import teamRoutes from "./routes/teams";
@@ -92,6 +93,7 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/pool", poolRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/standings", standingsRoutes);
 app.use("/api/teams", teamRoutes);
 
 // SSE endpoint for real-time notifications

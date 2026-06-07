@@ -19,6 +19,47 @@ export interface Entry {
   created_at: string;
 }
 
+export interface Incident {
+  type: "goal" | "card" | "sub";
+  team: "home" | "away";
+  minute: number;
+  player: string;
+  card?: "yellow" | "red";
+  player_out?: string;
+  player_in?: string;
+}
+
+export interface GroupStandingTeam {
+  name: string;
+  flag: string;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDiff: number;
+  points: number;
+}
+
+export interface GroupStanding {
+  groupName: string;
+  teams: GroupStandingTeam[];
+}
+
+export interface RecentFormEntry {
+  result: "W" | "D" | "L";
+  opponent: string;
+  score: string;
+  matchDate: string;
+}
+
+export interface TeamRecentForm {
+  teamName: string;
+  form: RecentFormEntry[];
+  formString: string;
+}
+
 export interface Match {
   id: string;
   phase: "groups" | "round_of_32" | "round_of_16" | "quarterfinals" | "semifinals" | "final_3rd" | "final";
@@ -30,6 +71,7 @@ export interface Match {
   match_date: string;
   home_score_real: number | null;
   away_score_real: number | null;
+  incidents: Incident[];
   is_locked: boolean;
   match_order: number;
 }
@@ -138,6 +180,7 @@ export const api = {
   // Matches
   getMatches: () => request<Match[]>("/matches"),
   getLiveMatches: () => request<{ live: Match[]; recent: Match[] }>("/matches/live"),
+  getStandings: () => request<GroupStanding[]>("/standings"),
 
   // Profile
   updateName: (name: string) =>

@@ -834,6 +834,13 @@ a:hover {
   margin-top: 4px;
 }
 
+.goal-scorers {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
 /* ===== BADGES ===== */
 .badge {
   display: inline-block;
@@ -1001,6 +1008,52 @@ a:hover {
 
 .admin-table tbody tr:hover {
   background: var(--bg-card-hover);
+}
+
+/* ===== STANDINGS ===== */
+.standings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.standings-group {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.standings-group-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.standings-team-flag {
+  margin-right: 6px;
+  font-size: 1.1rem;
+}
+
+.standings-table th {
+  text-align: center !important;
+}
+
+.standings-table th:first-child,
+.standings-table td:first-child {
+  width: 30px;
+  text-align: center !important;
+}
+
+.standings-table th:nth-child(2),
+.standings-table td:nth-child(2) {
+  text-align: left !important;
+}
+
+.standings-num {
+  text-align: center !important;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ===== MODAL ===== */
