@@ -109,16 +109,16 @@ app.get("/api/og-image", async (_req, res) => {
   try {
     const [config] = await db.select().from(poolConfig).limit(1);
     const imageUrl = config?.logo_url || config?.favicon_url || "/logo-og.png";
-    // If it's an absolute URL (Cloudinary), redirect directly
     if (imageUrl.startsWith("http")) {
       return res.redirect(302, imageUrl);
     }
-    // Relative URL — redirect to the same host
     res.redirect(302, imageUrl);
   } catch {
     res.redirect(302, "/logo-og.png");
   }
 });
+
+const FB_APP_ID = "61573653852682";
 
 // Dynamic PWA manifest with custom logo
 app.get("/manifest.json", async (_req, res) => {
@@ -158,7 +158,6 @@ app.get("/manifest.json", async (_req, res) => {
       ],
     });
   } catch {
-    // Fallback if DB fails
     res.json({
       name: "La Polla del Ponce 2026",
       short_name: "La Polla 2026",
@@ -172,9 +171,6 @@ app.get("/manifest.json", async (_req, res) => {
 });
 
 // ─── DYNAMIC OPEN GRAPH (scraper bots) ──────────────────────────
-// Social scrapers (WhatsApp, FB, Twitter, Telegram, Discord, Slack, LinkedIn)
-// don't execute JS, so we must serve static HTML with OG meta tags.
-// If the request comes from a known scraper, handle it here before the SPA.
 const SCRAPER_AGENTS = [
   "facebookexternalhit", "Twitterbot", "WhatsApp", "TelegramBot",
   "Slackbot", "LinkedInBot", "Discordbot", "Discord",
@@ -189,7 +185,6 @@ async function scraperMiddleware(req: Request, res: Response, next: NextFunction
   if (!ua || !isScraper(ua)) return next();
 
   const entryMatch = req.path.match(/^\/entry\/([a-f0-9-]+)/i);
-  // Dynamically determine base URL from the request
   const BASE_URL = `${req.protocol}://${req.get("host")}`;
 
   if (entryMatch) {
@@ -207,13 +202,13 @@ async function scraperMiddleware(req: Request, res: Response, next: NextFunction
       const rows = (result as any).rows || [];
       const name = rows[0]?.name || "Participante";
       const puntos = rows[0]?.puntos ?? 0;
-
       const ogImage = await getOgImageUrl();
 
       const html = `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8" />
+  <meta property="fb:app_id" content="${FB_APP_ID}" />
   <meta property="og:title" content="${escapeHtml(name)} — La Polla del Ponce 2026" />
   <meta property="og:description" content="Puntaje actual: ${puntos} pts. \u00bfPuedes superarlo?" />
   <meta property="og:image" content="${ogImage}" />
@@ -234,12 +229,11 @@ async function scraperMiddleware(req: Request, res: Response, next: NextFunction
       return res.status(200).send(html);
     } catch (err) {
       logger.warn(err, "[OG] Error fetching entry %s", entryId);
-      // Fall through to SPA
       return next();
     }
   }
 
-  // Root path for scrapers — serve dynamic HTML with OG metas using custom logo
+  // Root path for scrapers
   if (req.path === "/" || req.path === "") {
     try {
       const ogImage = await getOgImageUrl();
@@ -247,6 +241,7 @@ async function scraperMiddleware(req: Request, res: Response, next: NextFunction
 <html>
 <head>
   <meta charset="UTF-8" />
+  <meta property="fb:app_id" content="${FB_APP_ID}" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="${BASE_URL}/" />
   <meta property="og:title" content="La Polla del Ponce 2026" />
@@ -265,16 +260,13 @@ async function scraperMiddleware(req: Request, res: Response, next: NextFunction
 </html>`;
       return res.status(200).send(html);
     } catch {
-      // Fall through to SPA
       return next();
     }
   }
 
-  // For other routes, just show the base SPA (which already has OG metas)
   return next();
 }
 
-/** Get the best OG image URL: custom logo > favicon > fallback */
 async function getOgImageUrl(): Promise<string> {
   try {
     const [config] = await db.select().from(poolConfig).limit(1);
@@ -292,65 +284,44 @@ function escapeHtml(s: string): string {
 if (process.env.NODE_ENV === "production") {
   const clientBuild = path.join(__dirname, "../../client/dist");
   app.use(express.static(clientBuild));
-
-  // OG scraper middleware — intercept scrapers before SPA catch-all
   app.use(scraperMiddleware);
-
   app.get("*", (_req, res) => {
     res.sendFile(path.join(clientBuild, "index.html"));
   });
 }
 
 // ─── AUTO-CLOSE REGISTRATIONS JOB ────────────────────────────────
-// Checks every 60s if the first match has started and auto-locks the tournament
 async function checkTournamentStart() {
   try {
     const [config] = await db.select().from(poolConfig).limit(1);
     if (!config) return;
-
     const now = new Date();
-
-    // ── Verificar si ya hay partidos empezados ──
     if (!config.tournament_started) {
       const [startedMatch] = await db
         .select({ id: matches.id })
         .from(matches)
         .where(and(lte(matches.match_date, now), eq(matches.phase, "groups")))
         .limit(1);
-
       if (startedMatch) {
-        // Atomic check-and-set: only one cron wins
         const [updated] = await db
           .update(poolConfig)
           .set({ tournament_started: true })
           .where(and(eq(poolConfig.tournament_started, false), eq(poolConfig.id, config.id)))
           .returning({ id: poolConfig.id });
-
         if (updated) {
-          // Lock all group phase matches
           await db.update(matches).set({ is_locked: true }).where(eq(matches.phase, "groups"));
-          // Notify clients
           broadcastEvent("tournament_started", { startedAt: now.toISOString() });
           logger.info(`[CRON] Tournament auto-started at ${now.toISOString()}`);
         }
       }
     }
-
-    // ── Auto-lock elimination matches whose match_date has passed ──
     const [poolCfg] = await db.select({ started: poolConfig.tournament_started }).from(poolConfig).limit(1);
     if (poolCfg?.started) {
       const lockedElims = await db
         .update(matches)
         .set({ is_locked: true })
-        .where(
-          and(
-            lte(matches.match_date, now),
-            eq(matches.is_locked, false),
-            sql`${matches.phase} != 'groups'`
-          )
-        )
+        .where(and(lte(matches.match_date, now), eq(matches.is_locked, false), sql`${matches.phase} != 'groups'`))
         .returning({ id: matches.id, phase: matches.phase, home_team: matches.home_team, away_team: matches.away_team });
-
       if (lockedElims.length > 0) {
         logger.info(`[CRON] Auto-locked ${lockedElims.length} elimination match(es)`);
         for (const m of lockedElims) {
@@ -363,12 +334,9 @@ async function checkTournamentStart() {
   }
 }
 
-// Run check every 60 seconds
 const tournamentCheckInterval = setInterval(checkTournamentStart, 60_000);
-// Also run once on startup
 checkTournamentStart();
 
-// Graceful shutdown
 process.on("SIGTERM", () => {
   logger.info("[SHUTDOWN] Received SIGTERM, cleaning up...");
   clearInterval(tournamentCheckInterval);
@@ -382,23 +350,18 @@ process.on("SIGINT", () => {
   process.exit(0);
 });
 
-// Global error handler (must be after all routes)
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   logger.error(err, "[ERROR]");
   res.status(500).json({
-    error: process.env.NODE_ENV === "production"
-      ? "Error interno del servidor."
-      : err.message,
+    error: process.env.NODE_ENV === "production" ? "Error interno del servidor." : err.message,
   });
 });
 
 app.listen(PORT, async () => {
   logger.info(`Server running on http://localhost:${PORT}`);
-  // Run startup migrations (ALTER TABLE ADD COLUMN IF NOT EXISTS, etc.)
   await runStartupMigrations();
 });
 
-// Iniciar sincronización de live scores
 startLiveScoreSync();
 
 export default app;
