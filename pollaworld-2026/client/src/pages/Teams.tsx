@@ -133,7 +133,6 @@ export default function Teams() {
 
     parts.forEach((count, i) => {
       for (let j = 0; j < count; j++) {
-        const x = ((j + 1) / (count + 1)) * 100;
         const y = 74 - i * 16;
         rows.push({ label: labels[i] || "FW", y: Math.max(y, 6) });
       }
@@ -411,7 +410,6 @@ export default function Teams() {
               <div className="team-matches-modern">
                 {teamMatches.map((m) => {
                   const isHome = m.home_team === selectedTeam;
-                  const opponent = isHome ? m.away_team : m.home_team;
                   const score =
                     m.home_score_real !== null
                       ? `${m.home_score_real}–${m.away_score_real}`
