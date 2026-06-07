@@ -240,7 +240,7 @@ export default function Dashboard() {
     try {
       const entryId = selectedEntry?.id;
       if (!entryId) {
-        alert("Selecciona un ticket primero.");
+        toast.error("Selecciona un ticket primero.");
         return;
       }
       const matchesWithPreds = await api.getMatchesWithPredictions(entryId);
@@ -261,7 +261,7 @@ export default function Dashboard() {
           playerSlug={user!.player_slug}
           predictions={predictionsData}
           allMatches={allMatches}
-          logoUrl={config?.logo_url}
+          logoUrl={undefined} // Use text fallback "LA POLLA DEL PONCE" (Cloudinary logo fails in @react-pdf)
         />
       ).toBlob();
 
@@ -271,8 +271,11 @@ export default function Dashboard() {
       a.download = `predicciones-${user!.name.replace(/\s+/g, "-")}.pdf`;
       a.click();
       URL.revokeObjectURL(url);
+      toast.success(`PDF generado: ${predictionsData.length} predicciones`);
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al generar PDF");
+      const msg = err instanceof Error ? err.message : "Error al generar PDF";
+      toast.error(msg);
+      console.error("[PDF ERROR]", err);
     } finally {
       setGeneratingPdf(false);
     }

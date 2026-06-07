@@ -1,5 +1,5 @@
 import { db } from "../db";
-import { matches } from "../db/schema";
+import { matches, poolConfig } from "../db/schema";
 import { eq, inArray, sql } from "drizzle-orm";
 import { calculatePoints } from "./scoring";
 import { predictions } from "../db/schema";
@@ -134,6 +134,12 @@ async function fetchGames(): Promise<ApiGame[]> {
 
 async function syncScores(): Promise<{ updated: number; live: number }> {
   try {
+    // ── GUARD: No procesar si el torneo no ha empezado ──
+    const [cfg] = await db.select({ started: poolConfig.tournament_started }).from(poolConfig).limit(1);
+    if (!cfg?.started) {
+      return { updated: 0, live: 0 };
+    }
+
     const games = await fetchGames();
     let updated = 0;
     let live = 0;

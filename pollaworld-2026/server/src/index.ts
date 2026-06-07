@@ -149,22 +149,25 @@ async function checkTournamentStart() {
     }
 
     // ── Auto-lock elimination matches whose match_date has passed ──
-    const lockedElims = await db
-      .update(matches)
-      .set({ is_locked: true })
-      .where(
-        and(
-          lte(matches.match_date, now),
-          eq(matches.is_locked, false),
-          sql`${matches.phase} != 'groups'`
+    const [poolCfg] = await db.select({ started: poolConfig.tournament_started }).from(poolConfig).limit(1);
+    if (poolCfg?.started) {
+      const lockedElims = await db
+        .update(matches)
+        .set({ is_locked: true })
+        .where(
+          and(
+            lte(matches.match_date, now),
+            eq(matches.is_locked, false),
+            sql`${matches.phase} != 'groups'`
+          )
         )
-      )
-      .returning({ id: matches.id, phase: matches.phase, home_team: matches.home_team, away_team: matches.away_team });
+        .returning({ id: matches.id, phase: matches.phase, home_team: matches.home_team, away_team: matches.away_team });
 
-    if (lockedElims.length > 0) {
-      logger.info(`[CRON] Auto-locked ${lockedElims.length} elimination match(es)`);
-      for (const m of lockedElims) {
-        broadcastEvent("match_locked", { matchId: m.id, phase: m.phase, homeTeam: m.home_team, awayTeam: m.away_team });
+      if (lockedElims.length > 0) {
+        logger.info(`[CRON] Auto-locked ${lockedElims.length} elimination match(es)`);
+        for (const m of lockedElims) {
+          broadcastEvent("match_locked", { matchId: m.id, phase: m.phase, homeTeam: m.home_team, awayTeam: m.away_team });
+        }
       }
     }
   } catch (err) {
