@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { getPlayer } from "../lib/players";
 import { FlagImage } from "../lib/flags";
 import PdfBoleto from "../components/PdfBoleto";
-import { autofillModerate, autofillSmart } from "../lib/predictionsLogic";
+import { autofillModerate, autofillSmart, getStrength } from "../lib/predictionsLogic";
 import { getTeamDisplayName } from "../lib/teams";
 import { useAuth } from "../lib/AuthContext";
 
@@ -148,6 +148,24 @@ export default function Dashboard() {
     () => elimMatches.filter((m) => !m.is_locked && !config?.tournament_started && predictions[m.id]?.home === undefined).length,
     [elimMatches, predictions, config]
   );
+
+  // ── Suggestion state per match ──
+  const [suggestionState, setSuggestionState] = useState<Record<string, "hidden" | "shown" | "applied">>({});
+
+  const getMatchSuggestion = useCallback((match: { id: string; home_team: string; away_team: string }) => {
+    const result = autofillSmart([match]);
+    const suggestion = result[match.id];
+    const homeStr = getStrength(match.home_team);
+    const awayStr = getStrength(match.away_team);
+    const favTeam = homeStr >= awayStr ? match.home_team : match.away_team;
+    return {
+      homeScore: suggestion.home,
+      awayScore: suggestion.away,
+      favTeam,
+      homeStrength: homeStr,
+      awayStrength: awayStr,
+    };
+  }, []);
 
   const handlePredictionChange = useCallback((matchId: string, field: "home" | "away", value: string) => {
     const num = parseInt(value, 10);
@@ -533,6 +551,49 @@ export default function Dashboard() {
                               value={pred?.away ?? ""}
                               onChange={(e) => handlePredictionChange(m.id, "away", e.target.value)}
                             />
+                          </div>
+
+                          {/* ── Sugerencia individual ── */}
+                          <div className="match-suggestion">
+                            {suggestionState[m.id] === "applied" ? (
+                              <span className="suggestion-applied">✓ Sugerencia aplicada</span>
+                            ) : suggestionState[m.id] === "shown" ? (
+                              <div className="suggestion-tooltip">
+                                {(() => {
+                                  const s = getMatchSuggestion(m);
+                                  return (
+                                    <>
+                                      <span className="suggestion-text">
+                                        <strong>{getTeamDisplayName(s.favTeam)}</strong> es favorito
+                                        {" (fuerza "}{s.homeStrength >= s.awayStrength ? s.homeStrength : s.awayStrength}
+                                        /5). Resultado sugerido:{" "}
+                                        <strong>{s.homeScore}-{s.awayScore}</strong>
+                                      </span>
+                                      <button
+                                        className="suggestion-apply-btn"
+                                        onClick={() => {
+                                          handlePredictionChange(m.id, "home", s.homeScore);
+                                          handlePredictionChange(m.id, "away", s.awayScore);
+                                          setSuggestionState((prev) => ({ ...prev, [m.id]: "applied" }));
+                                        }}
+                                      >
+                                        Aplicar
+                                      </button>
+                                    </>
+                                  );
+                                })()}
+                              </div>
+                            ) : (
+                              <button
+                                className="suggestion-btn"
+                                onClick={() =>
+                                  setSuggestionState((prev) => ({ ...prev, [m.id]: "shown" }))
+                                }
+                                title="Ver sugerencia de marcador"
+                              >
+                                ⚡ Ver sugerencia
+                              </button>
+                            )}
                           </div>
                         </>
                       )}

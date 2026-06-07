@@ -1,8 +1,6 @@
-import { TEAMS } from "./teams";
-
 /**
  * Team strength ratings (1-5) based on FIFA ranking, qualifiers performance,
- * and recent World Cup history (2022).
+ * and recent World Cup history (2026).
  *
  * 5 = Elite favourite
  * 4 = Strong contender
@@ -10,21 +8,69 @@ import { TEAMS } from "./teams";
  * 2 = Lower tier
  * 1 = Underdog
  */
-const TEAM_STRENGTH: Record<string, number> = {};
-TEAMS.forEach(t => { TEAM_STRENGTH[t.name] = 3; }); // default 3
+const TEAM_STRENGTH: Record<string, number> = {
+  // ── 5: Favoritos absolutos ──
+  "Argentina": 5,
+  "Francia": 5,
+  "España": 5,
+  "Inglaterra": 5,
+  "Brasil": 5,
+  "Portugal": 5,
 
-// Override elite teams
-const ELITE = ["Argentina", "Brasil", "Francia", "Inglaterra", "Alemania", "España"];
-const STRONG = ["Países Bajos", "Portugal", "Bélgica", "Croacia"];
-const WEAK = ["Haití", "Catar", "Curazao", "Cabo Verde", "Panamá", "Jordania", "Uzbekistán"];
+  // ── 4: Fuertes contendientes ──
+  "Países Bajos": 4,
+  "Alemania": 4,
+  "Bélgica": 4,
+  "Colombia": 4,
+  "Uruguay": 4,
+  "Marruecos": 4,
+  "Japón": 4,
+  "Noruega": 4,
+  "Croacia": 4,
+  "Senegal": 4,
+  "Estados Unidos": 4,
+  "México": 4,
 
-ELITE.forEach(t => { TEAM_STRENGTH[t] = 5; });
-STRONG.forEach(t => { TEAM_STRENGTH[t] = 4; });
-WEAK.forEach(t => { TEAM_STRENGTH[t] = 1; });
+  // ── 3: Competitivos ──
+  "Ecuador": 3,
+  "Paraguay": 3,
+  "Austria": 3,
+  "Suiza": 3,
+  "Turquía": 3,
+  "Corea del Sur": 3,
+  "Australia": 3,
+  "Irán": 3,
+  "Costa de Marfil": 3,
+  "Egipto": 3,
+  "Ghana": 3,
+  "Argelia": 3,
+  "Túnez": 3,
+  "Sudáfrica": 3,
+  "Canadá": 3,
+  "Arabia Saudita": 3,
 
+  // ── 2: Nivel medio ──
+  "República Checa": 2,
+  "Escocia": 2,
+  "Bosnia y Herzegovina": 2,
+  "Suecia": 2,
+  "Irak": 2,
+  "RD Congo": 2,
+  "Panamá": 2,
+
+  // ── 1: Underdogs ──
+  "Catar": 1,
+  "Haití": 1,
+  "Curazao": 1,
+  "Cabo Verde": 1,
+  "Jordania": 1,
+  "Uzbekistán": 1,
+};
+
+// Equipos clasificados que no estén en la lista → DEFAULT = 2
 const DEFAULT_STRENGTH = 2;
 
-function getStrength(team: string): number {
+export function getStrength(team: string): number {
   return TEAM_STRENGTH[team] ?? DEFAULT_STRENGTH;
 }
 
