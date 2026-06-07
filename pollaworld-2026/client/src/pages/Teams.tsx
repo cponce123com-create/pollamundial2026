@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { api, Match } from "../lib/api";
+import { api, Match, TeamRecentForm } from "../lib/api";
 import { FlagImage } from "../lib/flags";
 import { TEAMS } from "../lib/teams";
 
@@ -33,6 +33,7 @@ export default function Teams() {
   const [squads, setSquads] = useState<TeamSquad[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [_selectedTeamMatches, setSelectedTeamMatches] = useState<Match[]>([]);
+  const [recentForm, setRecentForm] = useState<TeamRecentForm | null>(null);
 
   useEffect(() => {
     api.getMatches()
@@ -48,6 +49,7 @@ export default function Teams() {
   useEffect(() => {
     if (!selectedTeam) {
       setSelectedTeamMatches([]);
+      setRecentForm(null);
       return;
     }
     const teamMatches = matches.filter(
@@ -56,6 +58,16 @@ export default function Teams() {
         m.away_team === selectedTeam
     );
     setSelectedTeamMatches(teamMatches);
+
+    // Fetch recent form
+    fetch(`/api/standings/form/${encodeURIComponent(selectedTeam)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data && data.formString) {
+          setRecentForm(data as TeamRecentForm);
+        }
+      })
+      .catch(() => setRecentForm(null));
   }, [selectedTeam, matches]);
 
   const getTeamSquad = (teamName: string): TeamSquad | undefined => {
@@ -203,6 +215,26 @@ export default function Teams() {
                       {selectedSquad.stadium ?? "—"}
                     </div>
                     <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>Estadio</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Recent Form */}
+              {recentForm && recentForm.form.length > 0 && (
+                <div className="team-form-card">
+                  <h4 className="card-title">📊 Forma reciente</h4>
+                  <div className="team-form-row">
+                    {recentForm.form.map((entry, i) => (
+                      <div
+                        key={i}
+                        className={`team-form-badge team-form-${entry.result.toLowerCase()}`}
+                        title={`${entry.result === "W" ? "Ganó" : entry.result === "D" ? "Empató" : "Perdió"} ${entry.score} vs ${entry.opponent}`}
+                      >
+                        <span className="team-form-letter">{entry.result}</span>
+                        <span className="team-form-score">{entry.score}</span>
+                      </div>
+                    ))}
+                    <span className="team-form-string">{recentForm.formString}</span>
                   </div>
                 </div>
               )}
