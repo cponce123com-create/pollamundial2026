@@ -16,8 +16,9 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const IMAGES_DIR = path.resolve(__dirname, "../../client/public/players");
-const PLAYERS_TS_PATH = path.resolve(__dirname, "../../client/src/lib/players.ts");
+const PROJECT_ROOT = path.resolve(__dirname, "../../..");
+const IMAGES_DIR = path.join(PROJECT_ROOT, "client/public/players");
+const PLAYERS_TS_PATH = path.join(PROJECT_ROOT, "client/src/lib/players.ts");
 
 async function main() {
   console.log("Subiendo imagenes de jugadores a Cloudinary...");
