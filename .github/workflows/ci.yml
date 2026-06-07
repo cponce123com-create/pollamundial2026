@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  server:
+    name: Server — Lint & Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pollaworld-2026/server
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+          cache-dependency-path: pollaworld-2026/server/package-lock.json
+
+      - run: npm ci --silent
+      - run: npx tsc --noEmit
+      - run: npx vitest run --reporter=verbose
+
+  client:
+    name: Client — Lint & Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pollaworld-2026/client
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+          cache-dependency-path: pollaworld-2026/client/package-lock.json
+
+      - run: npm ci --silent
+      - run: npx tsc --noEmit
+      - run: npx vite build --logLevel warn

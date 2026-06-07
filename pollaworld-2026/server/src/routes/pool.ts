@@ -1,21 +1,11 @@
 import { Router, Request, Response } from "express";
 import { z } from "zod";
-import multer from "multer";
 import { db } from "../db";
 import { poolConfig, users, entries, predictions } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
 import { eq, sql, count, desc } from "drizzle-orm";
-import cloudinary from "../lib/cloudinary";
+import { imageUpload, uploadToCloudinary, cloudinaryErrorResponse } from "../lib/upload";
 import logger from "../lib/logger";
-
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) cb(null, true);
-    else cb(new Error("Solo se permiten imágenes (JPG, PNG, GIF, WEBP)"));
-  },
-});
 
 const poolConfigSchema = z.object({
   entry_fee: z.number().int().min(1).max(1000).optional(),
@@ -169,15 +159,10 @@ router.get("/ranking", async (_req: Request, res: Response) => {
 
 // POST /api/pool/upload-yape-qr — subir QR de Yape (admin)
 router.post("/upload-yape-qr", requireAdmin, (req: Request, res: Response, next) => {
-  upload.single("qr")(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      if (err.code === "LIMIT_FILE_SIZE") {
-        return res.status(400).json({ error: "La imagen no debe superar los 5MB." });
-      }
-      return res.status(400).json({ error: `Error al subir: ${err.message}` });
-    }
+  imageUpload.single("qr")(req, res, (err) => {
     if (err) {
-      return res.status(400).json({ error: err.message });
+      const handled = cloudinaryErrorResponse(err, "Upload yape QR");
+      return res.status(handled.status).json({ error: handled.error });
     }
     next();
   });
@@ -188,19 +173,9 @@ router.post("/upload-yape-qr", requireAdmin, (req: Request, res: Response, next)
       return;
     }
 
-    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        {
-          folder: "pollaworld/yape-qr",
-          allowed_formats: ["jpg", "jpeg", "png", "gif", "webp"],
-          max_file_size: 5 * 1024 * 1024,
-        },
-        (err, result) => {
-          if (err) reject(err);
-          else resolve(result as { secure_url: string });
-        }
-      );
-      stream.end(req.file!.buffer);
+    const result = await uploadToCloudinary(req.file.buffer, {
+      folder: "pollaworld/yape-qr",
+      allowedFormats: ["jpg", "jpeg", "png", "gif", "webp"],
     });
 
     const configs = await db.select().from(poolConfig).limit(1);
@@ -215,26 +190,17 @@ router.post("/upload-yape-qr", requireAdmin, (req: Request, res: Response, next)
 
     res.json({ url: result.secure_url, message: "Código QR de Yape actualizado." });
   } catch (err: unknown) {
-    logger.error(err, "Upload yape QR error:");
-    const errObj = err as Record<string, unknown>;
-    if (errObj?.http_code === 401 || (typeof errObj?.message === "string" && (errObj.message as string).includes("Invalid"))) {
-      return res.status(500).json({ error: "Error de configuración de Cloudinary. Contacta al administrador." });
-    }
-    res.status(500).json({ error: "Error al subir código QR." });
+    const errResp = cloudinaryErrorResponse(err, "Upload yape QR");
+    res.status(errResp.status).json({ error: errResp.error });
   }
 });
 
 // POST /api/pool/upload-logo — subir logo de la polla (admin)
 router.post("/upload-logo", requireAdmin, (req: Request, res: Response, next) => {
-  upload.single("logo")(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      if (err.code === "LIMIT_FILE_SIZE") {
-        return res.status(400).json({ error: "La imagen no debe superar los 5MB." });
-      }
-      return res.status(400).json({ error: `Error al subir: ${err.message}` });
-    }
+  imageUpload.single("logo")(req, res, (err) => {
     if (err) {
-      return res.status(400).json({ error: err.message });
+      const handled = cloudinaryErrorResponse(err, "Upload logo");
+      return res.status(handled.status).json({ error: handled.error });
     }
     next();
   });
@@ -245,19 +211,9 @@ router.post("/upload-logo", requireAdmin, (req: Request, res: Response, next) =>
       return;
     }
 
-    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        {
-          folder: "pollaworld/logo",
-          allowed_formats: ["jpg", "jpeg", "png", "gif", "webp", "svg"],
-          max_file_size: 5 * 1024 * 1024,
-        },
-        (err, result) => {
-          if (err) reject(err);
-          else resolve(result as { secure_url: string });
-        }
-      );
-      stream.end(req.file!.buffer);
+    const result = await uploadToCloudinary(req.file.buffer, {
+      folder: "pollaworld/logo",
+      allowedFormats: ["jpg", "jpeg", "png", "gif", "webp", "svg"],
     });
 
     const configs = await db.select().from(poolConfig).limit(1);
@@ -272,26 +228,17 @@ router.post("/upload-logo", requireAdmin, (req: Request, res: Response, next) =>
 
     res.json({ url: result.secure_url, message: "Logo actualizado." });
   } catch (err: unknown) {
-    logger.error(err, "Upload logo error:");
-    const errObj = err as Record<string, unknown>;
-    if (errObj?.http_code === 401 || (typeof errObj?.message === "string" && (errObj.message as string).includes("Invalid"))) {
-      return res.status(500).json({ error: "Error de configuración de Cloudinary. Contacta al administrador." });
-    }
-    res.status(500).json({ error: "Error al subir logo." });
+    const errResp = cloudinaryErrorResponse(err, "Upload logo");
+    res.status(errResp.status).json({ error: errResp.error });
   }
 });
 
 // POST /api/pool/upload-favicon — subir favicon de la polla (admin)
 router.post("/upload-favicon", requireAdmin, (req: Request, res: Response, next) => {
-  upload.single("favicon")(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      if (err.code === "LIMIT_FILE_SIZE") {
-        return res.status(400).json({ error: "La imagen no debe superar los 5MB." });
-      }
-      return res.status(400).json({ error: `Error al subir: ${err.message}` });
-    }
+  imageUpload.single("favicon")(req, res, (err) => {
     if (err) {
-      return res.status(400).json({ error: err.message });
+      const handled = cloudinaryErrorResponse(err, "Upload favicon");
+      return res.status(handled.status).json({ error: handled.error });
     }
     next();
   });
@@ -302,19 +249,9 @@ router.post("/upload-favicon", requireAdmin, (req: Request, res: Response, next)
       return;
     }
 
-    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        {
-          folder: "pollaworld/favicon",
-          allowed_formats: ["jpg", "jpeg", "png", "gif", "webp", "svg", "ico"],
-          max_file_size: 5 * 1024 * 1024,
-        },
-        (err, result) => {
-          if (err) reject(err);
-          else resolve(result as { secure_url: string });
-        }
-      );
-      stream.end(req.file!.buffer);
+    const result = await uploadToCloudinary(req.file.buffer, {
+      folder: "pollaworld/favicon",
+      allowedFormats: ["jpg", "jpeg", "png", "gif", "webp", "svg", "ico"],
     });
 
     const configs = await db.select().from(poolConfig).limit(1);
@@ -329,12 +266,8 @@ router.post("/upload-favicon", requireAdmin, (req: Request, res: Response, next)
 
     res.json({ url: result.secure_url, message: "Favicon actualizado." });
   } catch (err: unknown) {
-    logger.error(err, "Upload favicon error:");
-    const errObj = err as Record<string, unknown>;
-    if (errObj?.http_code === 401 || (typeof errObj?.message === "string" && (errObj.message as string).includes("Invalid"))) {
-      return res.status(500).json({ error: "Error de configuración de Cloudinary. Contacta al administrador." });
-    }
-    res.status(500).json({ error: "Error al subir favicon." });
+    const errResp = cloudinaryErrorResponse(err, "Upload favicon");
+    res.status(errResp.status).json({ error: errResp.error });
   }
 });
 

@@ -7,6 +7,10 @@
     "build": "cd pollaworld-2026/server && npm install && npm run build && cd ../client && npm install && npm run build",
     "start": "cd pollaworld-2026/server && node dist/index.js",
     "db:migrate": "cd pollaworld-2026/server && npm run db:migrate",
-    "db:seed": "cd pollaworld-2026/server && npm run db:seed"
+    "db:seed": "cd pollaworld-2026/server && npm run db:seed",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.0.0"
   }
 }

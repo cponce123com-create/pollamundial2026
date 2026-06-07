@@ -218,7 +218,7 @@ async function syncScores(): Promise<{ updated: number; live: number }> {
         .set({
           home_score_real: m.homeScore,
           away_score_real: m.awayScore,
-          incidents: allIncidents.length > 0 ? sql`${JSON.stringify(allIncidents)}::jsonb` : undefined,
+          incidents: allIncidents.length > 0 ? sql`${allIncidents}::jsonb` : undefined,
           is_locked: m.isFinished ? true : undefined,
         })
         .where(eq(matches.id, m.id));

@@ -160,7 +160,9 @@ router.post("/bulk", requireAuth, async (req: Request, res: Response) => {
       results.push(...inserted);
     }
 
-    res.json({ saved: results.length, predictions: results });
+    const skipped = data.predictions.length - batch.length;
+
+    res.json({ saved: results.length, skipped, predictions: results });
   } catch (err) {
     if (err instanceof z.ZodError) { res.status(400).json({ error: err.errors[0].message }); return; }
     logger.error(err, "Bulk prediction error:");

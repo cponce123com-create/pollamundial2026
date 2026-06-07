@@ -1,0 +1,4 @@
+{
+  "*.ts": ["bash -c 'cd pollaworld-2026/server && npx tsc --noEmit'"],
+  "*.tsx": ["bash -c 'cd pollaworld-2026/client && npx tsc --noEmit'"]
+}

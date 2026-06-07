@@ -1,11 +1,10 @@
 import { Router, Request, Response } from "express";
-import multer from "multer";
 import rateLimit from "express-rate-limit";
 import { db } from "../db";
 import { entries } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { eq } from "drizzle-orm";
-import cloudinary from "../lib/cloudinary";
+import { imageUpload, uploadToCloudinary, cloudinaryErrorResponse } from "../lib/upload";
 import logger from "../lib/logger";
 
 const router = Router();
@@ -16,26 +15,12 @@ const paymentLimiter = rateLimit({
   message: { error: "Demasiadas solicitudes de pago. Espera un minuto." },
 });
 
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) cb(null, true);
-    else cb(new Error("Solo se permiten imágenes (JPG, PNG, GIF, WEBP)"));
-  },
-});
-
 // POST /api/payments/upload — subir comprobante a Cloudinary para una entrada específica
-router.post("/upload", requireAuth, (req: Request, res: Response, next) => {
-  upload.single("proof")(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      if (err.code === "LIMIT_FILE_SIZE") {
-        return res.status(400).json({ error: "La imagen no debe superar los 5MB." });
-      }
-      return res.status(400).json({ error: `Error al subir: ${err.message}` });
-    }
+router.post("/upload", requireAuth, paymentLimiter, (req: Request, res: Response, next) => {
+  imageUpload.single("proof")(req, res, (err) => {
     if (err) {
-      return res.status(400).json({ error: err.message });
+      const handled = cloudinaryErrorResponse(err, "Upload proof");
+      return res.status(handled.status).json({ error: handled.error });
     }
     next();
   });
@@ -74,19 +59,9 @@ router.post("/upload", requireAuth, (req: Request, res: Response, next) => {
       return;
     }
 
-    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        {
-          folder: `pollaworld/payments/${req.user!.userId}`,
-          allowed_formats: ["jpg", "jpeg", "png", "gif", "webp"],
-          max_file_size: 5 * 1024 * 1024,
-        },
-        (err, result) => {
-          if (err) reject(err);
-          else resolve(result as { secure_url: string });
-        }
-      );
-      stream.end(req.file!.buffer);
+    const result = await uploadToCloudinary(req.file.buffer, {
+      folder: `pollaworld/payments/${req.user!.userId}`,
+      allowedFormats: ["jpg", "jpeg", "png", "gif", "webp"],
     });
 
     await db
@@ -96,12 +71,8 @@ router.post("/upload", requireAuth, (req: Request, res: Response, next) => {
 
     res.json({ url: result.secure_url, message: "Comprobante subido. Pendiente de revisión." });
   } catch (err: unknown) {
-    logger.error(err, "Upload proof error:");
-    const errObj = err as Record<string, unknown>;
-    if (errObj?.http_code === 401 || (typeof errObj?.message === "string" && (errObj.message as string).includes("Invalid"))) {
-      return res.status(500).json({ error: "Error de configuración de Cloudinary. Contacta al administrador." });
-    }
-    res.status(500).json({ error: "Error al subir comprobante. Verifica que el archivo sea una imagen válida." });
+    const errResp = cloudinaryErrorResponse(err, "Upload proof");
+    res.status(errResp.status).json({ error: errResp.error });
   }
 });
 

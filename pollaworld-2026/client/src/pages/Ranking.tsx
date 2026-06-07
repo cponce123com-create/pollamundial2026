@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { api, PoolStats, RankingEntry } from "../lib/api";
 import { getPlayer, PlayerImage } from "../lib/players";
+import { toast } from "sonner";
 
 function getShareText(stats: PoolStats | null, position: number, name: string): string {
   const prizeStr = position === 1 ? `S/.${stats?.prizes.first}` : position === 2 ? `S/.${stats?.prizes.second}` : position === 3 ? `S/.${stats?.prizes.third}` : "";
   const posText = position <= 3 ? `🥇🥈🥉`.charAt(position - 1) : `#${position}°`;
-  return `🏆 *La Polla del Ponce*\n${posText} — ${name}${prizeStr ? ` (Premio: ${prizeStr})` : ""}\n\n⬇️ Ve el ranking completo en:\n${window.location.href}`;
+  return `🏆 *La Polla del Ponce*\\n${posText} — ${name}${prizeStr ? ` (Premio: ${prizeStr})` : ""}\\n\\n⬇️ Ve el ranking completo en:\\n${window.location.href}`;
 }
 
 export default function RankingPage() {
@@ -13,6 +14,7 @@ export default function RankingPage() {
   const [stats, setStats] = useState<PoolStats | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -25,7 +27,11 @@ export default function RankingPage() {
         setStats(st);
         if (user) setCurrentUserId(user.id);
       })
-      .catch(() => {})
+      .catch((err) => {
+        const msg = err instanceof Error ? err.message : "Error al cargar el ranking";
+        setError(msg);
+        toast.error(msg);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -33,6 +39,16 @@ export default function RankingPage() {
     return (
       <div className="placeholder-page">
         <p className="placeholder-text">Cargando ranking...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="placeholder-page">
+        <div className="placeholder-icon">{"⚠️"}</div>
+        <h2 className="placeholder-title">Error</h2>
+        <p className="placeholder-text">{error}</p>
       </div>
     );
   }

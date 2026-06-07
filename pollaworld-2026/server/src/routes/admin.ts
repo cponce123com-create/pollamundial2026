@@ -514,6 +514,7 @@ router.post("/testing/activate-demo", requireAdmin, async (_req: Request, res: R
 // POST /api/admin/testing/run-simulation
 // Crea usuarios demo, les asigna predicciones fijas, aplica resultado real, calcula puntos
 router.post("/testing/run-simulation", requireAdmin, async (req: Request, res: Response) => {
+  const createdUserIds: string[] = [];
   try {
     const { home_real, away_real } = req.body as { home_real: number; away_real: number };
     if (home_real === undefined || away_real === undefined) {
@@ -555,6 +556,7 @@ router.post("/testing/run-simulation", requireAdmin, async (req: Request, res: R
         password_hash,
         player_slug: "personaje1",
       }).returning();
+      createdUserIds.push(newUser.id);
 
       const [newEntry] = await db.insert(entries).values({
         user_id: newUser.id,
@@ -614,6 +616,12 @@ router.post("/testing/run-simulation", requireAdmin, async (req: Request, res: R
       results,
     });
   } catch (err) {
+    // Cleanup orphaned demo users if simulation failed mid-way
+    if (createdUserIds && createdUserIds.length > 0) {
+      for (const uid of createdUserIds) {
+        await db.delete(users).where(eq(users.id, uid)).catch(() => {});
+      }
+    }
     logger.error(err, "Run simulation error:");
     res.status(500).json({ error: "Error al ejecutar simulación." });
   }

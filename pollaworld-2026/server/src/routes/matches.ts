@@ -121,7 +121,7 @@ router.post("/", requireAdmin, async (req: Request, res: Response) => {
 router.put("/:id", requireAdmin, async (req: Request, res: Response) => {
   try {
     const data = matchUpdateSchema.parse(req.body);
-    const values: any = { ...data };
+    const values: Record<string, unknown> = { ...data };
     if (data.match_date) values.match_date = new Date(data.match_date);
     const [updated] = await db
       .update(matches)

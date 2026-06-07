@@ -1,5 +1,7 @@
 const API_BASE = "/api";
 
+import { toast } from "sonner";
+
 export interface User {
   id: string;
   name: string;
@@ -158,7 +160,14 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
     ...options,
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Error de conexión");
+  if (!res.ok) {
+    // CSRF token expired — refresh the page to get a new one
+    if (res.status === 403 && (data.error || "").toLowerCase().includes("csrf")) {
+      toast.error("Sesión expirada. Recargando página...");
+      setTimeout(() => window.location.reload(), 1500);
+    }
+    throw new Error(data.error || "Error de conexión");
+  }
   return data;
 }
 

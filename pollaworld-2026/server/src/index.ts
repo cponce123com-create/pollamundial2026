@@ -26,7 +26,7 @@ import pinoHttp from "pino-http";
 import { sanitizeBody } from "./middleware/sanitize";
 import { csrfProtection } from "./middleware/csrf";
 import { startLiveScoreSync, stopLiveScoreSync } from "./lib/livescore";
-import { sseHandler, broadcastEvent } from "./lib/sse";
+import { sseHandler, broadcastEvent, getSSEClientCount } from "./lib/sse";
 import { runStartupMigrations } from "./db/migrate-entries";
 
 // Validar variables de entorno requeridas
@@ -100,8 +100,19 @@ app.use("/api/teams", teamRoutes);
 app.get("/api/events", sseHandler);
 
 // Health check
-app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", timestamp: new Date().toISOString() });
+app.get("/api/health", async (_req, res) => {
+  try {
+    // Lightweight DB check
+    const dbOk = await db.execute(sql`SELECT 1 AS ok`).then(() => true).catch(() => false);
+    res.json({
+      status: "ok",
+      timestamp: new Date().toISOString(),
+      db: dbOk ? "connected" : "error",
+      sseClients: getSSEClientCount(),
+    });
+  } catch {
+    res.status(503).json({ status: "degraded", error: "Health check failed" });
+  }
 });
 
 // Dynamic OG image — redirects to the custom logo or favicon from DB, or fallback
@@ -360,8 +371,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 app.listen(PORT, async () => {
   logger.info(`Server running on http://localhost:${PORT}`);
   await runStartupMigrations();
+  startLiveScoreSync();
 });
-
-startLiveScoreSync();
 
 export default app;
