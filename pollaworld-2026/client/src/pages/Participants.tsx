@@ -226,6 +226,8 @@ export default function Participants() {
                         border: "2px solid var(--border)",
                       }}
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     <div style={{ fontSize: "2.5rem" }}>{"❓"}</div>

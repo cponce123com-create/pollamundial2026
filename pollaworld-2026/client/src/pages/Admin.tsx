@@ -412,6 +412,7 @@ export default function Admin() {
                       alt={player.name}
                       className="player-edit-img"
                       loading="lazy"
+                      decoding="async"
                       referrerPolicy="no-referrer"
                     />
                     {isEditing ? (

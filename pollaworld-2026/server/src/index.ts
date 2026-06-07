@@ -55,7 +55,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "res.cloudinary.com", "flagcdn.com", "data:", "blob:"],
+      imgSrc: ["'self'", "res.cloudinary.com", "flagcdn.com", "cdn.jsdelivr.net", "data:", "blob:"],
       connectSrc: ["'self'", "res.cloudinary.com"],
       fontSrc: ["'self'", "data:"],
       objectSrc: ["'none'"],
@@ -122,22 +122,29 @@ async function checkTournamentStart() {
 
     const now = new Date();
 
-    // ── Atomic check-and-set: only one cron wins ──
+    // ── Verificar si ya hay partidos empezados ──
     if (!config.tournament_started) {
-      const [updated] = await db
-        .update(poolConfig)
-        .set({ tournament_started: true })
-        .where(and(eq(poolConfig.tournament_started, false), eq(poolConfig.id, config.id)))
-        .returning({ id: poolConfig.id });
+      const [startedMatch] = await db
+        .select({ id: matches.id })
+        .from(matches)
+        .where(and(lte(matches.match_date, now), eq(matches.phase, "groups")))
+        .limit(1);
 
-      if (updated) {
-        // Lock all group phase matches
-        await db.update(matches).set({ is_locked: true }).where(eq(matches.phase, "groups"));
+      if (startedMatch) {
+        // Atomic check-and-set: only one cron wins
+        const [updated] = await db
+          .update(poolConfig)
+          .set({ tournament_started: true })
+          .where(and(eq(poolConfig.tournament_started, false), eq(poolConfig.id, config.id)))
+          .returning({ id: poolConfig.id });
 
-        // Notify clients
-        broadcastEvent("tournament_started", { startedAt: now.toISOString() });
-
-        logger.info(`[CRON] Tournament auto-started at ${now.toISOString()}`);
+        if (updated) {
+          // Lock all group phase matches
+          await db.update(matches).set({ is_locked: true }).where(eq(matches.phase, "groups"));
+          // Notify clients
+          broadcastEvent("tournament_started", { startedAt: now.toISOString() });
+          logger.info(`[CRON] Tournament auto-started at ${now.toISOString()}`);
+        }
       }
     }
 
