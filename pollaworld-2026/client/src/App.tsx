@@ -84,6 +84,22 @@ export default function App() {
         </main>
         <Footer />
         <Toaster position="top-right" theme="dark" />
+        <style>{`
+          @media (max-width: 600px) {
+            [data-sonner-toaster] {
+              bottom: 16px !important;
+              left: 8px !important;
+              right: 8px !important;
+              top: auto !important;
+              transform: none !important;
+              width: auto !important;
+            }
+            [data-sonner-toaster] [data-sonner-toast] {
+              width: 100% !important;
+              max-width: 100% !important;
+            }
+          }
+        `}</style>
       </div>
     </AuthProvider>
   );
