@@ -78,6 +78,7 @@ export async function uploadToCloudinary(
     transformation?: Record<string, unknown>[];
     compress?: boolean;
     maxFileSize?: number;
+    resourceType?: "image" | "video" | "raw";
   }
 ): Promise<{ secure_url: string }> {
   const finalBuffer = options.compress !== false ? await compressImage(buffer, "image/jpeg") : buffer;
@@ -86,6 +87,7 @@ export async function uploadToCloudinary(
     const stream = cloudinary.uploader.upload_stream(
       {
         folder: options.folder,
+        resource_type: options.resourceType ?? "image",
         allowed_formats: options.allowedFormats || ["jpg", "jpeg", "png", "gif", "webp"],
         max_file_size: options.maxFileSize ?? MAX_FILE_SIZE,
         transformation: options.transformation,

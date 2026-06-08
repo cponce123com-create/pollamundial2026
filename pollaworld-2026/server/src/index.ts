@@ -59,7 +59,7 @@ app.use(helmet({
       connectSrc: ["'self'", "res.cloudinary.com"],
       fontSrc: ["'self'", "data:"],
       objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
+      mediaSrc: ["'self'", "res.cloudinary.com"],
       frameSrc: ["'none'"],
     },
   },

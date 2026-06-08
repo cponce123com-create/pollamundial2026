@@ -292,6 +292,7 @@ router.post("/upload-video", requireAdmin, (req: Request, res: Response, next) =
       allowedFormats: ["mp4", "webm", "ogg", "mov"],
       compress: false, // skip sharp compression for video
       maxFileSize: MAX_VIDEO_FILE_SIZE,
+      resourceType: "video",
     });
 
     const configs = await db.select().from(poolConfig).limit(1);
