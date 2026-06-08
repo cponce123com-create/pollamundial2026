@@ -51,7 +51,7 @@ export default function Admin() {
   const [qrFile, setQrFile] = useState<File | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [faviconFile, setFaviconFile] = useState<File | null>(null);
-  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [videoFiles, setVideoFiles] = useState<(File | null)[]>([null, null, null]);
   const [whatsappLink, setWhatsappLink] = useState("");
 
   // Export state
@@ -163,12 +163,25 @@ export default function Admin() {
     }
   };
 
-  const handleUploadVideo = async () => {
-    if (!videoFile) return;
+  const handleUploadVideo = async (slot: number) => {
+    const file = videoFiles[slot - 1];
+    if (!file) return;
     try {
-      const data = await api.uploadHeroVideo(videoFile);
-      toast.success(data.message || "Video subido");
-      setVideoFile(null);
+      const data = await api.uploadHeroVideo(file, slot);
+      toast.success(data.message || `Video ${slot} subido`);
+      const newFiles = [...videoFiles];
+      newFiles[slot - 1] = null;
+      setVideoFiles(newFiles);
+      await loadAll();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error");
+    }
+  };
+
+  const handleDeleteVideo = async (slot: number) => {
+    try {
+      const data = await api.deleteHeroVideo(slot);
+      toast.success(data.message || `Video ${slot} eliminado`);
       await loadAll();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Error");
@@ -381,10 +394,15 @@ export default function Admin() {
             onFaviconFileChange={setFaviconFile}
             onUploadLogo={handleUploadLogo}
             onUploadFavicon={handleUploadFavicon}
-            heroVideoUrl={config?.hero_video_url || ""}
-            videoFile={videoFile}
-            onVideoFileChange={setVideoFile}
+            heroVideoUrls={config?.hero_video_urls || []}
+            videoFiles={videoFiles}
+            onVideoFileChange={(slot, file) => {
+              const newFiles = [...videoFiles];
+              newFiles[slot - 1] = file;
+              setVideoFiles(newFiles);
+            }}
             onUploadVideo={handleUploadVideo}
+            onDeleteVideo={handleDeleteVideo}
           />
         )}
 

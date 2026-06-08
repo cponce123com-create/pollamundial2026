@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { api, PoolStats, PoolConfig } from "../lib/api";
 import { useAuth } from "../lib/AuthContext";
@@ -142,6 +142,10 @@ export default function Home() {
   const [stats, setStats] = useState<PoolStats | null>(null);
   const [config, setConfig] = useState<PoolConfig | null>(null);
   const [loading, setLoading] = useState(true);
+  const [videoIndex, setVideoIndex] = useState(0);
+
+  const validUrls = config?.hero_video_urls?.filter(Boolean) || [];
+  const hasMultipleVideos = validUrls.length > 1;
 
   useEffect(() => {
     Promise.all([
@@ -153,13 +157,23 @@ export default function Home() {
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
+  // Cycle through videos when multiple are available
+  useEffect(() => {
+    if (!hasMultipleVideos) return;
+    const interval = setInterval(() => {
+      setVideoIndex((prev) => (prev + 1) % validUrls.length);
+    }, 8000); // cambia cada 8 segundos
+    return () => clearInterval(interval);
+  }, [hasMultipleVideos, validUrls.length]);
+
   const sections = getSections(config);
 
   return (
     <div className="home-page">
       {/* HERO */}
       <section className="home-hero">
-        {config?.hero_video_url && (
+        {/* Single video (backward compat) */}
+        {!hasMultipleVideos && config?.hero_video_url && (
           <video
             className="hero-video-bg"
             src={config.hero_video_url.replace('/upload/', '/upload/f_auto:video,q_auto/')}
@@ -169,6 +183,18 @@ export default function Home() {
             playsInline
           />
         )}
+        {/* Multiple videos — each in its own layer, only current one visible */}
+        {hasMultipleVideos && validUrls.map((url, idx) => (
+          <video
+            key={url}
+            className={`hero-video-bg${idx === videoIndex ? '' : ' hero-video-hidden'}`}
+            src={url.replace('/upload/', '/upload/f_auto:video,q_auto/')}
+            autoPlay={idx === videoIndex}
+            muted
+            loop={idx === videoIndex}
+            playsInline
+          />
+        ))}
         <div className="hero-video-overlay" />
         <div className="home-hero-content">
           {loading ? (

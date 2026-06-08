@@ -27,11 +27,14 @@ interface ConfigPanelProps {
   onFaviconFileChange?: (f: File | null) => void;
   onUploadLogo?: () => void;
   onUploadFavicon?: () => void;
-  heroVideoUrl?: string;
-  videoFile?: File | null;
-  onVideoFileChange?: (f: File | null) => void;
-  onUploadVideo?: () => void;
+  heroVideoUrls?: string[];
+  videoFiles?: (File | null)[];
+  onVideoFileChange?: (slot: number, f: File | null) => void;
+  onUploadVideo?: (slot: number) => void;
+  onDeleteVideo?: (slot: number) => void;
 }
+
+const VIDEO_LABELS = ["Video 1 (principal)", "Video 2", "Video 3"];
 
 export default function ConfigPanel({
   config,
@@ -60,10 +63,11 @@ export default function ConfigPanel({
   onFaviconFileChange,
   onUploadLogo,
   onUploadFavicon,
-  heroVideoUrl,
-  videoFile,
+  heroVideoUrls = [],
+  videoFiles = [null, null, null],
   onVideoFileChange,
   onUploadVideo,
+  onDeleteVideo,
 }: ConfigPanelProps) {
   const totalPct = prize1 + prize2 + prize3;
 
@@ -191,36 +195,55 @@ export default function ConfigPanel({
           </button>
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Video de fondo (hero)</label>
-          {heroVideoUrl && (
-            <div className="admin-qr-preview">
-              <video
-                src={heroVideoUrl}
-                muted
-                loop
-                playsInline
-                style={{ maxWidth: 200, borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}
+        {/* 3 Video Slots */}
+        {[0, 1, 2].map((idx) => {
+          const slot = idx + 1;
+          const url = heroVideoUrls[idx];
+          return (
+            <div key={slot} className="form-group">
+              <label className="form-label">🎬 {VIDEO_LABELS[idx]}</label>
+              {url && (
+                <div className="admin-qr-preview">
+                  <video
+                    src={url.replace('/upload/', '/upload/f_auto:video,q_auto/')}
+                    muted
+                    loop
+                    playsInline
+                    style={{ maxWidth: 200, borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}
+                  />
+                </div>
+              )}
+              <input
+                type="file"
+                accept="video/mp4,video/webm,video/ogg"
+                onChange={(e) => onVideoFileChange?.(slot, e.target.files?.[0] || null)}
+                className="admin-file-input"
               />
+              <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
+                <button
+                  className="btn btn-outline"
+                  onClick={() => onUploadVideo?.(slot)}
+                  disabled={!videoFiles[idx]}
+                >
+                  {url ? "Reemplazar" : "Subir"}
+                </button>
+                {url && (
+                  <button
+                    className="btn btn-outline btn-danger"
+                    onClick={() => onDeleteVideo?.(slot)}
+                  >
+                    Eliminar
+                  </button>
+                )}
+              </div>
+              {idx === 0 && (
+                <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 4 }}>
+                  Recomendado: MP4, 5-10 segundos, sin audio, paisaje. Los videos se reproducen en bucle y se alternan automáticamente.
+                </p>
+              )}
             </div>
-          )}
-          <input
-            type="file"
-            accept="video/mp4,video/webm,video/ogg"
-            onChange={(e) => onVideoFileChange?.(e.target.files?.[0] || null)}
-            className="admin-file-input"
-          />
-          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 4 }}>
-            Recomendado: MP4, 5-10 segundos, sin audio, paisaje. Se muestra en loop en desktop.
-          </p>
-          <button
-            className="btn btn-outline"
-            onClick={onUploadVideo}
-            disabled={!videoFile}
-          >
-            Subir Video
-          </button>
-        </div>
+          );
+        })}
 
         <div className="form-group admin-full-width">
           <label className="form-label">

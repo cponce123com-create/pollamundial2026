@@ -4981,6 +4981,12 @@ html {
   object-position: center;
   z-index: 0;
   pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+.hero-video-hidden {
+  opacity: 0;
+  z-index: -1;
 }
 
 .hero-video-overlay {

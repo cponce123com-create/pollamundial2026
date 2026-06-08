@@ -77,5 +77,6 @@ export const poolConfig = pgTable("pool_config", {
   logo_url: text("logo_url"),
   favicon_url: text("favicon_url"),
   hero_video_url: text("hero_video_url"),
+  hero_video_urls: jsonb("hero_video_urls").default([]).notNull(),
   player_custom_names: jsonb("player_custom_names"),
 });

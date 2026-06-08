@@ -272,6 +272,7 @@ router.post("/upload-favicon", requireAdmin, (req: Request, res: Response, next)
 });
 
 // POST /api/pool/upload-video — subir video de fondo del hero (admin)
+// El cliente envía un campo "slot" (1-3) para indicar qué posición ocupará
 router.post("/upload-video", requireAdmin, (req: Request, res: Response, next) => {
   videoUpload.single("video")(req, res, (err) => {
     if (err) {
@@ -287,27 +288,83 @@ router.post("/upload-video", requireAdmin, (req: Request, res: Response, next) =
       return;
     }
 
+    const slot = Number(req.body.slot) || 1;
+    if (slot < 1 || slot > 3) {
+      res.status(400).json({ error: "El slot debe ser 1, 2 o 3." });
+      return;
+    }
+
     const result = await uploadToCloudinary(req.file.buffer, {
       folder: "pollaworld/hero-video",
       allowedFormats: ["mp4", "webm", "ogg", "mov"],
-      compress: false, // skip sharp compression for video
+      compress: false,
       maxFileSize: MAX_VIDEO_FILE_SIZE,
       resourceType: "video",
     });
 
     const configs = await db.select().from(poolConfig).limit(1);
     if (configs.length === 0) {
-      await db.insert(poolConfig).values({ hero_video_url: result.secure_url });
+      await db.insert(poolConfig).values({
+        hero_video_url: result.secure_url,
+        hero_video_urls: [result.secure_url],
+      });
     } else {
+      const currentUrls: string[] = (configs[0].hero_video_urls as string[]) || [];
+      const urls = [...currentUrls];
+      urls[slot - 1] = result.secure_url;
+      // Mantén hero_video_url como el primer video para compatibilidad
       await db
         .update(poolConfig)
-        .set({ hero_video_url: result.secure_url })
+        .set({
+          hero_video_url: urls[0] || result.secure_url,
+          hero_video_urls: urls,
+        })
         .where(eq(poolConfig.id, configs[0].id));
     }
 
-    res.json({ url: result.secure_url, message: "Video de fondo actualizado." });
+    res.json({ url: result.secure_url, slot, message: `Video ${slot} actualizado.` });
   } catch (err: unknown) {
     const errResp = cloudinaryErrorResponse(err, "Upload hero video");
+    res.status(errResp.status).json({ error: errResp.error });
+  }
+});
+
+// DELETE /api/pool/upload-video/:slot — eliminar un video específico (admin)
+router.delete("/upload-video/:slot", requireAdmin, async (req: Request, res: Response) => {
+  try {
+    const slot = Number(req.params.slot);
+    if (slot < 1 || slot > 3) {
+      res.status(400).json({ error: "El slot debe ser 1, 2 o 3." });
+      return;
+    }
+
+    const configs = await db.select().from(poolConfig).limit(1);
+    if (configs.length === 0) {
+      res.status(404).json({ error: "No hay configuración." });
+      return;
+    }
+
+    const currentUrls: string[] = (configs[0].hero_video_urls as string[]) || [];
+    if (slot > currentUrls.length || !currentUrls[slot - 1]) {
+      res.status(404).json({ error: `No hay video en el slot ${slot}.` });
+      return;
+    }
+
+    const urls = [...currentUrls];
+    delete urls[slot - 1]; // deja undefined en ese slot
+
+    const firstUrl = urls.find((u) => u !== undefined && u !== null) as string | undefined;
+    await db
+      .update(poolConfig)
+      .set({
+        hero_video_url: firstUrl || null,
+        hero_video_urls: urls.filter((u) => u !== undefined && u !== null),
+      })
+      .where(eq(poolConfig.id, configs[0].id));
+
+    res.json({ message: `Video ${slot} eliminado.` });
+  } catch (err: unknown) {
+    const errResp = cloudinaryErrorResponse(err, "Delete hero video");
     res.status(errResp.status).json({ error: errResp.error });
   }
 });

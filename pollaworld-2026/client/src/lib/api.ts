@@ -106,6 +106,7 @@ export interface PoolConfig {
   logo_url: string | null;
   favicon_url: string | null;
   hero_video_url: string | null;
+  hero_video_urls: string[];
   player_custom_names: Record<string, string> | null;
 }
 
@@ -385,9 +386,10 @@ export const api = {
     });
   },
 
-  uploadHeroVideo: async (file: File) => {
+  uploadHeroVideo: async (file: File, slot: number = 1) => {
     const fd = new FormData();
     fd.append("video", file);
+    fd.append("slot", String(slot));
     const token = await getCSRFToken();
     const headers: Record<string, string> = {};
     if (token) headers["x-csrf-token"] = token;
@@ -399,7 +401,22 @@ export const api = {
     }).then(async (res) => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error");
-      return data as { url: string; message: string };
+      return data as { url: string; slot: number; message: string };
+    });
+  },
+
+  deleteHeroVideo: async (slot: number) => {
+    const token = await getCSRFToken();
+    const headers: Record<string, string> = {};
+    if (token) headers["x-csrf-token"] = token;
+    return fetch(`/api/pool/upload-video/${slot}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers,
+    }).then(async (res) => {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error");
+      return data as { message: string };
     });
   },
 
