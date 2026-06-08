@@ -7,21 +7,28 @@ import sharp from "sharp";
 import cloudinary from "./cloudinary";
 import logger from "./logger";
 
-/** Maximum file size for uploads (5MB) */
+/** Maximum file size for images (5MB) */
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+/** Maximum file size for videos (50MB) */
+export const MAX_VIDEO_FILE_SIZE = 50 * 1024 * 1024;
 
 /**
  * Creates a pre-configured multer instance with memory storage.
  * @param allowedMimeTypes - Optional array of allowed MIME type prefixes (default: ["image/"])
+ * @param maxFileSize - Optional max file size in bytes (default: MAX_FILE_SIZE)
  */
-export function createUpload(allowedMimeTypes: string[] = ["image/"]) {
+export function createUpload(allowedMimeTypes: string[] = ["image/"], maxFileSize?: number) {
   return multer({
     storage: multer.memoryStorage(),
-    limits: { fileSize: MAX_FILE_SIZE },
+    limits: { fileSize: maxFileSize ?? MAX_FILE_SIZE },
     fileFilter: (_req, file, cb) => {
       const ok = allowedMimeTypes.some((prefix) => file.mimetype.startsWith(prefix));
       if (ok) return cb(null, true);
-      cb(new Error(`Formato no permitido: ${file.mimetype}. Usa imágenes (JPG, PNG, GIF, WEBP).`));
+      const typeLabel = allowedMimeTypes.some((p) => p.startsWith("video"))
+        ? "video (MP4, WebM, OGG, MOV)"
+        : "imágenes (JPG, PNG, GIF, WEBP)";
+      cb(new Error(`Formato no permitido: ${file.mimetype}. Usa ${typeLabel}.`));
     },
   });
 }
@@ -29,8 +36,8 @@ export function createUpload(allowedMimeTypes: string[] = ["image/"]) {
 /** Default image upload instance */
 export const imageUpload = createUpload();
 
-/** Video upload instance (for hero background videos) */
-export const videoUpload = createUpload(["video/"]);
+/** Video upload instance (for hero background videos) — 50MB limit */
+export const videoUpload = createUpload(["video/"], MAX_VIDEO_FILE_SIZE);
 
 /**
  * Compress an image buffer using sharp before uploading.
@@ -70,6 +77,7 @@ export async function uploadToCloudinary(
     allowedFormats?: string[];
     transformation?: Record<string, unknown>[];
     compress?: boolean;
+    maxFileSize?: number;
   }
 ): Promise<{ secure_url: string }> {
   const finalBuffer = options.compress !== false ? await compressImage(buffer, "image/jpeg") : buffer;
@@ -79,7 +87,7 @@ export async function uploadToCloudinary(
       {
         folder: options.folder,
         allowed_formats: options.allowedFormats || ["jpg", "jpeg", "png", "gif", "webp"],
-        max_file_size: MAX_FILE_SIZE,
+        max_file_size: options.maxFileSize ?? MAX_FILE_SIZE,
         transformation: options.transformation,
       },
       (err, result) => {
@@ -121,11 +129,17 @@ export function isCloudinaryConfigError(err: unknown): boolean {
 
 /**
  * Log and handle a Cloudinary upload error. Returns a structured error response object.
+ * Also handles multer errors first, before falling through to Cloudinary-specific errors.
  */
 export function cloudinaryErrorResponse(err: unknown, loggerLabel: string): { status: number; error: string } {
   logger.error(err, `${loggerLabel} error:`);
+
+  // Handle multer errors first (LIMIT_FILE_SIZE, unexpected field, etc.)
+  const multerHandled = handleMulterError(err, "Error al subir archivo.");
+  if (multerHandled) return multerHandled;
+
   if (isCloudinaryConfigError(err)) {
     return { status: 500, error: "Error de configuración de Cloudinary. Contacta al administrador." };
   }
-  return { status: 500, error: "Error al subir archivo. Verifica que sea una imagen válida." };
+  return { status: 500, error: "Error al subir archivo." };
 }

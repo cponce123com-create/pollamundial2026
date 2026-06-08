@@ -4,7 +4,7 @@ import { db } from "../db";
 import { poolConfig, users, entries, predictions } from "../db/schema";
 import { requireAdmin } from "../middleware/admin";
 import { eq, sql, count, desc } from "drizzle-orm";
-import { imageUpload, videoUpload, uploadToCloudinary, cloudinaryErrorResponse } from "../lib/upload";
+import { imageUpload, videoUpload, uploadToCloudinary, cloudinaryErrorResponse, MAX_VIDEO_FILE_SIZE } from "../lib/upload";
 import logger from "../lib/logger";
 
 const poolConfigSchema = z.object({
@@ -291,6 +291,7 @@ router.post("/upload-video", requireAdmin, (req: Request, res: Response, next) =
       folder: "pollaworld/hero-video",
       allowedFormats: ["mp4", "webm", "ogg", "mov"],
       compress: false, // skip sharp compression for video
+      maxFileSize: MAX_VIDEO_FILE_SIZE,
     });
 
     const configs = await db.select().from(poolConfig).limit(1);
