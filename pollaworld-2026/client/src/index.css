@@ -5015,10 +5015,14 @@ html {
   z-index: 2;
 }
 
-/* Hide video background on mobile (save data) */
+/* Video background on mobile: shown with darker overlay for readability */
 @media (max-width: 768px) {
-  .hero-video-bg,
   .hero-video-overlay {
-    display: none;
+    background: linear-gradient(
+      135deg,
+      rgba(13, 17, 23, 0.92) 0%,
+      rgba(13, 17, 23, 0.70) 40%,
+      rgba(13, 17, 23, 0.92) 100%
+    );
   }
 }

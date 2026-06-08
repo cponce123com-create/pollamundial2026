@@ -3,6 +3,18 @@ import { Link } from "react-router-dom";
 import { api, PoolStats, PoolConfig } from "../lib/api";
 import { useAuth } from "../lib/AuthContext";
 
+function optVideoUrl(url: string): string {
+  const isMobile = window.innerWidth < 768;
+  const quality = isMobile ? ",q_40" : ",q_auto";
+  return url.replace('/upload/', `/upload/f_auto:video${quality}/`);
+}
+
+function optImgUrl(url: string): string {
+  const isMobile = window.innerWidth < 768;
+  const quality = isMobile ? ",q_40" : ",q_auto";
+  return url.replace('/upload/', `/upload/f_auto${quality}/`);
+}
+
 function getSections(config: PoolConfig | null) {
   const yapePhone = config?.yape_phone || "—";
 
@@ -176,7 +188,7 @@ export default function Home() {
         {!hasMultipleVideos && config?.hero_video_url && (
           <video
             className="hero-video-bg"
-            src={config.hero_video_url.replace('/upload/', '/upload/f_auto:video,q_auto/')}
+            src={optVideoUrl(config.hero_video_url)}
             autoPlay
             muted
             loop
@@ -188,7 +200,7 @@ export default function Home() {
           <video
             key={url}
             className={`hero-video-bg${idx === videoIndex ? '' : ' hero-video-hidden'}`}
-            src={url.replace('/upload/', '/upload/f_auto:video,q_auto/')}
+            src={optVideoUrl(url)}
             autoPlay={idx === videoIndex}
             muted
             loop={idx === videoIndex}
@@ -200,7 +212,7 @@ export default function Home() {
           {loading ? (
             <div className="home-hero-skeleton" />
           ) : config?.logo_url ? (
-            <img src={config.logo_url.replace('/upload/', '/upload/f_auto,q_auto/')} alt="La Polla del Ponce" className="home-hero-logo" loading="eager" decoding="async" />
+            <img src={optImgUrl(config.logo_url)} alt="La Polla del Ponce" className="home-hero-logo" loading="eager" decoding="async" />
           ) : (
             <h1 className="home-hero-title">
               <span className="home-hero-highlight">La Polla del Ponce</span> 2026
