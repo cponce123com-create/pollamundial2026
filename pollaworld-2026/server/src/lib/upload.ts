@@ -106,7 +106,7 @@ export async function uploadToCloudinary(
 export function handleMulterError(err: unknown, defaultMessage: string): { status: number; error: string } | null {
   if (err instanceof multer.MulterError) {
     if (err.code === "LIMIT_FILE_SIZE") {
-      return { status: 400, error: "El archivo no debe superar los 5MB." };
+      return { status: 400, error: "El archivo no debe superar los 50MB." };
     }
     return { status: 400, error: `Error al subir: ${err.message}` };
   }
@@ -118,11 +118,43 @@ export function handleMulterError(err: unknown, defaultMessage: string): { statu
 
 /**
  * Checks if a Cloudinary error is due to misconfiguration (invalid API keys).
+ * More specific: only http_code 401 or credential-specific keywords.
  */
 export function isCloudinaryConfigError(err: unknown): boolean {
   if (err && typeof err === "object") {
     const obj = err as Record<string, unknown>;
-    return obj?.http_code === 401 || (typeof obj?.message === "string" && (obj.message as string).includes("Invalid"));
+    if (obj?.http_code === 401) return true;
+    if (typeof obj?.message === "string") {
+      const msg = (obj.message as string).toLowerCase();
+      return (
+        msg.includes("invalid api key") ||
+        msg.includes("invalid cloud name") ||
+        msg.includes("invalid signature") ||
+        msg.includes("api key not found") ||
+        msg.includes("not authorized") ||
+        msg.includes("unauthorized")
+      );
+    }
+  }
+  return false;
+}
+
+/**
+ * Checks if a Cloudinary error is due to the file being invalid/unsupported.
+ */
+export function isCloudinaryFileError(err: unknown): boolean {
+  if (err && typeof err === "object") {
+    const obj = err as Record<string, unknown>;
+    if (obj?.http_code === 400) return true;
+    if (typeof obj?.message === "string") {
+      const msg = (obj.message as string).toLowerCase();
+      return (
+        msg.includes("invalid") &&
+        !msg.includes("api key") &&
+        !msg.includes("cloud name") &&
+        !msg.includes("signature")
+      );
+    }
   }
   return false;
 }
@@ -141,5 +173,10 @@ export function cloudinaryErrorResponse(err: unknown, loggerLabel: string): { st
   if (isCloudinaryConfigError(err)) {
     return { status: 500, error: "Error de configuración de Cloudinary. Contacta al administrador." };
   }
+
+  if (isCloudinaryFileError(err)) {
+    return { status: 400, error: "El archivo no es válido. Verifica el formato (MP4, WebM, OGG, MOV) e intenta de nuevo." };
+  }
+
   return { status: 500, error: "Error al subir archivo." };
 }
